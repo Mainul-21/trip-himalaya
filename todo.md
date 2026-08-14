@@ -64,7 +64,7 @@
 - [x] Create the confirmed private GitHub repository Mainul-21/triphimalaya02 and push the reviewed project source.
 - [x] Diagnose why the Vercel deployment serves repository text or code instead of the built Trip Himalaya site.
 - [x] Add and validate Vercel-compatible build, routing, and server entry configuration so the deployed domain renders the website and API correctly.
-- [ ] Push the Vercel deployment repair to the private GitHub repository with clear setup guidance.
+- [x] Push the Vercel deployment repair to the private GitHub repository with clear setup guidance.
 - [ ] Redeploy the updated repository on Vercel and verify the live URL serves the Trip Himalaya interface instead of raw source or text.
 - [ ] Verify the live Vercel API function receives public tRPC requests after redeployment.
 - [x] Repair and visually verify the mobile navigation menu so all public links remain visible, reachable, and tappable on phone screens.
@@ -74,9 +74,14 @@
 - [x] Remove technical image/slug presentation from public cards and refine the public and administrator UI to look like a professional agency product.
 - [x] Add regression coverage for multi-photo tour galleries and the corrected mobile-navigation breakpoint.
 - [ ] Open and exercise the phone navigation menu to verify every public link and contact action is visible and tappable.
+- [ ] Diagnose the Vercel blank page using deployment logs, live browser inspection, and production asset routing checks.
+- [ ] Repair the Vercel production configuration so the live domain renders the public app and API routes without blank-screen failures.
+- [x] Redesign the homepage as a restrained, professional travel-agency experience with less decorative text, clearer hierarchy, and authentic service-focused content.
+- [x] Validate the updated homepage at desktop and phone breakpoints; Vercel live-domain confirmation remains pending redeployment.
 - [x] Add protected administrator media-library removal controls so unused uploaded photos can be managed directly.
 - [x] Clarify the administrator workflow as selecting, ordering, and removing tour gallery photos, and verify there is no residual technical public-card copy.
 - [x] Add explicit source-level regression coverage for the mobile-navigation breakpoint and accessible overlay behavior.
 - [x] Add regression coverage for protected photo-library removal, including prevention when a photo is still assigned to a journey.
 - [x] Move the mobile-navigation regression into Vitest’s discovered test scope and verify it executes.
 - [x] Extend protected media-removal tests to reject visitor and unauthenticated callers.
+- [x] Reduce overuse of condensed all-caps display treatments and strengthen the local-outfitter visual language without adding artificial reviews or generic template cues.

@@ -150,7 +150,13 @@ function vitePluginManusDebugCollector(): Plugin {
   };
 }
 
-const plugins = [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
+// The Manus runtime and debug collector support the managed preview environment.
+// They are intentionally excluded from Vercel artifacts: those scripts rely on
+// Manus-specific endpoints and can prevent an external static deployment from booting.
+const isVercelBuild = process.env.VERCEL === "1";
+const plugins = isVercelBuild
+  ? [react(), tailwindcss(), jsxLocPlugin()]
+  : [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
 
 export default defineConfig({
   plugins,
