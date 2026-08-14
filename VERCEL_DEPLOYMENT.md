@@ -1,5 +1,21 @@
 # Vercel deployment guide
 
+## Blank-page repair
+
+The repository now uses a Vercel-safe Vite build and an SPA fallback that **does not intercept `/api/*`**. This matters because the public site loads its journeys and forms through the API function. The project also includes a lightweight deployment check at `/api/health`.
+
+Before redeploying, open **Vercel → Project Settings → General** and confirm that **Root Directory** is the repository root (`.`), not `client`. A `client` root directory bypasses the repository’s Vercel configuration and can serve an incomplete or blank app.
+
+After the new deployment is ready, open `https://YOUR-VERCEL-DOMAIN/api/health`. It should return:
+
+```json
+{"ok":true,"service":"trip-himalaya-api"}
+```
+
+Then open the root domain in an incognito window. If the health URL works but the root is still blank, save a screenshot of the Vercel **Build Logs** and the browser console; this separates a deployment routing issue from a browser asset-loading issue.
+
+> The routing pattern follows Vercel’s official rewrite guidance: [Vite SPA deployment](https://vercel.com/docs/frameworks/frontend/vite) and [rewrite patterns](https://vercel.com/docs/routing/rewrites).
+
 The repository now includes `vercel.json`, which makes Vercel build the Vite application into `dist/public`, serves that built output, and keeps React deep links working. The native `api/index.ts` and `api/[...path].ts` Vercel Functions send the root and nested `/api/*` requests to the exported Express application without changing their request paths.
 
 ## Vercel project settings

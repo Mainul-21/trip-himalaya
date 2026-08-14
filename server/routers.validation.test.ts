@@ -11,6 +11,7 @@ vi.mock("./db", () => ({
   listMediaAssets: vi.fn(),
   removeUnusedMediaAsset: vi.fn(),
   createTour: vi.fn(),
+  createBlog: vi.fn(),
   credentialAdminExists: vi.fn(),
   getUserByEmail: vi.fn(),
   enableExistingPrincipalCredential: vi.fn(),
@@ -185,5 +186,50 @@ describe("tour gallery management", () => {
       inclusions: ["Local guide"], exclusions: ["Personal purchases"], isPublished: true, isFeatured: true, featureOrder: 1,
     })).resolves.toEqual({ success: true });
     expect(db.createTour).toHaveBeenCalledWith(expect.objectContaining({ heroImage: photos[0], gallery: photos }));
+  });
+
+  it("accepts long administrator-managed tour and field-note content without word-count limits", async () => {
+    const caller = appRouter.createCaller(createContext("admin"));
+    const longText = "Detailed local route guidance. ".repeat(800);
+    const photo = "/manus-storage/tour-media/2/triund-cover.webp";
+
+    await expect(caller.tours.create({
+      title: longText,
+      slug: "long-form-triund-guide",
+      category: "Trekking",
+      location: "Dharamshala, Himachal Pradesh",
+      duration: "2 Days / 1 Night",
+      difficulty: "Easy",
+      priceFrom: 3200,
+      heroImage: photo,
+      gallery: [photo],
+      shortDescription: longText,
+      overview: longText,
+      highlights: [`Route note: ${longText}`],
+      itinerary: [{ day: "Day 1", title: longText, description: longText }],
+      inclusions: [longText],
+      exclusions: [longText],
+      isPublished: false,
+      isFeatured: false,
+      featureOrder: 1,
+    })).resolves.toEqual({ success: true });
+    const expectedLength = longText.trim().length;
+    const savedTour = vi.mocked(db.createTour).mock.calls[0]?.[0];
+    expect(savedTour?.title.length).toBe(expectedLength);
+    expect(savedTour?.overview.length).toBe(expectedLength);
+
+    await expect(caller.blogs.create({
+      title: longText,
+      slug: "long-form-local-field-note",
+      excerpt: longText,
+      content: longText,
+      coverImage: photo,
+      author: longText,
+      isPublished: false,
+    })).resolves.toEqual({ success: true });
+    const savedBlog = vi.mocked(db.createBlog).mock.calls[0]?.[0];
+    expect(savedBlog?.title.length).toBe(expectedLength);
+    expect(savedBlog?.content.length).toBe(expectedLength);
+    expect(savedBlog?.author.length).toBe(expectedLength);
   });
 });

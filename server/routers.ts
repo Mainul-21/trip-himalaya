@@ -13,34 +13,35 @@ import { assertPublicFormSubmissionAllowed } from "./publicFormRateLimit";
 const email = z.string().trim().email().max(320);
 const password = z.string().min(12, "Use at least 12 characters.").max(128);
 const textLine = z.string().trim().min(2).max(180);
-const itinerary = z.array(z.object({ day: z.string().min(1).max(40), title: z.string().min(2).max(180), description: z.string().min(4).max(1000) })).min(1);
+const adminContent = z.string().trim().min(1);
+const itinerary = z.array(z.object({ day: adminContent, title: adminContent, description: adminContent })).min(1);
 const tourInput = z.object({
-  title: textLine,
+  title: adminContent,
   slug: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(200),
-  category: textLine.max(80),
-  location: textLine,
-  duration: z.string().trim().min(2).max(60),
-  difficulty: z.string().trim().min(2).max(40),
+  category: adminContent,
+  location: adminContent,
+  duration: adminContent,
+  difficulty: adminContent,
   priceFrom: z.number().int().nonnegative(),
   heroImage: z.string().url().or(z.string().startsWith("/manus-storage/")),
   gallery: z.array(z.string().url().or(z.string().startsWith("/manus-storage/"))).min(1).max(10),
-  shortDescription: z.string().trim().min(20).max(360),
-  overview: z.string().trim().min(40).max(8000),
-  highlights: z.array(z.string().trim().min(2).max(180)).min(1).max(12),
+  shortDescription: adminContent,
+  overview: adminContent,
+  highlights: z.array(adminContent).min(1),
   itinerary,
-  inclusions: z.array(z.string().trim().min(2).max(180)).min(1).max(20),
-  exclusions: z.array(z.string().trim().min(2).max(180)).max(20),
+  inclusions: z.array(adminContent).min(1),
+  exclusions: z.array(adminContent),
   isPublished: z.boolean(),
   isFeatured: z.boolean(),
   featureOrder: z.number().int().min(0).max(999),
 });
 const blogInput = z.object({
-  title: textLine,
+  title: adminContent,
   slug: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(200),
-  excerpt: z.string().trim().min(20).max(360),
-  content: z.string().trim().min(60).max(20000),
+  excerpt: adminContent,
+  content: adminContent,
   coverImage: z.string().url().or(z.string().startsWith("/manus-storage/")),
-  author: textLine.max(160),
+  author: adminContent,
   isPublished: z.boolean(),
 });
 const imageUploadInput = z.object({
@@ -177,9 +178,9 @@ export const appRouter = router({
   reviews: router({
     list: publicProcedure.query(() => db.listPublishedReviews()),
     adminList: adminProcedure.query(() => db.listAdminReviews()),
-    create: adminProcedure.input(z.object({ reviewerName: textLine.max(160), location: z.string().trim().max(180).optional(), quote: z.string().trim().min(10).max(2000), sourceLabel: z.string().trim().max(100).optional(), isPublished: z.boolean() }))
+    create: adminProcedure.input(z.object({ reviewerName: adminContent, location: adminContent.optional(), quote: adminContent, sourceLabel: adminContent.optional(), isPublished: z.boolean() }))
       .mutation(async ({ input }) => { await db.createReview({ ...input, location: input.location || null, sourceLabel: input.sourceLabel || null }); return { success: true } as const; }),
-    update: adminProcedure.input(z.object({ id: z.number().int().positive(), reviewerName: textLine.max(160), location: z.string().trim().max(180).optional(), quote: z.string().trim().min(10).max(2000), sourceLabel: z.string().trim().max(100).optional(), isPublished: z.boolean() }))
+    update: adminProcedure.input(z.object({ id: z.number().int().positive(), reviewerName: adminContent, location: adminContent.optional(), quote: adminContent, sourceLabel: adminContent.optional(), isPublished: z.boolean() }))
       .mutation(async ({ input }) => { const { id, ...values } = input; await db.updateReview(id, { ...values, location: values.location || null, sourceLabel: values.sourceLabel || null }); return { success: true } as const; }),
     delete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(async ({ input }) => { await db.deleteReview(input.id); return { success: true } as const; }),
   }),

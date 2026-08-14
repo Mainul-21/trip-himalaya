@@ -85,3 +85,7 @@
 - [x] Move the mobile-navigation regression into Vitest’s discovered test scope and verify it executes.
 - [x] Extend protected media-removal tests to reject visitor and unauthenticated callers.
 - [x] Reduce overuse of condensed all-caps display treatments and strengthen the local-outfitter visual language without adding artificial reviews or generic template cues.
+- [x] Remove unnecessary administrator word-count restrictions from tour, blog, and other admin-managed content while retaining essential security protections.
+- [x] Replace remaining administrator-facing technical or unclear labels with simple task-focused guidance.
+- [x] Audit setup, profile, administrator-management, journey, blog, and review screens for plain-language guidance and verify the revised wording.
+- [ ] Inspect the live Vercel deployment and repair the configuration or runtime issue causing the user-reported blank white page.

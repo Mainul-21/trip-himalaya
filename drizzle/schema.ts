@@ -25,16 +25,16 @@ export const users = mysqlTable("users", {
 
 export const tours = mysqlTable("tours", {
   id: int("id").autoincrement().primaryKey(),
-  title: varchar("title", { length: 180 }).notNull(),
+  title: text("title").notNull(),
   slug: varchar("slug", { length: 200 }).notNull().unique(),
-  category: varchar("category", { length: 80 }).notNull(),
-  location: varchar("location", { length: 180 }).notNull(),
-  duration: varchar("duration", { length: 60 }).notNull(),
-  difficulty: varchar("difficulty", { length: 40 }).notNull(),
+  category: text("category").notNull(),
+  location: text("location").notNull(),
+  duration: text("duration").notNull(),
+  difficulty: text("difficulty").notNull(),
   priceFrom: int("priceFrom").notNull(),
   heroImage: text("heroImage").notNull(),
   gallery: json("gallery").$type<string[]>().notNull(),
-  shortDescription: varchar("shortDescription", { length: 360 }).notNull(),
+  shortDescription: text("shortDescription").notNull(),
   overview: text("overview").notNull(),
   highlights: json("highlights").$type<string[]>().notNull(),
   itinerary: json("itinerary").$type<{ day: string; title: string; description: string }[]>().notNull(),
@@ -81,12 +81,12 @@ export const newsletterSubscribers = mysqlTable("newsletterSubscribers", {
 
 export const blogs = mysqlTable("blogs", {
   id: int("id").autoincrement().primaryKey(),
-  title: varchar("title", { length: 180 }).notNull(),
+  title: text("title").notNull(),
   slug: varchar("slug", { length: 200 }).notNull().unique(),
-  excerpt: varchar("excerpt", { length: 360 }).notNull(),
+  excerpt: text("excerpt").notNull(),
   content: text("content").notNull(),
   coverImage: text("coverImage").notNull(),
-  author: varchar("author", { length: 160 }).notNull(),
+  author: text("author").notNull(),
   isPublished: boolean("isPublished").default(false).notNull(),
   publishedAt: timestamp("publishedAt"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
@@ -95,10 +95,10 @@ export const blogs = mysqlTable("blogs", {
 
 export const reviews = mysqlTable("reviews", {
   id: int("id").autoincrement().primaryKey(),
-  reviewerName: varchar("reviewerName", { length: 160 }).notNull(),
-  location: varchar("location", { length: 180 }),
+  reviewerName: text("reviewerName").notNull(),
+  location: text("location"),
   quote: text("quote").notNull(),
-  sourceLabel: varchar("sourceLabel", { length: 100 }),
+  sourceLabel: text("sourceLabel"),
   isPublished: boolean("isPublished").default(false).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
