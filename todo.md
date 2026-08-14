@@ -1,0 +1,49 @@
+# Project TODO
+
+- [x] Create a mountain-led visual system inspired by the supplied reference with distinct Trip Himalaya branding.
+- [x] Build a fast, responsive public homepage with hero, trust strip, experience categories, featured tours, benefits, enquiry panel, and footer.
+- [x] Add public pages for tours, tour detail, trekking, experiences, about, contact, blog, search results, booking confirmation, enquiry confirmation, and an interactive 404 page.
+- [x] Remove destination-directory pages and destination navigation from the public site.
+- [x] Use India-only locations, names, tourism context, and imagery; focus the service area on Dharamshala and Himachal Pradesh.
+- [x] Write concise conversion-focused copy around the target phrase “Best tour agency in Dharamshala, India”.
+- [x] Add WhatsApp and telephone call-to-action controls throughout relevant visitor journeys.
+- [x] Build functional public search across tours, treks, experiences, and blogs.
+- [x] Build tour enquiry and booking request forms with immediate visitor confirmation states.
+- [x] Persist booking requests with the selected tour and full form details for administrative follow-up.
+- [x] Persist contact enquiries with full message and contact details for administrative follow-up.
+- [x] Add newsletter subscription capture and its administrative management controls.
+- [x] Model tours with overview, highlights, itinerary-by-day, inclusions, exclusions, gallery, price, duration, category, publication state, and placement order.
+- [x] Support safe administrator-controlled featured-trip ordering and visibility placements.
+- [x] Add blog publishing and deletion controls in the administrator portal.
+- [x] Add authentic-content review management without fabricating customer reviews or ratings.
+- [x] Implement a secure invite/credential-only administrator access flow with no public user registration or social sign-in controls.
+- [x] Implement a one-time principal administrator setup flow and prevent a second public administrator-creation pathway after setup.
+- [x] Create principal and administrator roles: only the principal can manage other administrators; other administrators can manage their own profile and all permitted operational content.
+- [x] Allow the principal to permanently remove subordinate administrator accounts while preventing principal-account deletion.
+- [x] Add administrator profile settings for name, email, password, and account security actions consistent with role permissions.
+- [x] Build an admin dashboard with booking, enquiry, newsletter, blog, tour, placement, and review administration areas.
+- [x] Keep the admin portal hidden from public header navigation and show it only after a valid administrator sign-in.
+- [x] Add responsive mobile navigation, accessible keyboard controls, visible focus treatments, and reduced-motion support.
+- [x] Add refined motion and micro-interactions using performant transform and opacity transitions.
+- [x] Add SEO metadata, sitemap/robots configuration, semantic structure, performance-conscious images, and target-keyword coverage.
+- [x] Add a footer credit reading “Develop by Mainul Islam”.
+- [x] Write database schema, server procedures, and client integrations for all data-managed flows.
+- [x] Write and run Vitest coverage for permissions, content flows, and visitor submission validation.
+- [x] Verify public and admin routes visually on desktop and mobile before delivery.
+- [x] Confirm and visually verify the homepage enquiry panel and footer implementation.
+- [x] Inspect and validate all promised public routes, including trekking, experiences, about, booking and enquiry confirmations, and 404.
+- [x] Verify visible WhatsApp and telephone calls to action across key visitor pages.
+- [x] Confirm search covers all public tour categories plus blogs and add search-flow test coverage.
+- [x] Confirm public navigation never exposes an administrator portal route.
+- [x] Add Vitest coverage for visitor submission validation and principal-versus-admin permission boundaries.
+- [x] Perform visual QA on the full public and administrator route set at desktop and mobile breakpoints.
+- [x] Reduce the initial public JavaScript payload through route-level code splitting where practical.
+- [x] Exercise booking and homepage enquiry submissions end-to-end and verify the visitor confirmation states.
+- [x] Add search-result unit coverage for tours, treks, blogs, and the no-results state.
+- [x] Confirm CTA coverage in the homepage, global public layout, contact page, and tour details.
+- [ ] Verify the authenticated administrator portal flows on desktop and mobile without exposing credentials.
+- [x] Add full mutation-path coverage proving booking and homepage enquiry records reach their respective persistence helpers and return confirmation responses.
+- [x] Perform explicit WhatsApp and telephone CTA visibility and link-behavior QA on the contact and tour-detail pages.
+- [x] Add clear View details and Enquire now actions to every reusable public tour card.
+- [x] Make every homepage category card navigate to the tours catalogue with its matching category filter already applied.
+- [x] Rebuild and verify the cacheable shared vendor-chunk strategy for the public experience.

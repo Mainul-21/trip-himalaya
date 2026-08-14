@@ -1,42 +1,44 @@
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
-import Home from "./pages/Home";
+import { lazy, Suspense } from "react";
+import { Route, Switch } from "wouter";
+
+const AdminLogin = lazy(() => import("./pages/AdminLogin"));
+const AdminPortal = lazy(() => import("./pages/AdminPortal"));
+const AdminSetup = lazy(() => import("./pages/AdminSetup"));
+const BlogDetail = lazy(() => import("./pages/BlogDetail"));
+const BlogList = lazy(() => import("./pages/BlogList"));
+const Contact = lazy(() => import("./pages/Contact"));
+const Home = lazy(() => import("./pages/Home"));
+const NotFound = lazy(() => import("./pages/NotFound"));
+const PublicPage = lazy(() => import("./pages/PublicPage"));
+const SearchPage = lazy(() => import("./pages/SearchPage"));
+const TourBooking = lazy(() => import("./pages/TourBooking"));
+const TourDetail = lazy(() => import("./pages/TourDetail"));
+const Tours = lazy(() => import("./pages/Tours"));
+const Treks = lazy(() => import("./pages/Treks"));
 
 function Router() {
-  // make sure to consider if you need authentication for certain routes
-  return (
-    <Switch>
-      <Route path={"/"} component={Home} />
-      <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
-      <Route component={NotFound} />
-    </Switch>
-  );
+  return <Suspense fallback={<main className="grid min-h-screen place-items-center bg-[#fbfaf6] text-sm font-bold text-[#123d5b]">Loading your journey…</main>}><Switch>
+    <Route path="/" component={Home} />
+    <Route path="/tours" component={Tours} />
+    <Route path="/tours/:slug" component={TourDetail} />
+    <Route path="/treks" component={Treks} />
+    <Route path="/book/:slug" component={TourBooking} />
+    <Route path="/experiences"><PublicPage kind="experiences" /></Route>
+    <Route path="/about"><PublicPage kind="about" /></Route>
+    <Route path="/contact" component={Contact} />
+    <Route path="/blog" component={BlogList} />
+    <Route path="/blog/:slug" component={BlogDetail} />
+    <Route path="/search" component={SearchPage} />
+    <Route path="/admin/setup" component={AdminSetup} />
+    <Route path="/admin/login" component={AdminLogin} />
+    <Route path="/admin/:rest*" component={AdminPortal} />
+    <Route path="/admin" component={AdminPortal} />
+    <Route component={NotFound} />
+  </Switch></Suspense>;
 }
 
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
-
-function App() {
-  return (
-    <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-        // switchable
-      >
-        <TooltipProvider>
-          <Toaster />
-          <Router />
-        </TooltipProvider>
-      </ThemeProvider>
-    </ErrorBoundary>
-  );
-}
-
-export default App;
+export default function App() { return <ErrorBoundary><ThemeProvider defaultTheme="light"><TooltipProvider><Toaster richColors position="top-right" /><Router /></TooltipProvider></ThemeProvider></ErrorBoundary>; }

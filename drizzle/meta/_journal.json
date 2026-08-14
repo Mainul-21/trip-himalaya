@@ -1,5 +1,27 @@
 {
   "version": "7",
   "dialect": "mysql",
-  "entries": []
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1786664738961,
+      "tag": "0000_pale_jack_flag",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1786665000222,
+      "tag": "0001_messy_mikhail_rasputin",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1786665063783,
+      "tag": "0002_ambiguous_havok",
+      "breakpoints": true
+    }
+  ]
 }

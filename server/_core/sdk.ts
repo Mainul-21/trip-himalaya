@@ -334,11 +334,13 @@ function buildCronUser(
   const now = new Date();
   return {
     id: -1,
-    openId: userInfo.openId,
-    name: userInfo.name || "Manus Scheduled Task",
+    openId: CRON_OPEN_ID_PREFIX + (userInfo.taskUid ?? "unknown"),
+    name: "Cron",
     email: null,
+    passwordHash: null,
     loginMethod: null,
     role: "user",
+    isActive: true,
     createdAt: now,
     updatedAt: now,
     lastSignedIn: now,
