@@ -61,4 +61,9 @@
 - [x] Add focused public-enquiry tests for one-character messages, invalid required fields, invalid email rejection, and form abuse controls.
 - [x] Add concrete regression coverage for security headers, request-size limits, credential throttling, and secure session-cookie settings.
 - [x] Add an exact one-character enquiry-message regression test and rerun the full suite.
-- [ ] Create the confirmed private GitHub repository Mainul-21/triphimalaya02 and push the reviewed project source.
+- [x] Create the confirmed private GitHub repository Mainul-21/triphimalaya02 and push the reviewed project source.
+- [x] Diagnose why the Vercel deployment serves repository text or code instead of the built Trip Himalaya site.
+- [x] Add and validate Vercel-compatible build, routing, and server entry configuration so the deployed domain renders the website and API correctly.
+- [ ] Push the Vercel deployment repair to the private GitHub repository with clear setup guidance.
+- [ ] Redeploy the updated repository on Vercel and verify the live URL serves the Trip Himalaya interface instead of raw source or text.
+- [ ] Verify the live Vercel API function receives public tRPC requests after redeployment.

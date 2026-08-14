@@ -1,0 +1,26 @@
+# Vercel deployment guide
+
+The repository now includes `vercel.json`, which makes Vercel build the Vite application into `dist/public`, serves that built output, and keeps React deep links working. The native `api/index.ts` and `api/[...path].ts` Vercel Functions send the root and nested `/api/*` requests to the exported Express application without changing their request paths.
+
+## Vercel project settings
+
+| Setting | Value |
+| --- | --- |
+| Framework preset | Vite |
+| Root directory | Repository root |
+| Install command | `pnpm install --frozen-lockfile` |
+| Build command | `pnpm vercel:build` |
+| Output directory | `dist/public` |
+| Node.js version | 22.x |
+
+Do not configure Vercel to deploy the repository root as a static directory. That causes the source files or a directory listing to be served instead of the generated application.
+
+## Required environment services
+
+The public interface will render after the build configuration above. The booking, enquiry, administrator, authentication, database, and media-upload features additionally require production equivalents for the database, session secret, OAuth/authentication service, object storage, and the public `VITE_*` configuration values. Add those values in **Vercel → Project Settings → Environment Variables**; do not commit them to this repository.
+
+> The managed Manus deployment is already configured with those platform services. When using Vercel, provision and configure your own compatible services before relying on the live admin or visitor-submission features.
+
+## Redeploy
+
+After the repository is pushed, open the Vercel deployment, select **Redeploy**, and enable **Use existing Build Cache** only after the first successful deployment. The deployment should then show the Trip Himalaya website rather than raw project text.

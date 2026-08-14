@@ -29,9 +29,8 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
   throw new Error(`No available port found starting from ${startPort}`);
 }
 
-async function startServer() {
+export function createApp() {
   const app = express();
-  const server = createServer(app);
   app.disable("x-powered-by");
   app.use((_req, res, next) => {
     applySecurityHeaders(res, process.env.NODE_ENV === "production");
@@ -49,6 +48,12 @@ async function startServer() {
       createContext,
     })
   );
+  return app;
+}
+
+async function startServer() {
+  const app = createApp();
+  const server = createServer(app);
   // development mode uses Vite, production mode uses static files
   if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
@@ -68,4 +73,10 @@ async function startServer() {
   });
 }
 
-startServer().catch(console.error);
+// Vercel imports the exported Express application as a serverless function.
+// Local and Manus production runtimes retain the existing listener behavior.
+if (!process.env.VERCEL) {
+  startServer().catch(console.error);
+}
+
+export default createApp;
