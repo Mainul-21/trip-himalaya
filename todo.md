@@ -67,3 +67,16 @@
 - [ ] Push the Vercel deployment repair to the private GitHub repository with clear setup guidance.
 - [ ] Redeploy the updated repository on Vercel and verify the live URL serves the Trip Himalaya interface instead of raw source or text.
 - [ ] Verify the live Vercel API function receives public tRPC requests after redeployment.
+- [x] Repair and visually verify the mobile navigation menu so all public links remain visible, reachable, and tappable on phone screens.
+- [x] Replace technical labels such as image URL and slug with simple professional agency language in the administrator journey editor.
+- [x] Add a clear gallery section for selecting, reordering, and editing tour photos from the administrator media library.
+- [x] Streamline tour-cover and gallery image workflows with quick image selection, editing, removal, and size-aware fast uploads.
+- [x] Remove technical image/slug presentation from public cards and refine the public and administrator UI to look like a professional agency product.
+- [x] Add regression coverage for multi-photo tour galleries and the corrected mobile-navigation breakpoint.
+- [ ] Open and exercise the phone navigation menu to verify every public link and contact action is visible and tappable.
+- [x] Add protected administrator media-library removal controls so unused uploaded photos can be managed directly.
+- [x] Clarify the administrator workflow as selecting, ordering, and removing tour gallery photos, and verify there is no residual technical public-card copy.
+- [x] Add explicit source-level regression coverage for the mobile-navigation breakpoint and accessible overlay behavior.
+- [x] Add regression coverage for protected photo-library removal, including prevention when a photo is still assigned to a journey.
+- [x] Move the mobile-navigation regression into Vitest’s discovered test scope and verify it executes.
+- [x] Extend protected media-removal tests to reject visitor and unauthenticated callers.

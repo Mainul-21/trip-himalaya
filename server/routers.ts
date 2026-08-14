@@ -134,6 +134,11 @@ export const appRouter = router({
       await db.createMediaAsset({ storageKey: stored.key, url: stored.url, filename: input.filename, mimeType: input.mimeType, sizeBytes: bytes.length, uploadedBy: ctx.user.id });
       return { success: true, asset: { url: stored.url, filename: input.filename } } as const;
     }),
+    remove: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(async ({ input }) => {
+      const result = await db.removeUnusedMediaAsset(input.id);
+      if (!result.removed) throw new TRPCError({ code: result.reason === "missing" ? "NOT_FOUND" : "CONFLICT", message: result.reason === "in-use" ? "This photo is still used by a tour. Remove it from that tour before removing it from the library." : "This photo is no longer in the library." });
+      return { success: true } as const;
+    }),
   }),
   bookings: router({
     create: publicProcedure.input(z.object({

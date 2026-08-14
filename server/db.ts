@@ -36,6 +36,17 @@ export async function listMediaAssets() {
   return db.select().from(mediaAssets).orderBy(desc(mediaAssets.createdAt));
 }
 
+export async function removeUnusedMediaAsset(id: number) {
+  const db = requireDb(await getDb());
+  const asset = (await db.select().from(mediaAssets).where(eq(mediaAssets.id, id)).limit(1))[0];
+  if (!asset) return { removed: false, reason: "missing" as const };
+  const assignedTours = await db.select({ heroImage: tours.heroImage, gallery: tours.gallery }).from(tours);
+  const inUse = assignedTours.some(tour => tour.heroImage === asset.url || (Array.isArray(tour.gallery) && tour.gallery.includes(asset.url)));
+  if (inUse) return { removed: false, reason: "in-use" as const };
+  await db.delete(mediaAssets).where(eq(mediaAssets.id, id));
+  return { removed: true as const };
+}
+
 export async function upsertUser(user: InsertUser): Promise<void> {
   const db = await getDb();
   if (!db || !user.openId) return;

@@ -9,6 +9,8 @@ vi.mock("./db", () => ({
   createEnquiry: vi.fn(),
   createMediaAsset: vi.fn(),
   listMediaAssets: vi.fn(),
+  removeUnusedMediaAsset: vi.fn(),
+  createTour: vi.fn(),
   credentialAdminExists: vi.fn(),
   getUserByEmail: vi.fn(),
   enableExistingPrincipalCredential: vi.fn(),
@@ -151,7 +153,37 @@ describe("administrator media upload", () => {
     const visitor = appRouter.createCaller(createContext("visitor"));
     await expect(visitor.media.list()).rejects.toMatchObject({ code: "FORBIDDEN" });
     await expect(visitor.media.upload({ filename: "triund.png", mimeType: "image/png", dataBase64: Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00]).toString("base64") })).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(visitor.media.remove({ id: 7 })).rejects.toMatchObject({ code: "FORBIDDEN" });
     const anonymous = appRouter.createCaller({ user: null, req: { protocol: "https", headers: {} }, res: { clearCookie: () => undefined } } as TrpcContext);
     await expect(anonymous.media.list()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(anonymous.media.remove({ id: 7 })).rejects.toMatchObject({ code: "FORBIDDEN" });
+  });
+
+  it("allows an administrator to remove an unused library photo but protects a photo assigned to a journey", async () => {
+    const caller = appRouter.createCaller(createContext("admin"));
+    vi.mocked(db.removeUnusedMediaAsset).mockResolvedValueOnce({ removed: true });
+    await expect(caller.media.remove({ id: 14 })).resolves.toEqual({ success: true });
+    expect(db.removeUnusedMediaAsset).toHaveBeenCalledWith(14);
+
+    vi.mocked(db.removeUnusedMediaAsset).mockResolvedValueOnce({ removed: false, reason: "in-use" });
+    await expect(caller.media.remove({ id: 15 })).rejects.toMatchObject({ code: "CONFLICT" });
+  });
+});
+
+describe("tour gallery management", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("persists a selected multi-photo gallery in the order chosen by an administrator", async () => {
+    const caller = appRouter.createCaller(createContext("admin"));
+    const photos = ["/manus-storage/tour-media/2/triund-cover.webp", "/manus-storage/tour-media/2/triund-camp.webp", "/manus-storage/tour-media/2/triund-sunrise.webp"];
+    await expect(caller.tours.create({
+      title: "Triund Sunrise Trek", slug: "triund-sunrise-trek", category: "Trekking", location: "Dharamshala, Himachal Pradesh", duration: "2 Days / 1 Night", difficulty: "Easy", priceFrom: 3200,
+      heroImage: photos[0]!, gallery: photos,
+      shortDescription: "A carefully paced sunrise trek from Dharamshala with local mountain guides.",
+      overview: "Walk through cedar forests to Triund with a local guide, a relaxed camp evening, and a memorable Himalayan sunrise.",
+      highlights: ["Triund sunrise", "Local guide"], itinerary: [{ day: "Day 1", title: "Walk to Triund", description: "Meet the guide and walk through the forest to the campsite." }],
+      inclusions: ["Local guide"], exclusions: ["Personal purchases"], isPublished: true, isFeatured: true, featureOrder: 1,
+    })).resolves.toEqual({ success: true });
+    expect(db.createTour).toHaveBeenCalledWith(expect.objectContaining({ heroImage: photos[0], gallery: photos }));
   });
 });
