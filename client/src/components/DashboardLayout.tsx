@@ -4,13 +4,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { BookOpen, BriefcaseBusiness, ClipboardList, LayoutDashboard, LogOut, Mail, MessageSquare, Mountain, Settings, ShieldCheck, Users } from "lucide-react";
+import { BookOpen, BriefcaseBusiness, ClipboardList, ImagePlus, LayoutDashboard, LogOut, Mail, MessageSquare, Mountain, Settings, ShieldCheck, Users } from "lucide-react";
 import { useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from "./DashboardLayoutSkeleton";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Overview", path: "/admin" }, { icon: Mountain, label: "Tours & placement", path: "/admin/tours" }, { icon: ClipboardList, label: "Booking requests", path: "/admin/bookings" }, { icon: MessageSquare, label: "Enquiries", path: "/admin/enquiries" }, { icon: Mail, label: "Newsletter", path: "/admin/newsletter" }, { icon: BookOpen, label: "Field notes", path: "/admin/blogs" }, { icon: BriefcaseBusiness, label: "Reviews", path: "/admin/reviews" }, { icon: Settings, label: "My profile", path: "/admin/profile" },
+  { icon: LayoutDashboard, label: "Overview", path: "/admin" }, { icon: Mountain, label: "Tours & placement", path: "/admin/tours" }, { icon: ImagePlus, label: "Tour photos", path: "/admin/tours" }, { icon: ClipboardList, label: "Booking requests", path: "/admin/bookings" }, { icon: MessageSquare, label: "Enquiries", path: "/admin/enquiries" }, { icon: Mail, label: "Newsletter", path: "/admin/newsletter" }, { icon: BookOpen, label: "Field notes", path: "/admin/blogs" }, { icon: BriefcaseBusiness, label: "Reviews", path: "/admin/reviews" }, { icon: Settings, label: "My profile", path: "/admin/profile" },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {

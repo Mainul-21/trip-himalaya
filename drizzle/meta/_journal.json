@@ -22,6 +22,13 @@
       "when": 1786665063783,
       "tag": "0002_ambiguous_havok",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1786680117337,
+      "tag": "0003_sour_dragon_man",
+      "breakpoints": true
     }
   ]
 }

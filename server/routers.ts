@@ -3,10 +3,12 @@ import { z } from "zod";
 import { getSessionCookieOptions } from "./_core/cookies";
 import { sdk } from "./_core/sdk";
 import { adminProcedure, principalProcedure, publicProcedure, router } from "./_core/trpc";
-import { hashPassword, verifyPassword } from "./adminAuth";
+import { assertCredentialAttemptAllowed, clearCredentialFailures, hashPassword, recordCredentialFailure, verifyPassword } from "./adminAuth";
 import * as db from "./db";
 import { isAdminRole } from "./roles";
 import { COOKIE_NAME } from "../shared/const";
+import { storagePut } from "./storage";
+import { assertPublicFormSubmissionAllowed } from "./publicFormRateLimit";
 
 const email = z.string().trim().email().max(320);
 const password = z.string().min(12, "Use at least 12 characters.").max(128);
@@ -41,6 +43,17 @@ const blogInput = z.object({
   author: textLine.max(160),
   isPublished: z.boolean(),
 });
+const imageUploadInput = z.object({
+  filename: z.string().trim().min(1).max(180),
+  mimeType: z.enum(["image/jpeg", "image/png", "image/webp"]),
+  dataBase64: z.string().min(8).max(2_100_000),
+});
+
+function validImageSignature(buffer: Buffer, mimeType: "image/jpeg" | "image/png" | "image/webp") {
+  if (mimeType === "image/jpeg") return buffer.length > 3 && buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff;
+  if (mimeType === "image/png") return buffer.length > 8 && buffer.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]));
+  return buffer.length > 12 && buffer.subarray(0, 4).toString("ascii") === "RIFF" && buffer.subarray(8, 12).toString("ascii") === "WEBP";
+}
 
 export const appRouter = router({
   auth: router({
@@ -52,16 +65,36 @@ export const appRouter = router({
   }),
   adminAuth: router({
     setupStatus: publicProcedure.query(async () => ({ needsSetup: !(await db.credentialAdminExists()) })),
-    setupPrincipal: publicProcedure.input(z.object({ name: textLine.max(160), email, password })).mutation(async ({ input }) => {
+    setupPrincipal: publicProcedure.input(z.object({ name: textLine.max(160), email, password })).mutation(async ({ ctx, input }) => {
       if (await db.credentialAdminExists()) throw new TRPCError({ code: "FORBIDDEN", message: "The principal administrator is already configured." });
-      await db.createCredentialAdmin({ name: input.name, email: input.email, passwordHash: await hashPassword(input.password), role: "principal" });
-      return { success: true } as const;
+      assertCredentialAttemptAllowed(`setup:${input.email}`);
+      const owner = await db.getUserByEmail(input.email);
+      if (!owner || owner.role !== "principal" || owner.passwordHash || !owner.isActive) {
+        recordCredentialFailure(`setup:${input.email}`);
+        throw new TRPCError({ code: "FORBIDDEN", message: "The principal setup identity could not be verified." });
+      }
+      const principal = await db.enableExistingPrincipalCredential({ id: owner.id, name: input.name, email: input.email, passwordHash: await hashPassword(input.password) });
+      if (!principal || !principal.passwordHash || principal.role !== "principal") {
+        recordCredentialFailure(`setup:${input.email}`);
+        throw new TRPCError({ code: "CONFLICT", message: "The principal account could not be created. Please try again." });
+      }
+      clearCredentialFailures(`setup:${input.email}`);
+      const token = await sdk.createSessionToken(principal.openId, { name: principal.name || "Principal administrator" });
+      ctx.res.cookie(COOKIE_NAME, token, { ...getSessionCookieOptions(ctx.req), maxAge: 1000 * 60 * 60 * 24 * 14 });
+      return { success: true, role: "principal" } as const;
     }),
     login: publicProcedure.input(z.object({ email, password: z.string().min(1).max(128) })).mutation(async ({ ctx, input }) => {
+      try {
+        assertCredentialAttemptAllowed(`login:${input.email}`);
+      } catch (error) {
+        throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: error instanceof Error ? error.message : "Please try again later." });
+      }
       const user = await db.getUserByEmail(input.email);
       if (!user || !isAdminRole(user.role) || !user.isActive || !(await verifyPassword(input.password, user.passwordHash))) {
+        recordCredentialFailure(`login:${input.email}`);
         throw new TRPCError({ code: "UNAUTHORIZED", message: "Email or password is incorrect." });
       }
+      clearCredentialFailures(`login:${input.email}`);
       const token = await sdk.createSessionToken(user.openId, { name: user.name || "Administrator" });
       ctx.res.cookie(COOKIE_NAME, token, { ...getSessionCookieOptions(ctx.req), maxAge: 1000 * 60 * 60 * 24 * 14 });
       await db.upsertUser({ openId: user.openId, lastSignedIn: new Date() });
@@ -88,6 +121,20 @@ export const appRouter = router({
       return { success: true } as const;
     }),
   }),
+  media: router({
+    list: adminProcedure.query(() => db.listMediaAssets()),
+    upload: adminProcedure.input(imageUploadInput).mutation(async ({ ctx, input }) => {
+      const bytes = Buffer.from(input.dataBase64, "base64");
+      if (!bytes.length || bytes.length > 1_500_000 || !validImageSignature(bytes, input.mimeType)) {
+        throw new TRPCError({ code: "BAD_REQUEST", message: "Please upload a valid JPG, PNG, or WebP image up to 1.5 MB." });
+      }
+      const extension = input.mimeType === "image/jpeg" ? "jpg" : input.mimeType === "image/png" ? "png" : "webp";
+      const safeName = input.filename.replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 120) || "tour-photo";
+      const stored = await storagePut(`tour-media/${ctx.user.id}/${Date.now()}-${safeName}.${extension}`, bytes, input.mimeType);
+      await db.createMediaAsset({ storageKey: stored.key, url: stored.url, filename: input.filename, mimeType: input.mimeType, sizeBytes: bytes.length, uploadedBy: ctx.user.id });
+      return { success: true, asset: { url: stored.url, filename: input.filename } } as const;
+    }),
+  }),
   bookings: router({
     create: publicProcedure.input(z.object({
       tourId: z.number().int().positive().optional(),
@@ -96,14 +143,15 @@ export const appRouter = router({
       travelDate: z.string().trim().max(32).optional(), travellers: z.number().int().min(1).max(30),
       message: z.string().trim().max(3000).optional(),
     })).mutation(async ({ input }) => {
+      try { assertPublicFormSubmissionAllowed("booking", input.email); } catch (error) { throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: error instanceof Error ? error.message : "Please try again later." }); }
       await db.createBooking({ ...input, travelDate: input.travelDate || null, message: input.message || null });
       return { success: true } as const;
     }),
     list: adminProcedure.query(() => db.listBookings()),
   }),
   enquiries: router({
-    create: publicProcedure.input(z.object({ name: textLine.max(160), email, phone: z.string().trim().max(40).optional(), subject: textLine, message: z.string().trim().min(10).max(4000) }))
-      .mutation(async ({ input }) => { await db.createEnquiry({ ...input, phone: input.phone || null }); return { success: true } as const; }),
+    create: publicProcedure.input(z.object({ name: textLine.max(160), email, phone: z.string().trim().max(40).optional(), subject: z.string().trim().min(1).max(180), message: z.string().trim().min(1).max(4000) }))
+      .mutation(async ({ input }) => { try { assertPublicFormSubmissionAllowed("enquiry", input.email); } catch (error) { throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: error instanceof Error ? error.message : "Please try again later." }); } await db.createEnquiry({ ...input, phone: input.phone || null }); return { success: true } as const; }),
     list: adminProcedure.query(() => db.listEnquiries()),
   }),
   newsletter: router({

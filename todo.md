@@ -47,3 +47,17 @@
 - [x] Add clear View details and Enquire now actions to every reusable public tour card.
 - [x] Make every homepage category card navigate to the tours catalogue with its matching category filter already applied.
 - [x] Rebuild and verify the cacheable shared vendor-chunk strategy for the public experience.
+- [x] Diagnose and repair the principal administrator creation failure, including an automated regression test.
+- [x] Permit short enquiry and contact messages while preserving required-field, email, and abuse-protection validation.
+- [x] Strengthen authentication, credential, input, and session security controls and verify their behavior.
+- [x] Add administrator-only local-device photo upload with file validation, safe storage, and a reusable media library.
+- [x] Let administrators select uploaded images for tour hero cards and homepage featured-tour imagery.
+- [x] Reorganize the administrator tour editor into clearly labelled content sections that show where each detail appears on the public tour page.
+- [x] Add automated coverage for administrator-only media upload validation and managed-storage persistence.
+- [ ] Verify the authenticated tour-editor photo upload and clear section labels in the administrator portal.
+- [x] Verify media upload and media-library access reject visitor and unauthenticated callers.
+- [x] Align the photo-picker file-size guidance with the server’s enforced upload limit.
+- [x] Add direct router regression coverage for credential-enabling an existing principal account without duplicate-email failure.
+- [x] Add focused public-enquiry tests for one-character messages, invalid required fields, invalid email rejection, and form abuse controls.
+- [x] Add concrete regression coverage for security headers, request-size limits, credential throttling, and secure session-cookie settings.
+- [x] Add an exact one-character enquiry-message regression test and rerun the full suite.

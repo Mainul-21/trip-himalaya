@@ -1,4 +1,4 @@
-import { and, asc, desc, eq, inArray, isNotNull, like, or } from "drizzle-orm";
+import { and, asc, desc, eq, inArray, isNotNull, isNull, like, or } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import { randomUUID } from "crypto";
 import {
@@ -6,6 +6,7 @@ import {
   bookings,
   enquiries,
   InsertUser,
+  mediaAssets,
   newsletterSubscribers,
   reviews,
   tours,
@@ -23,6 +24,16 @@ export async function getDb() {
 function requireDb<T>(db: T | null): T {
   if (!db) throw new Error("Database is unavailable");
   return db;
+}
+
+export async function createMediaAsset(input: { storageKey: string; url: string; filename: string; mimeType: string; sizeBytes: number; uploadedBy: number }) {
+  const db = requireDb(await getDb());
+  await db.insert(mediaAssets).values(input);
+}
+
+export async function listMediaAssets() {
+  const db = requireDb(await getDb());
+  return db.select().from(mediaAssets).orderBy(desc(mediaAssets.createdAt));
 }
 
 export async function upsertUser(user: InsertUser): Promise<void> {
@@ -74,6 +85,25 @@ export async function createCredentialAdmin(input: { name: string; email: string
     isActive: true,
     lastSignedIn: new Date(),
   });
+}
+
+/**
+ * The project owner already has a principal row from the platform identity
+ * bootstrap. First-time credential setup must upgrade that row rather than
+ * insert a duplicate email record.
+ */
+export async function enableExistingPrincipalCredential(input: { id: number; name: string; email: string; passwordHash: string }) {
+  const db = requireDb(await getDb());
+  await db.update(users).set({
+    name: input.name,
+    email: input.email.toLowerCase(),
+    passwordHash: input.passwordHash,
+    loginMethod: "email-password",
+    role: "principal",
+    isActive: true,
+    lastSignedIn: new Date(),
+  }).where(and(eq(users.id, input.id), eq(users.role, "principal"), isNull(users.passwordHash)));
+  return getUserByEmail(input.email);
 }
 
 export async function listAdmins() {

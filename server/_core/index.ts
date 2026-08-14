@@ -8,6 +8,7 @@ import { registerStorageProxy } from "./storageProxy";
 import { appRouter } from "../routers";
 import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
+import { applySecurityHeaders, PUBLIC_BODY_LIMIT } from "../httpSecurity";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -31,9 +32,13 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
 async function startServer() {
   const app = express();
   const server = createServer(app);
-  // Configure body parser with larger size limit for file uploads
-  app.use(express.json({ limit: "50mb" }));
-  app.use(express.urlencoded({ limit: "50mb", extended: true }));
+  app.disable("x-powered-by");
+  app.use((_req, res, next) => {
+    applySecurityHeaders(res, process.env.NODE_ENV === "production");
+    next();
+  });
+  app.use(express.json({ limit: PUBLIC_BODY_LIMIT }));
+  app.use(express.urlencoded({ limit: PUBLIC_BODY_LIMIT, extended: true }));
   registerStorageProxy(app);
   registerOAuthRoutes(app);
   // tRPC API
