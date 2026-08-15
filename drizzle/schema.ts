@@ -97,6 +97,8 @@ export const reviews = mysqlTable("reviews", {
   id: int("id").autoincrement().primaryKey(),
   reviewerName: text("reviewerName").notNull(),
   location: text("location"),
+  reviewerImage: text("reviewerImage"),
+  rating: int("rating").default(5).notNull(),
   quote: text("quote").notNull(),
   sourceLabel: text("sourceLabel"),
   isPublished: boolean("isPublished").default(false).notNull(),

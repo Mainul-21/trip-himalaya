@@ -14,7 +14,8 @@ const email = z.string().trim().email().max(320);
 const password = z.string().min(12, "Use at least 12 characters.").max(128);
 const textLine = z.string().trim().min(2).max(180);
 const adminContent = z.string().trim().min(1);
-const itinerary = z.array(z.object({ day: adminContent, title: adminContent, description: adminContent })).min(1);
+const draftContent = z.string().trim();
+const draftItinerary = z.array(z.object({ day: draftContent, title: draftContent, description: draftContent }));
 const tourInput = z.object({
   title: adminContent,
   slug: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(200),
@@ -25,15 +26,24 @@ const tourInput = z.object({
   priceFrom: z.number().int().nonnegative(),
   heroImage: z.string().url().or(z.string().startsWith("/manus-storage/")),
   gallery: z.array(z.string().url().or(z.string().startsWith("/manus-storage/"))).min(1).max(10),
-  shortDescription: adminContent,
-  overview: adminContent,
-  highlights: z.array(adminContent).min(1),
-  itinerary,
-  inclusions: z.array(adminContent).min(1),
-  exclusions: z.array(adminContent),
+  shortDescription: draftContent,
+  overview: draftContent,
+  highlights: z.array(draftContent),
+  itinerary: draftItinerary,
+  inclusions: z.array(draftContent),
+  exclusions: z.array(draftContent),
   isPublished: z.boolean(),
   isFeatured: z.boolean(),
   featureOrder: z.number().int().min(0).max(999),
+}).superRefine((tour, ctx) => {
+  if (!tour.isPublished) return;
+  if (!tour.shortDescription.trim()) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["shortDescription"], message: "Add a short introduction before publishing." });
+  if (!tour.overview.trim()) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["overview"], message: "Add a tour story before publishing." });
+  if (!tour.highlights.some(Boolean)) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["highlights"], message: "Add at least one highlight before publishing." });
+  if (!tour.inclusions.some(Boolean)) ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["inclusions"], message: "Add at least one included item before publishing." });
+  if (!tour.itinerary.some(day => day.day.trim() && day.title.trim() && day.description.trim())) {
+    ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["itinerary"], message: "Add one complete day plan before publishing." });
+  }
 });
 const blogInput = z.object({
   title: adminContent,
@@ -112,7 +122,7 @@ export const appRouter = router({
       await db.createTour(input);
       return { success: true } as const;
     }),
-    update: adminProcedure.input(tourInput.extend({ id: z.number().int().positive() })).mutation(async ({ input }) => {
+    update: adminProcedure.input(tourInput.safeExtend({ id: z.number().int().positive() })).mutation(async ({ input }) => {
       const { id, ...values } = input;
       await db.updateTour(id, values);
       return { success: true } as const;
@@ -178,10 +188,10 @@ export const appRouter = router({
   reviews: router({
     list: publicProcedure.query(() => db.listPublishedReviews()),
     adminList: adminProcedure.query(() => db.listAdminReviews()),
-    create: adminProcedure.input(z.object({ reviewerName: adminContent, location: adminContent.optional(), quote: adminContent, sourceLabel: adminContent.optional(), isPublished: z.boolean() }))
-      .mutation(async ({ input }) => { await db.createReview({ ...input, location: input.location || null, sourceLabel: input.sourceLabel || null }); return { success: true } as const; }),
-    update: adminProcedure.input(z.object({ id: z.number().int().positive(), reviewerName: adminContent, location: adminContent.optional(), quote: adminContent, sourceLabel: adminContent.optional(), isPublished: z.boolean() }))
-      .mutation(async ({ input }) => { const { id, ...values } = input; await db.updateReview(id, { ...values, location: values.location || null, sourceLabel: values.sourceLabel || null }); return { success: true } as const; }),
+    create: adminProcedure.input(z.object({ reviewerName: adminContent, location: adminContent.optional(), reviewerImage: z.string().trim().max(2048).optional(), rating: z.number().int().min(1).max(5), quote: adminContent, sourceLabel: adminContent.optional(), isPublished: z.boolean() }))
+      .mutation(async ({ input }) => { await db.createReview({ ...input, location: input.location || null, reviewerImage: input.reviewerImage || null, sourceLabel: input.sourceLabel || null }); return { success: true } as const; }),
+    update: adminProcedure.input(z.object({ id: z.number().int().positive(), reviewerName: adminContent, location: adminContent.optional(), reviewerImage: z.string().trim().max(2048).optional(), rating: z.number().int().min(1).max(5), quote: adminContent, sourceLabel: adminContent.optional(), isPublished: z.boolean() }))
+      .mutation(async ({ input }) => { const { id, ...values } = input; await db.updateReview(id, { ...values, location: values.location || null, reviewerImage: values.reviewerImage || null, sourceLabel: values.sourceLabel || null }); return { success: true } as const; }),
     delete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(async ({ input }) => { await db.deleteReview(input.id); return { success: true } as const; }),
   }),
   admin: router({

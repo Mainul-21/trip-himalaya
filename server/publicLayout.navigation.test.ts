@@ -8,7 +8,7 @@ describe("PublicLayout mobile navigation contract", () => {
     expect(source).toContain('aria-controls="mobile-menu"');
     expect(source).toContain('aria-expanded={mobileOpen}');
     expect(source).toContain("lg:hidden");
-    expect(source).toContain("fixed inset-x-0 top-[74px] z-50 max-h-[calc(100dvh-74px)] overflow-y-auto");
+    expect(source).toContain("fixed inset-x-0 top-20 z-50 max-h-[calc(100dvh-5rem)] overflow-y-auto");
   });
 
   it("keeps all public links and the call, WhatsApp, and plan-your-trip actions inside the phone menu", () => {

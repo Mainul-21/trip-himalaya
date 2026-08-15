@@ -8,6 +8,7 @@ vi.mock("./db", () => ({
   createBooking: vi.fn(),
   createEnquiry: vi.fn(),
   createMediaAsset: vi.fn(),
+  createReview: vi.fn(),
   listMediaAssets: vi.fn(),
   removeUnusedMediaAsset: vi.fn(),
   createTour: vi.fn(),
@@ -129,6 +130,40 @@ describe("principal administrator boundary", () => {
   });
 });
 
+describe("verified review management", () => {
+  beforeEach(() => vi.clearAllMocks());
+
+  it("allows an administrator to save a verified traveller review with a rating and optional photo", async () => {
+    const caller = appRouter.createCaller(createContext("admin"));
+    await expect(caller.reviews.create({
+      reviewerName: "Asha Mehta",
+      location: "Delhi, India",
+      reviewerImage: "/manus-storage/tour-media/2/asha.jpg",
+      rating: 5,
+      quote: "A clear plan and a very good Triund experience.",
+      sourceLabel: "Direct message",
+      isPublished: true,
+    })).resolves.toEqual({ success: true });
+    expect(db.createReview).toHaveBeenCalledWith({
+      reviewerName: "Asha Mehta",
+      location: "Delhi, India",
+      reviewerImage: "/manus-storage/tour-media/2/asha.jpg",
+      rating: 5,
+      quote: "A clear plan and a very good Triund experience.",
+      sourceLabel: "Direct message",
+      isPublished: true,
+    });
+  });
+
+  it("rejects invalid star ratings and blocks visitor review creation", async () => {
+    const admin = appRouter.createCaller(createContext("admin"));
+    const visitor = appRouter.createCaller(createContext("visitor"));
+    const review = { reviewerName: "Asha", rating: 5, quote: "A real traveller comment.", isPublished: false };
+    await expect(admin.reviews.create({ ...review, rating: 6 })).rejects.toMatchObject({ code: "BAD_REQUEST" });
+    await expect(visitor.reviews.create(review)).rejects.toMatchObject({ code: "FORBIDDEN" });
+  });
+});
+
 describe("administrator media upload", () => {
   beforeEach(() => vi.clearAllMocks());
 
@@ -186,6 +221,32 @@ describe("tour gallery management", () => {
       inclusions: ["Local guide"], exclusions: ["Personal purchases"], isPublished: true, isFeatured: true, featureOrder: 1,
     })).resolves.toEqual({ success: true });
     expect(db.createTour).toHaveBeenCalledWith(expect.objectContaining({ heroImage: photos[0], gallery: photos }));
+  });
+
+  it("allows an administrator to save an unfinished named journey as a draft but requires complete details before publishing", async () => {
+    const caller = appRouter.createCaller(createContext("admin"));
+    const draft = {
+      title: "New Dharamshala Journey",
+      slug: "new-dharamshala-journey",
+      category: "Trekking",
+      location: "Dharamshala, Himachal Pradesh",
+      duration: "2 Days / 1 Night",
+      difficulty: "Easy–Moderate",
+      priceFrom: 2500,
+      heroImage: "/manus-storage/tour-media/2/draft-cover.webp",
+      gallery: ["/manus-storage/tour-media/2/draft-cover.webp"],
+      shortDescription: "",
+      overview: "",
+      highlights: [],
+      itinerary: [],
+      inclusions: [],
+      exclusions: [],
+      isFeatured: false,
+      featureOrder: 0,
+    };
+
+    await expect(caller.tours.create({ ...draft, isPublished: false })).resolves.toEqual({ success: true });
+    await expect(caller.tours.create({ ...draft, isPublished: true })).rejects.toMatchObject({ code: "BAD_REQUEST" });
   });
 
   it("accepts long administrator-managed tour and field-note content without word-count limits", async () => {

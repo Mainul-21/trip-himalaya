@@ -89,3 +89,32 @@
 - [x] Replace remaining administrator-facing technical or unclear labels with simple task-focused guidance.
 - [x] Audit setup, profile, administrator-management, journey, blog, and review screens for plain-language guidance and verify the revised wording.
 - [ ] Inspect the live Vercel deployment and repair the configuration or runtime issue causing the user-reported blank white page.
+- [x] Include the selected tour name and a concise tour summary in every tour-specific WhatsApp enquiry message sent to the administrator.
+- [x] Upgrade the homepage WhatsApp control with a recognisable, accessible WhatsApp-style icon treatment.
+- [x] Rework the About page into clear professional sections covering the company, mission, services, and operating values.
+- [x] Replace fragile featured-trip up/down ordering with a simple, reliable homepage-rank selector and clear feedback.
+- [x] Normalise existing homepage Top Trips records so every displayed featured journey has a distinct #1–#4 rank.
+- [x] Replace raw administrator validation payloads with clear field-level journey-editor guidance and add contextual help for itinerary, highlights, and inclusions fields.
+- [x] Keep the Trip Himalaya brand visible in the compact mobile header and add an accessible branded loading indicator for route transitions.
+- [x] Verify the new public and administrator UI remains fast-loading, responsive, and keyboard-accessible.
+- [x] Replace raw journey-editor mutation errors with a clear administrator-friendly save message and verify the error state in source.
+- [ ] Visually test the authenticated /admin/tours screen while signed in, confirm the journey editor and Top Trips rank selector render correctly, and record that the route is not redirecting to login.
+- [ ] Exercise keyboard-only navigation on the updated admin journey editor and Top Trips rank selector, including visible focus and selector interaction.
+- [x] Add a consistent fixed “Plan your trip” call to action in public-page heading areas, with a restrained glass surface that remains readable and accessible.
+- [x] Rewrite homepage and public-page copy into shorter, human-written agency messaging, focusing on a strong first-screen impression and simple mission/service points.
+- [x] Reduce generic AI-template visual cues across public pages while retaining the established Trip Himalaya mountain identity and fast-loading architecture.
+- [x] Extend administrator-managed reviews with a real traveller name, location, optional photo, star rating, and a simpler professional form and public display.
+- [x] Validate the redesigned homepage, fixed planning CTA, and rated-review workflow at desktop and phone breakpoints.
+- [ ] Visually verify the signed-in administrator review form, including traveller name, location, star rating, optional photo selection, and published-review cards.
+- [ ] Visually check the public rated-review display at desktop and phone breakpoints after an administrator-reviewed rating is shown.
+- [x] Show a visible Admin Dashboard link in the public mobile three-dots menu only when an administrator is signed in.
+- [x] Diagnose and repair the administrator journey form so valid new tours save reliably instead of failing on confusing input validation.
+- [x] Add simple examples and clear “how to write this” help for every important journey-editor field, especially highlights, daily itinerary, inclusions, and exclusions.
+- [ ] Verify signed-in mobile administrator navigation and the repaired journey-save workflow in the administrator portal.
+- [x] Replace line-based highlight, itinerary, inclusion, and exclusion inputs with simple item boxes that administrators can add and delete individually.
+- [x] Preserve draft saving and public-publishing validation while converting repeatable journey details to the box-based editor.
+- [x] Add regression coverage for the box-based journey item mapping so highlights, itinerary days, inclusions, and exclusions retain the correct tour payload structure.
+- [ ] Verify the new box-based journey editor is clear and usable on desktop and mobile.
+- [x] Make the public header consistently fixed with a subtle, readable glass treatment that does not obscure content.
+- [x] Redesign the Plan your trip call to action as a larger, practical agency control that remains clear on desktop and mobile.
+- [x] Verify the refined fixed header and planning action at desktop and phone breakpoints.
