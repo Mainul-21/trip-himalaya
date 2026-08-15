@@ -43,3 +43,9 @@ The homepage hero now cross-fades through three existing authentic Himachal trav
 ## Administrator route availability — 15 August 2026
 
 The locally signed-in administrator session reaches the Overview, Journeys, Reviews, and Photo library routes without redirecting to login. The Overview displays the operational sidebar, principal account identity, and public-site return action; the Reviews route exposes the **Add verified review** action and correctly explains that no public feedback is published before a real review is verified. The media route and protected journey list are asynchronous views, so their full post-load state and form interactions must be completed in an active user browser session rather than inferred from an initial rendered skeleton.
+
+## Managed-domain deployment check — 15 August 2026
+
+After the initial managed auto-publish failed because the runtime could not find `dist/index.js`, the production build and start scripts were restored and the compiled server was verified locally. An initial managed-domain visit then showed an expected Trip Himalaya page title but an empty white viewport. A module import check identified a circular production chunk relationship: the manually split `vendor` bundle tried to read React from the `framework` bundle while the `framework` bundle imported the vendor bundle. The unsafe custom chunk split was removed, preserving Vite’s native route-level code splitting.
+
+The rebuilt managed production artifact was started on an isolated local port and reviewed in a browser. The public homepage mounted successfully with its fixed header, hero, search fields, navigation, CTA controls, trust strip, category cards, and footer. The final production build creates `dist/index.js`; the separate Vercel health and live environment checks remain pending the owner’s external setup.

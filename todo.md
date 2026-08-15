@@ -160,3 +160,4 @@
 - [x] Verify the clean-restart package with fresh installation, tests, type checks, and Vercel-compatible production build commands.
 - [x] Restart the reported stopped development server and verify that the public preview and API service respond after the restart.
 - [x] Restore the managed full-stack build and start scripts so deployment produces `dist/index.js`, then verify the compiled production server boots successfully.
+- [x] Repair the managed-domain blank screen caused by a circular production bundle split, then verify the rendered live homepage.
