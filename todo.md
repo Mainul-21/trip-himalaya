@@ -118,3 +118,5 @@
 - [x] Make the public header consistently fixed with a subtle, readable glass treatment that does not obscure content.
 - [x] Redesign the Plan your trip call to action as a larger, practical agency control that remains clear on desktop and mobile.
 - [x] Verify the refined fixed header and planning action at desktop and phone breakpoints.
+- [x] Show a direct Admin Dashboard link in the public desktop header only when an administrator is signed in, while preserving the visitor-only header.
+- [ ] Verify the role-aware header link appears for signed-in administrators and stays hidden for visitors at desktop and mobile breakpoints.

@@ -18,4 +18,9 @@ describe("PublicLayout mobile navigation contract", () => {
     expect(source).toContain('href="/contact"');
     expect(source).toContain("onClick={() => setMobileOpen(false)}");
   });
+
+  it("shows a direct dashboard link in the desktop header only for a signed-in administrator", () => {
+    expect(source).toContain('{user && <Link href="/admin"');
+    expect(source).toContain("Admin dashboard");
+  });
 });
