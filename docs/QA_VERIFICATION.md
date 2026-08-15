@@ -13,3 +13,11 @@ The remaining live visual check is the open administrator review form and the pu
 ## Fixed glass header verification — 15 August 2026
 
 The revised public header was reviewed at desktop and phone breakpoints. It stays fixed while the page scrolls, uses a light translucent surface with a restrained blur, and preserves strong contrast for the Trip Himalaya wordmark and navigation controls. The larger orange **Plan your trip** control remains visible, legible, and clearly distinct from decorative pill-style interface elements at both widths.
+
+## About company profile verification — 15 August 2026
+
+The About page was reviewed at desktop and phone breakpoints after its company-profile refinement. The compact agency description explains Trip Himalaya’s Dharamshala-based travel-planning role in two short paragraphs. Four factual information cards remain legible in a single-column phone layout and a four-column desktop layout; the only displayed quantity is the live count of currently published journeys. No unsupported satisfaction, traveller, booking, or completed-tour statistics were introduced.
+
+## Homepage trust strip and Top 4 verification — 15 August 2026
+
+The refreshed homepage was reviewed at desktop and phone breakpoints. The dark strip below the hero displays four concise travel-planning points with distinct route, calendar, support, and mountain icons. The featured section is labelled **Top 4 journeys** and shows the four real, published, administrator-ranked journeys in positions #1 through #4. On a phone, the trust points and tour cards stack cleanly without clipped text or inaccessible actions.

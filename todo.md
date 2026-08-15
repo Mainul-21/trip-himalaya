@@ -135,3 +135,8 @@
 - [x] Source-verify and refine the public tour-detail page under the restrained Trip Himalaya agency design system.
 - [x] Re-run final public QA after replacing placeholder-looking content and confirm desktop/mobile presentation contains no generated-looking imagery.
 - [x] Move the incomplete public test journey back to an unpublished, unfeatured draft without deleting its administrator-entered data.
+- [x] Restore the compact homepage trust-point strip beneath the hero in a reference-aligned three-to-four-item presentation, using distinct restrained icons and concise agency copy.
+- [x] Present the homepage featured journeys as an explicit Top 4 card grid while preserving the administrator-controlled unique #1–#4 ordering.
+- [x] Verify the revised trust strip and Top 4 journeys cards at desktop and phone breakpoints, including empty and fewer-than-four featured-data states.
+- [x] Refine the About page with a brief clear Trip Himalaya company profile, a concise explanation of the agency’s work, and premium fact-based service cards without unsupported customer or performance statistics.
+- [x] Verify the revised About page at desktop and phone breakpoints for readability, hierarchy, and responsive card behavior.

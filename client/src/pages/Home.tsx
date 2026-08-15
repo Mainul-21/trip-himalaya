@@ -1,7 +1,8 @@
 import PublicLayout from "@/components/PublicLayout";
 import TourCard from "@/components/TourCard";
+import { selectTopFeaturedTours } from "@/lib/featuredTours";
 import { trpc } from "@/lib/trpc";
-import { ArrowRight, CalendarDays, CheckCircle2, Compass, Landmark, MapPinned, Mountain, Search, ShieldCheck, Star, TentTree, UsersRound } from "lucide-react";
+import { ArrowRight, CalendarDays, CheckCircle2, Compass, MapPinned, MessageCircle, Mountain, Search, Star, UsersRound } from "lucide-react";
 import { FormEvent, useState } from "react";
 import { Link, useLocation } from "wouter";
 
@@ -12,15 +13,23 @@ const experiences = [
   { title: "All journeys", filter: "All", image: "/manus-storage/dharamshala-valley_971eee0a.jpg", copy: "See every current Himachal trip." },
 ];
 
+const trustPoints = [
+  [MapPinned, "Dharamshala base", "Local help before you arrive."],
+  [CalendarDays, "Clear trip plan", "Route, stay, timing and price."],
+  [MessageCircle, "Direct support", "Talk to a real planning desk."],
+  [Mountain, "Mountain-first journeys", "Treks, stays and day plans."],
+] as const;
+
 const planningPoints = [
   [MapPinned, "Start with the right route", "We help match the route to your dates, group and experience."],
-  [ShieldCheck, "Know the practical details", "Get clear guidance before you decide to travel."],
+  [Compass, "Know the practical details", "Get clear guidance before you decide to travel."],
   [UsersRound, "Speak to a local team", "Ask questions before booking and get a straight answer."],
 ];
 
 export default function Home() {
   const { data: tours = [] } = trpc.tours.featured.useQuery();
   const { data: reviews = [] } = trpc.reviews.list.useQuery(undefined, { retry: false });
+  const topTours = selectTopFeaturedTours(tours);
   const [, setLocation] = useLocation();
   const [query, setQuery] = useState("");
   const newsletter = trpc.newsletter.subscribe.useMutation();
@@ -70,12 +79,12 @@ export default function Home() {
           <button className="focus-ring h-11 bg-white px-5 text-sm font-bold text-[#123d5b] transition hover:bg-[#f7f1e8] active:scale-[.98]">Search</button>
         </form>
       </div>
-      <div className="relative border-t border-white/14 bg-[#0b3553]/92"><div className="container grid divide-y divide-white/12 sm:grid-cols-3 sm:divide-x sm:divide-y-0">{[["Dharamshala-based", "Local help before you arrive."], ["Clear trip details", "Know the route, timing and price."], ["Direct support", "Talk to a real planning team."]].map(([title, copy]) => <div key={title} className="px-4 py-4 sm:px-5"><strong className="block text-xs font-extrabold uppercase tracking-[.08em] text-[#f6a85c]">{title}</strong><span className="mt-1 block text-xs text-white/68">{copy}</span></div>)}</div></div>
+      <div className="relative border-t border-white/14 bg-[#0b3553]/95"><div className="container grid divide-y divide-white/12 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0">{trustPoints.map(([Icon, title, copy]) => <div key={title} className="flex items-center gap-3 px-4 py-4 sm:px-5"><span aria-hidden="true" className="grid size-9 shrink-0 place-items-center rounded-full border border-[#f6a85c]/30 bg-white/8 text-[#f6a85c]"><Icon className="size-[18px]" /></span><span><strong className="block text-xs font-extrabold uppercase tracking-[.08em] text-white">{title}</strong><span className="mt-0.5 block text-xs leading-5 text-white/66">{copy}</span></span></div>)}</div></div>
     </section>
 
     <section className="py-16 sm:py-20"><div className="container"><div className="grid gap-5 lg:grid-cols-[1fr_.68fr] lg:items-end"><div><p className="eyebrow">Find your way into Himachal</p><h2 className="section-title mt-3">Choose a trip style.</h2></div><p className="max-w-md text-sm leading-6 text-slate-600">Start with the kind of day you want. The next page shows journeys that fit.</p></div><div className="mt-8 grid gap-px overflow-hidden border border-[#dfe8e8] bg-[#dfe8e8] sm:grid-cols-2 lg:grid-cols-4">{experiences.map(item => <Link key={item.title} href={`/tours?category=${encodeURIComponent(item.filter)}`} className="group relative isolate h-56 overflow-hidden bg-[#123d5b] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e9781c] focus-visible:ring-offset-4"><img src={item.image} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]" loading="lazy" /><div className="absolute inset-0 bg-gradient-to-t from-[#082f4b]/94 via-[#082f4b]/18 to-transparent" /><div className="absolute inset-x-0 bottom-0 p-5 text-white"><h3 className="font-display text-2xl font-bold leading-none">{item.title}</h3><p className="mt-2 text-sm leading-5 text-white/75">{item.copy}</p></div></Link>)}</div></div></section>
 
-    <section className="border-y border-[#e5ece7] bg-[#fbfaf6] py-16 sm:py-20"><div className="container"><div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="eyebrow">Current trips</p><h2 className="section-title mt-3">Journeys people ask about.</h2></div><Link href="/tours" className="focus-ring inline-flex items-center gap-2 text-sm font-bold text-[#123d5b] hover:text-[#e17818]">See all journeys <ArrowRight className="size-4" /></Link></div><div className="mt-9 grid gap-4 md:grid-cols-2 xl:grid-cols-4">{tours.length ? tours.map(tour => <TourCard key={tour.id} tour={tour} />) : <div className="col-span-full border border-dashed border-[#ccd9d7] p-10 text-center text-sm text-slate-500">New journeys are being prepared. Please check back shortly.</div>}</div></div></section>
+    <section className="border-y border-[#e5ece7] bg-[#fbfaf6] py-16 sm:py-20"><div className="container"><div className="flex flex-col justify-between gap-5 sm:flex-row sm:items-end"><div><p className="eyebrow">Featured journeys</p><h2 className="section-title mt-3">Top 4 journeys.</h2><p className="mt-3 max-w-lg text-sm leading-6 text-slate-600">Four current Himachal journeys selected and ordered by the Trip Himalaya team.</p></div><Link href="/tours" className="focus-ring inline-flex items-center gap-2 text-sm font-bold text-[#123d5b] hover:text-[#e17818]">See all journeys <ArrowRight className="size-4" /></Link></div><div className="mt-9 grid gap-4 md:grid-cols-2 xl:grid-cols-4">{topTours.length ? topTours.map(tour => <TourCard key={tour.id} tour={tour} />) : <div className="col-span-full border border-dashed border-[#ccd9d7] p-10 text-center text-sm text-slate-500">New journeys are being prepared. Please check back shortly.</div>}</div></div></section>
 
     <section className="py-16 sm:py-20"><div className="container grid gap-12 lg:grid-cols-[.92fr_1.08fr] lg:items-center"><img src="/manus-storage/dharamshala-prayer-flags_26329188.jpg" alt="Prayer flags in Dharamshala" className="h-[335px] w-full object-cover sm:h-[390px]" loading="lazy" /><div><p className="eyebrow">Planning from Dharamshala</p><h2 className="section-title mt-3 max-w-xl">Useful advice before you book.</h2><p className="mt-5 max-w-xl text-base leading-7 text-slate-600">A mountain trip works better when the route, season and pace are considered early. Tell us what you have in mind and we will help you start simply.</p><div className="mt-8 divide-y divide-[#dfe8e8] border-y border-[#dfe8e8]">{planningPoints.map(([Icon, title, copy]) => <div key={String(title)} className="flex gap-4 py-4"><Icon className="mt-0.5 size-5 shrink-0 text-[#e17818]" /><span><strong className="text-sm text-[#123d5b]">{String(title)}</strong><p className="mt-1 text-sm leading-6 text-slate-500">{String(copy)}</p></span></div>)}</div></div></div></section>
 
