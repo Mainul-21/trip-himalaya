@@ -1,5 +1,13 @@
+export const LOCAL_CREDENTIAL_APP_ID = "trip-himalaya-local";
+
+export function getSessionAppId() {
+  return process.env.VITE_APP_ID?.trim() || LOCAL_CREDENTIAL_APP_ID;
+}
+
 export const ENV = {
-  appId: process.env.VITE_APP_ID ?? "",
+  // Credential-only local deployments do not need a Manus OAuth app ID.
+  // Sessions still use JWT_SECRET for cryptographic verification.
+  appId: getSessionAppId(),
   cookieSecret: process.env.JWT_SECRET ?? "",
   databaseUrl: process.env.DATABASE_URL ?? "",
   oAuthServerUrl: process.env.OAUTH_SERVER_URL ?? "",
