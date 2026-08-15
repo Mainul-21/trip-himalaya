@@ -159,3 +159,4 @@
 - [x] Audit and apply only low-risk dependency updates compatible with the current Node, Vite, React, tRPC, Drizzle, and Vercel architecture.
 - [x] Verify the clean-restart package with fresh installation, tests, type checks, and Vercel-compatible production build commands.
 - [x] Restart the reported stopped development server and verify that the public preview and API service respond after the restart.
+- [x] Restore the managed full-stack build and start scripts so deployment produces `dist/index.js`, then verify the compiled production server boots successfully.
