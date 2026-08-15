@@ -27,9 +27,16 @@ Open the local address shown in PowerShell, usually `http://localhost:3000`. The
 For the full website, create your own MySQL-compatible database (for example, MySQL, TiDB, PlanetScale, or a managed MySQL provider). Then create a file named `.env` in the repository root:
 
 ```env
-DATABASE_URL="mysql://DATABASE_USER:DATABASE_PASSWORD@DATABASE_HOST:3306/DATABASE_NAME"
+DATABASE_URL='mysql://DATABASE_USER:URL_ENCODED_PASSWORD@DATABASE_HOST:3306/DATABASE_NAME?ssl={"rejectUnauthorized":true}'
 JWT_SECRET="PASTE_A_LONG_RANDOM_SECRET_HERE"
 CLOUDINARY_URL="cloudinary://API_KEY:API_SECRET@CLOUD_NAME"
+```
+
+For TiDB Cloud, choose `Node.js (mysql2)` on its **Connect** page, select your target database, and copy its connection string. Replace the `<PASSWORD>` placeholder with your saved password; do not leave the angle brackets in the URL. Use the exact host from TiDB. If the password contains URL-reserved characters such as `@`, `:`, `/`, `?`, `#`, `%`, or `&`, encode it before adding it to the URL:
+
+```powershell
+$password = Read-Host "Paste TiDB password"
+[System.Uri]::EscapeDataString($password)
 ```
 
 Generate a secure `JWT_SECRET` on your PC with Node.js:
@@ -45,7 +52,7 @@ pnpm db:push
 pnpm dev
 ```
 
-When the site opens, go to `/admin/setup` to create the first principal administrator account. This account uses the email-and-password administrator flow built into Trip Himalaya.
+When the site opens locally, go to `/admin/setup` to create the first principal administrator account. This account uses the email-and-password administrator flow built into Trip Himalaya; no platform-owner identity or setup key is needed for this local one-time setup.
 
 | Value | Needed for | Where to get it |
 | --- | --- | --- |
@@ -54,6 +61,7 @@ When the site opens, go to `/admin/setup` to create the first principal administ
 | `BUILT_IN_FORGE_API_URL` | Current managed image upload and delivery adapter | Automatically supplied only in the managed Manus environment |
 | `BUILT_IN_FORGE_API_KEY` | Current managed image upload and delivery adapter | Automatically supplied only in the managed Manus environment |
 | `CLOUDINARY_URL` | Owner-controlled image upload for local runs and Vercel | Complete API Environment Variable from your own Cloudinary dashboard |
+| `INITIAL_ADMIN_SETUP_KEY` | Protects the one-time first principal setup on a hosted standalone deployment | Generate it yourself, set it in Vercel, and remove it after the principal account exists |
 
 ## Important image-upload note
 
@@ -69,6 +77,7 @@ For Vercel, open **Project Settings → Environment Variables** and add your own
 DATABASE_URL
 JWT_SECRET
 CLOUDINARY_URL
+INITIAL_ADMIN_SETUP_KEY
 ```
 
 Use the following build settings:
@@ -82,7 +91,7 @@ Use the following build settings:
 | Build Command | `pnpm vercel:build` |
 | Output Directory | `dist/public` |
 
-The public website can build with those settings. With `CLOUDINARY_URL` present, administrator tour and review photo uploads work through the owner-controlled Cloudinary fallback. Add the required service key in Vercel, never in GitHub. After deployment, test `https://YOUR-DOMAIN/api/health`; the expected response is `{"ok":true,"service":"trip-himalaya-api"}`.
+The public website can build with those settings. With `CLOUDINARY_URL` present, administrator tour and review photo uploads work through the owner-controlled Cloudinary fallback. `INITIAL_ADMIN_SETUP_KEY` is required only before creating the very first hosted principal account: generate a separate random value, set it privately in Vercel, enter the same value in the optional setup-key field at `/admin/setup`, and then remove it from Vercel after setup succeeds. Add service keys in Vercel, never in GitHub. After deployment, test `https://YOUR-DOMAIN/api/health`; the expected response is `{"ok":true,"service":"trip-himalaya-api"}`.
 
 For the complete Vercel deployment settings, see [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md). For the basic Windows commands, see [WINDOWS_SETUP.md](./WINDOWS_SETUP.md).
 

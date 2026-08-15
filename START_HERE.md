@@ -11,6 +11,7 @@ Install **Node.js 22 LTS** and Git. This project uses `pnpm`, which is included 
 | `DATABASE_URL` | Stores tours, bookings, enquiries, reviews, and administrator data | `.env` locally and Vercel environment variables |
 | `JWT_SECRET` | Signs secure administrator-session cookies | `.env` locally and Vercel environment variables |
 | `CLOUDINARY_URL` | Lets administrators upload tour and review photos on local hosting and Vercel | `.env` locally and Vercel environment variables |
+| `INITIAL_ADMIN_SETUP_KEY` | Protects the one-time first principal setup on a hosted standalone site | Vercel environment variables, only until initial setup is complete |
 
 > **Never send these values in chat, commit them to GitHub, or put them in `VITE_*` variables.** Server secrets must stay private.
 
@@ -27,10 +28,12 @@ New-Item -Type File .env
 Open the new `.env` file. Add the following key names with your own values. Do not use quotation marks around a Cloudinary value containing special characters unless Cloudinary supplied them as part of the exact string.
 
 ```env
-DATABASE_URL="mysql://USER:PASSWORD@HOST:3306/DATABASE_NAME"
+DATABASE_URL='mysql://USER:URL_ENCODED_PASSWORD@HOST:3306/DATABASE_NAME?ssl={"rejectUnauthorized":true}'
 JWT_SECRET="PASTE_A_LONG_RANDOM_SECRET_HERE"
 CLOUDINARY_URL="cloudinary://API_KEY:API_SECRET@CLOUD_NAME"
 ```
+
+For TiDB Cloud, select **Node.js (mysql2)** on the Connect page, copy the connection string for your selected database, and replace `<PASSWORD>` with your saved password. Do not leave angle brackets in the URL. If the password contains `@`, `:`, `/`, `?`, `#`, `%`, or `&`, URL-encode it before adding it to the connection string.
 
 Generate a safe session secret with:
 
@@ -45,7 +48,7 @@ pnpm db:push
 pnpm dev
 ```
 
-Open the address shown in the terminal. Set up the principal administrator at `/admin/setup` only when the database has no administrator yet. Afterwards, sign in at `/admin/login`.
+Open the address shown in the terminal. Set up the principal administrator at `/admin/setup` only when the database has no administrator yet. Local setup creates that initial principal account directly. Afterwards, sign in at `/admin/login`.
 
 ## 3. Deploy to Vercel
 
@@ -59,7 +62,7 @@ Import the repository into Vercel and keep the configuration simple.
 | Build command | `pnpm vercel:build` |
 | Output directory | `dist/public` |
 
-In **Settings → Environment Variables**, add `DATABASE_URL`, `JWT_SECRET`, and `CLOUDINARY_URL` for **Production**, **Preview**, and **Development**. Redeploy after saving them. Then open `https://YOUR-DOMAIN/api/health`; a working deployment returns `{"ok":true,"service":"trip-himalaya-api"}`.
+In **Settings → Environment Variables**, add `DATABASE_URL`, `JWT_SECRET`, `CLOUDINARY_URL`, and a separate random `INITIAL_ADMIN_SETUP_KEY` for **Production**, **Preview**, and **Development**. Redeploy after saving them. Enter that private setup key once in the optional field at the hosted `/admin/setup` page when you create the first principal administrator, then delete `INITIAL_ADMIN_SETUP_KEY` from Vercel. Then open `https://YOUR-DOMAIN/api/health`; a working deployment returns `{"ok":true,"service":"trip-himalaya-api"}`.
 
 ## 4. Cloudinary in one minute
 

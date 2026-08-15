@@ -15,6 +15,7 @@ vi.mock("./db", () => ({
   createBlog: vi.fn(),
   credentialAdminExists: vi.fn(),
   getUserByEmail: vi.fn(),
+  createCredentialAdmin: vi.fn(),
   enableExistingPrincipalCredential: vi.fn(),
 }));
 vi.mock("./storage", () => ({ storagePut: vi.fn().mockResolvedValue({ key: "tour-media/2/demo_abc123.png", url: "/manus-storage/tour-media/2/demo_abc123.png" }) }));
@@ -120,6 +121,22 @@ describe("principal setup repair", () => {
     await expect(caller.adminAuth.setupPrincipal({ name: "Mainul Islam", email: "owner@example.com", password: "A_secure_password_2026" })).resolves.toEqual({ success: true, role: "principal" });
     expect(db.enableExistingPrincipalCredential).toHaveBeenCalledWith(expect.objectContaining({ id: owner.id, email: "owner@example.com", name: "Mainul Islam" }));
     expect(cookie).toHaveBeenCalledWith(expect.any(String), "secure-principal-session", expect.objectContaining({ httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 14 }));
+  });
+
+  it("creates the first principal account for a standalone local database with no platform owner row", async () => {
+    const principal = { ...createContext("principal").user!, name: "Mainul", email: "mainul@example.com", passwordHash: "scrypt$salt$hash" };
+    vi.mocked(db.credentialAdminExists).mockResolvedValue(false);
+    vi.mocked(db.getUserByEmail).mockResolvedValueOnce(undefined).mockResolvedValueOnce(principal);
+    vi.mocked(db.createCredentialAdmin).mockResolvedValue(undefined);
+    const ctx = createContext("visitor");
+    const cookie = vi.fn();
+    ctx.res = { clearCookie: () => undefined, cookie } as TrpcContext["res"];
+
+    const caller = appRouter.createCaller(ctx);
+    await expect(caller.adminAuth.setupPrincipal({ name: "Mainul", email: "mainul@example.com", password: "A_secure_password_2026" })).resolves.toEqual({ success: true, role: "principal" });
+
+    expect(db.createCredentialAdmin).toHaveBeenCalledWith(expect.objectContaining({ name: "Mainul", email: "mainul@example.com", role: "principal", passwordHash: expect.any(String) }));
+    expect(cookie).toHaveBeenCalledWith(expect.any(String), "secure-principal-session", expect.any(Object));
   });
 });
 

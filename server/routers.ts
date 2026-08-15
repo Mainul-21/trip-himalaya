@@ -1,6 +1,8 @@
 import { TRPCError } from "@trpc/server";
+import { timingSafeEqual } from "crypto";
 import { z } from "zod";
 import { getSessionCookieOptions } from "./_core/cookies";
+import { ENV } from "./_core/env";
 import { sdk } from "./_core/sdk";
 import { adminProcedure, principalProcedure, publicProcedure, router } from "./_core/trpc";
 import { assertCredentialAttemptAllowed, clearCredentialFailures, hashPassword, recordCredentialFailure, verifyPassword } from "./adminAuth";
@@ -60,6 +62,13 @@ const imageUploadInput = z.object({
   dataBase64: z.string().min(8).max(2_100_000),
 });
 
+function matchesInitialSetupKey(expected: string, received: string | undefined) {
+  if (!expected || !received) return false;
+  const expectedBytes = Buffer.from(expected);
+  const receivedBytes = Buffer.from(received);
+  return expectedBytes.length === receivedBytes.length && timingSafeEqual(expectedBytes, receivedBytes);
+}
+
 function validImageSignature(buffer: Buffer, mimeType: "image/jpeg" | "image/png" | "image/webp") {
   if (mimeType === "image/jpeg") return buffer.length > 3 && buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff;
   if (mimeType === "image/png") return buffer.length > 8 && buffer.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]));
@@ -76,15 +85,27 @@ export const appRouter = router({
   }),
   adminAuth: router({
     setupStatus: publicProcedure.query(async () => ({ needsSetup: !(await db.credentialAdminExists()) })),
-    setupPrincipal: publicProcedure.input(z.object({ name: textLine.max(160), email, password })).mutation(async ({ ctx, input }) => {
+    setupPrincipal: publicProcedure.input(z.object({ name: textLine.max(160), email, password, setupKey: z.string().min(1).max(128).optional() })).mutation(async ({ ctx, input }) => {
       if (await db.credentialAdminExists()) throw new TRPCError({ code: "FORBIDDEN", message: "The principal administrator is already configured." });
       assertCredentialAttemptAllowed(`setup:${input.email}`);
       const owner = await db.getUserByEmail(input.email);
-      if (!owner || owner.role !== "principal" || owner.passwordHash || !owner.isActive) {
-        recordCredentialFailure(`setup:${input.email}`);
-        throw new TRPCError({ code: "FORBIDDEN", message: "The principal setup identity could not be verified." });
+      const passwordHash = await hashPassword(input.password);
+      let principal;
+
+      if (owner) {
+        if (owner.role !== "principal" || owner.passwordHash || !owner.isActive) {
+          recordCredentialFailure(`setup:${input.email}`);
+          throw new TRPCError({ code: "FORBIDDEN", message: "The principal setup identity could not be verified." });
+        }
+        principal = await db.enableExistingPrincipalCredential({ id: owner.id, name: input.name, email: input.email, passwordHash });
+      } else {
+        if (ENV.isProduction && !matchesInitialSetupKey(ENV.initialAdminSetupKey, input.setupKey)) {
+          recordCredentialFailure(`setup:${input.email}`);
+          throw new TRPCError({ code: "FORBIDDEN", message: "This hosted deployment needs its initial administrator setup key." });
+        }
+        await db.createCredentialAdmin({ name: input.name, email: input.email, passwordHash, role: "principal" });
+        principal = await db.getUserByEmail(input.email);
       }
-      const principal = await db.enableExistingPrincipalCredential({ id: owner.id, name: input.name, email: input.email, passwordHash: await hashPassword(input.password) });
       if (!principal || !principal.passwordHash || principal.role !== "principal") {
         recordCredentialFailure(`setup:${input.email}`);
         throw new TRPCError({ code: "CONFLICT", message: "The principal account could not be created. Please try again." });
