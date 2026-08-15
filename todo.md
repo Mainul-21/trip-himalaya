@@ -125,3 +125,13 @@
 - [x] Remove the obsolete Vite plugin that blocks standard npm installation with Vite 7, then refresh the package lockfile.
 - [x] Verify a clean dependency install and production build, then provide exact Windows setup commands without unsafe dependency flags.
 - [x] Remove the unused legacy `add` development package that triggers npm’s separate dependency-resolution crash.
+- [x] Audit the current public experience against the submitted professional-agency brief, retaining all working booking, enquiry, search, contact, and admin flows.
+- [x] Reduce AI-template visual cues across the public pages: oversized headings, repetitive rounded cards, unnecessary effects, decorative icon repetition, and generic content density.
+- [x] Establish and apply a restrained Trip Himalaya agency design system with two-font typography, practical buttons/forms, documentary-style photography, subtle borders, and editorial visual rhythm.
+- [x] Rework the homepage first impression around a realistic Dharamshala travel-agency hero, short credible copy, clear contact/booking actions, and customer-question-led sections.
+- [x] Refine tours, treks, detail, blog, contact, and About pages for concise human-written content, authentic trust cues, and responsive practical layouts.
+- [x] Verify the redesigned public experience at desktop and phone breakpoints, run automated tests and production build, and ensure no fake reviews, claims, statistics, certifications, or generated-looking imagery are introduced.
+- [x] Replace remaining seeded illustrative/test-style public tour imagery with authentic Himachal travel photographs while retaining user-managed tour titles and business data.
+- [x] Source-verify and refine the public tour-detail page under the restrained Trip Himalaya agency design system.
+- [x] Re-run final public QA after replacing placeholder-looking content and confirm desktop/mobile presentation contains no generated-looking imagery.
+- [x] Move the incomplete public test journey back to an unpublished, unfeatured draft without deleting its administrator-entered data.
