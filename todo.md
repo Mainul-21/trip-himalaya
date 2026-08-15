@@ -140,3 +140,5 @@
 - [x] Verify the revised trust strip and Top 4 journeys cards at desktop and phone breakpoints, including empty and fewer-than-four featured-data states.
 - [x] Refine the About page with a brief clear Trip Himalaya company profile, a concise explanation of the agency’s work, and premium fact-based service cards without unsupported customer or performance statistics.
 - [x] Verify the revised About page at desktop and phone breakpoints for readability, hierarchy, and responsive card behavior.
+- [x] Replace the current About-page wording and excess sections with a concise professional agency profile: a short company introduction, what Trip Himalaya does, and a limited why-choose-us point set.
+- [x] Validate the rewritten concise About page at desktop and phone breakpoints for clarity, visual quality, and responsive behavior.

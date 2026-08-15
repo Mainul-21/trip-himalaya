@@ -21,3 +21,11 @@ The About page was reviewed at desktop and phone breakpoints after its company-p
 ## Homepage trust strip and Top 4 verification — 15 August 2026
 
 The refreshed homepage was reviewed at desktop and phone breakpoints. The dark strip below the hero displays four concise travel-planning points with distinct route, calendar, support, and mountain icons. The featured section is labelled **Top 4 journeys** and shows the four real, published, administrator-ranked journeys in positions #1 through #4. On a phone, the trust points and tour cards stack cleanly without clipped text or inaccessible actions.
+
+## Deployment verification scope — 15 August 2026
+
+The local Vite preview serves the public app and its SPA fallback, so a direct visit to `/api/health` in that preview intentionally resolves to the custom 404 page rather than the Vercel-only function. The production `/api/health` and public tRPC checks therefore remain correctly pending a fresh Vercel deployment from the updated `main` branch.
+
+## Concise About-page rewrite verification — 15 August 2026
+
+The About page was reviewed again at desktop and phone widths after its concise rewrite. It now contains only a short company introduction, three clear service points, and three reasons to choose Trip Himalaya, followed by the planning call to action. The content is readable without dense paragraphs, the desktop cards and phone rows preserve their hierarchy, and all actions remain visible and usable.
