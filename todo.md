@@ -165,3 +165,4 @@
 - [x] Diagnose why the local principal-admin setup still reports identity verification failure after the TiDB schema migration succeeds, then verify the owner’s local code revision and running server process.
 - [x] Diagnose and repair the repeated local administrator sign-in return after principal setup, including credential verification, cookie creation, and authenticated navigation.
 - [x] Reassess and resolve the persistent local administrator sign-in loop after the HTTP session-cookie repair is pulled and restarted on the owner’s PC.
+- [x] Diagnose and repair the reported missing public and uploaded images when the project is run locally on the owner’s PC.
