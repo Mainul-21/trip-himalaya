@@ -93,7 +93,10 @@ export const appRouter = router({
       let principal;
 
       if (owner) {
-        if (owner.role !== "principal" || owner.passwordHash || !owner.isActive) {
+        const hasAllowedExistingIdentity = !owner.passwordHash && owner.isActive && (
+          !ENV.isProduction || matchesInitialSetupKey(ENV.initialAdminSetupKey, input.setupKey)
+        );
+        if (!hasAllowedExistingIdentity) {
           recordCredentialFailure(`setup:${input.email}`);
           throw new TRPCError({ code: "FORBIDDEN", message: "The principal setup identity could not be verified." });
         }

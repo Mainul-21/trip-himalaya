@@ -162,3 +162,4 @@
 - [x] Restore the managed full-stack build and start scripts so deployment produces `dist/index.js`, then verify the compiled production server boots successfully.
 - [x] Repair the managed-domain blank screen caused by a circular production bundle split, then verify the rendered live homepage.
 - [x] Repair the local first-principal-admin identity-verification failure while retaining the secure one-time principal setup protection.
+- [x] Diagnose why the local principal-admin setup still reports identity verification failure after the TiDB schema migration succeeds, then verify the owner’s local code revision and running server process.

@@ -113,7 +113,7 @@ export async function enableExistingPrincipalCredential(input: { id: number; nam
     role: "principal",
     isActive: true,
     lastSignedIn: new Date(),
-  }).where(and(eq(users.id, input.id), eq(users.role, "principal"), isNull(users.passwordHash)));
+  }).where(and(eq(users.id, input.id), isNull(users.passwordHash)));
   return getUserByEmail(input.email);
 }
 

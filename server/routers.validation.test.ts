@@ -138,6 +138,22 @@ describe("principal setup repair", () => {
     expect(db.createCredentialAdmin).toHaveBeenCalledWith(expect.objectContaining({ name: "Mainul", email: "mainul@example.com", role: "principal", passwordHash: expect.any(String) }));
     expect(cookie).toHaveBeenCalledWith(expect.any(String), "secure-principal-session", expect.any(Object));
   });
+
+  it("promotes a password-less standalone local user record when no credential administrator exists", async () => {
+    const importedLocalUser = { ...createContext("user").user!, passwordHash: null, name: "Mainul", email: "mainul@example.com" };
+    const principal = { ...importedLocalUser, role: "principal" as const, passwordHash: "scrypt$salt$hash" };
+    vi.mocked(db.credentialAdminExists).mockResolvedValue(false);
+    vi.mocked(db.getUserByEmail).mockResolvedValue(importedLocalUser);
+    vi.mocked(db.enableExistingPrincipalCredential).mockResolvedValue(principal);
+    const ctx = createContext("visitor");
+    const cookie = vi.fn();
+    ctx.res = { clearCookie: () => undefined, cookie } as TrpcContext["res"];
+
+    await expect(appRouter.createCaller(ctx).adminAuth.setupPrincipal({ name: "Mainul Islam", email: "mainul@example.com", password: "A_secure_password_2026" })).resolves.toEqual({ success: true, role: "principal" });
+
+    expect(db.enableExistingPrincipalCredential).toHaveBeenCalledWith(expect.objectContaining({ id: importedLocalUser.id, name: "Mainul Islam", email: "mainul@example.com" }));
+    expect(cookie).toHaveBeenCalledWith(expect.any(String), "secure-principal-session", expect.any(Object));
+  });
 });
 
 describe("principal administrator boundary", () => {
