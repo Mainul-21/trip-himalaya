@@ -208,7 +208,8 @@ function Summary({
 
 function Tours() {
   const utils = trpc.useUtils();
-  const { data: tours = [] } = trpc.tours.adminList.useQuery();
+  const { data, isLoading, isError } = trpc.tours.adminList.useQuery();
+  const tours = data ?? [];
   const [editing, setEditing] = useState<Tour | null>(null);
   const [placementNote, setPlacementNote] = useState("");
   const remove = trpc.tours.delete.useMutation({
@@ -292,7 +293,7 @@ function Tours() {
             </p>
           )}
         </div>
-        {tours.map(tour => (
+        {!isLoading && !isError && tours.map(tour => (
           <article
             key={tour.id}
             className="flex flex-col gap-3 border-b border-[#edf0ed] p-4 last:border-0 md:flex-row md:items-center md:justify-between"
@@ -366,7 +367,17 @@ function Tours() {
             </div>
           </article>
         ))}
-        {!tours.length && (
+        {isLoading && (
+          <p className="p-12 text-center text-sm text-slate-500" role="status">
+            Loading journeys…
+          </p>
+        )}
+        {isError && (
+          <p className="p-12 text-center text-sm text-slate-500" role="alert">
+            Journeys could not be loaded. Refresh the page and try again.
+          </p>
+        )}
+        {!isLoading && !isError && !tours.length && (
           <p className="p-12 text-center text-sm text-slate-500">
             Create your first journey.
           </p>

@@ -142,3 +142,7 @@
 - [x] Verify the revised About page at desktop and phone breakpoints for readability, hierarchy, and responsive card behavior.
 - [x] Replace the current About-page wording and excess sections with a concise professional agency profile: a short company introduction, what Trip Himalaya does, and a limited why-choose-us point set.
 - [x] Validate the rewritten concise About page at desktop and phone breakpoints for clarity, visual quality, and responsive behavior.
+- [x] Reconcile the signed-in administrator journey list and Top Trips data with the public featured-journey records so administrators can manage every displayed journey.
+- [x] Verify the reconciled administrator journey list, Top Trips ranks, and public Top 4 card data remain consistent.
+- [ ] While signed in, open the /admin/tours Add journey or Edit journey form and visually verify the box-based journey editor and section labels on desktop.
+- [ ] Repeat the signed-in /admin/tours journey-editor visual check on phone and record the result in QA_VERIFICATION.md.

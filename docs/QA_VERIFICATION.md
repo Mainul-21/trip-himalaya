@@ -29,3 +29,9 @@ The local Vite preview serves the public app and its SPA fallback, so a direct v
 ## Concise About-page rewrite verification — 15 August 2026
 
 The About page was reviewed again at desktop and phone widths after its concise rewrite. It now contains only a short company introduction, three clear service points, and three reasons to choose Trip Himalaya, followed by the planning call to action. The content is readable without dense paragraphs, the desktop cards and phone rows preserve their hierarchy, and all actions remain visible and usable.
+
+## Administrator journey data reconciliation — 15 August 2026
+
+The authenticated administrator journey view was checked against the persisted tour records. Five journeys are present: one private draft and four published Top Trips in rank order #1 through #4. The portal had briefly displayed its empty message while the protected list query was unresolved, so that misleading state was replaced with a specific loading message and a separate recovery message for query errors. After the query resolves, the admin view shows every persisted journey, its publication state, and the correct homepage rank selector.
+
+The same corrected view was reviewed on a 375 px phone layout. The compact header, **Add journey** action, all five journey rows, and the rank, edit, and delete controls remain visible without horizontal clipping. The selected Top #1 through Top #4 ranks agree with the public homepage order.
