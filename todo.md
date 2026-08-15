@@ -148,3 +148,4 @@
 - [ ] Repeat the signed-in /admin/tours journey-editor visual check on phone and record the result in QA_VERIFICATION.md.
 - [x] Add a lightweight homepage hero slideshow that advances through authentic Himachal travel photos every four seconds with a restrained cross-fade and reduced-motion support.
 - [x] Verify the hero slideshow timing, desktop and phone presentation, accessibility treatment, and production build quality.
+- [x] Provide secure, exact local-PC and Vercel environment setup guidance explaining why private API keys are absent from the GitHub repository and which configuration values must be supplied by the project owner.

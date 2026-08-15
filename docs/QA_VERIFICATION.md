@@ -39,3 +39,7 @@ The same corrected view was reviewed on a 375 px phone layout. The compact heade
 ## Homepage hero slideshow verification — 15 August 2026
 
 The homepage hero now cross-fades through three existing authentic Himachal travel photographs at a four-second interval. Desktop and 375 px phone reviews confirmed that each image retains the dark readability overlay, clear headline, visible CTA controls, and usable search field. The slideshow only animates with standard motion preferences; for visitors who request reduced motion, the initial hero photo remains stable.
+
+## Administrator route availability — 15 August 2026
+
+The locally signed-in administrator session reaches the Overview, Journeys, Reviews, and Photo library routes without redirecting to login. The Overview displays the operational sidebar, principal account identity, and public-site return action; the Reviews route exposes the **Add verified review** action and correctly explains that no public feedback is published before a real review is verified. The media route and protected journey list are asynchronous views, so their full post-load state and form interactions must be completed in an active user browser session rather than inferred from an initial rendered skeleton.
