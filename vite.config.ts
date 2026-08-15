@@ -1,4 +1,3 @@
-import { jsxLocPlugin } from "@builder.io/vite-plugin-jsx-loc";
 import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import fs from "node:fs";
@@ -155,8 +154,8 @@ function vitePluginManusDebugCollector(): Plugin {
 // Manus-specific endpoints and can prevent an external static deployment from booting.
 const isVercelBuild = process.env.VERCEL === "1";
 const plugins = isVercelBuild
-  ? [react(), tailwindcss(), jsxLocPlugin()]
-  : [react(), tailwindcss(), jsxLocPlugin(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
+  ? [react(), tailwindcss()]
+  : [react(), tailwindcss(), vitePluginManusRuntime(), vitePluginManusDebugCollector()];
 
 export default defineConfig({
   plugins,

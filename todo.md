@@ -120,3 +120,8 @@
 - [x] Verify the refined fixed header and planning action at desktop and phone breakpoints.
 - [x] Show a direct Admin Dashboard link in the public desktop header only when an administrator is signed in, while preserving the visitor-only header.
 - [ ] Verify the role-aware header link appears for signed-in administrators and stays hidden for visitors at desktop and mobile breakpoints.
+- [x] Diagnose the user-reported npm installation failure and provide the correct local setup command sequence.
+- [x] Provide the project’s supported upload and deployment steps after the installation issue is resolved.
+- [x] Remove the obsolete Vite plugin that blocks standard npm installation with Vite 7, then refresh the package lockfile.
+- [x] Verify a clean dependency install and production build, then provide exact Windows setup commands without unsafe dependency flags.
+- [x] Remove the unused legacy `add` development package that triggers npm’s separate dependency-resolution crash.

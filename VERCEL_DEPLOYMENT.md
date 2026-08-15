@@ -31,6 +31,8 @@ The repository now includes `vercel.json`, which makes Vercel build the Vite app
 
 Do not configure Vercel to deploy the repository root as a static directory. That causes the source files or a directory listing to be served instead of the generated application.
 
+For a Windows-local setup or an npm alternative, see [`WINDOWS_SETUP.md`](./WINDOWS_SETUP.md). The obsolete Vite helper that caused an npm peer-dependency conflict has been removed; after pulling the latest `main` branch, a standard `npm install` can resolve the project without `--force` or `--legacy-peer-deps`.
+
 ## Required environment services
 
 The public interface will render after the build configuration above. The booking, enquiry, administrator, authentication, database, and media-upload features additionally require production equivalents for the database, session secret, OAuth/authentication service, object storage, and the public `VITE_*` configuration values. Add those values in **Vercel → Project Settings → Environment Variables**; do not commit them to this repository.
