@@ -13,8 +13,8 @@ describe("PublicLayout mobile navigation contract", () => {
 
   it("keeps all public links and the call, WhatsApp, and plan-your-trip actions inside the phone menu", () => {
     expect(source).toContain("navigation.map(([label, href])");
-    expect(source).toContain('href="tel:+919999999999"');
-    expect(source).toContain('href="https://wa.me/919999999999"');
+    expect(source).toContain('href="tel:+918609752814"');
+    expect(source).toContain('href="https://wa.me/918609752814"');
     expect(source).toContain('href="/contact"');
     expect(source).toContain("onClick={() => setMobileOpen(false)}");
   });

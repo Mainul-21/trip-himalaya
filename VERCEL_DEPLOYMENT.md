@@ -33,12 +33,18 @@ Do not configure Vercel to deploy the repository root as a static directory. Tha
 
 For a Windows-local setup or an npm alternative, see [`WINDOWS_SETUP.md`](./WINDOWS_SETUP.md). The obsolete Vite helper that caused an npm peer-dependency conflict has been removed; after pulling the latest `main` branch, a standard `npm install` can resolve the project without `--force` or `--legacy-peer-deps`.
 
-## Required environment services
+## Required environment variables
 
-The public interface will render after the build configuration above. The booking, enquiry, administrator, authentication, database, and media-upload features additionally require production equivalents for the database, session secret, OAuth/authentication service, object storage, and the public `VITE_*` configuration values. Add those values in **Vercel → Project Settings → Environment Variables**; do not commit them to this repository.
+The public interface can build without secrets, but its live tours, booking, enquiry, administrator, and image-upload features need the following owner-controlled values in **Vercel → Project Settings → Environment Variables**. Add each value for **Production**, **Preview**, and **Development**; never commit real values to the repository.
 
-> The managed Manus deployment is already configured with those platform services. When using Vercel, provision and configure your own compatible services before relying on the live admin or visitor-submission features.
+| Variable | Purpose | Notes |
+| --- | --- | --- |
+| `DATABASE_URL` | Connects the MySQL-compatible database | Create and manage this database outside Vercel. |
+| `JWT_SECRET` | Signs the credential-only administrator session | Use a private, random value of at least 32 bytes. |
+| `CLOUDINARY_URL` | Uploads administrator-selected images | Copy Cloudinary's full `cloudinary://…` API Environment Variable. |
+
+The live administrator sign-in is **email and password only**; it does not require Google, social, Manus, or other OAuth credentials. Do not add invented `BUILT_IN_FORGE_*` values on Vercel: those managed-platform values are unavailable outside the managed environment. The Cloudinary fallback handles image uploads for local and Vercel deployments instead.
 
 ## Redeploy
 
-After the repository is pushed, open the Vercel deployment, select **Redeploy**, and enable **Use existing Build Cache** only after the first successful deployment. The deployment should then show the Trip Himalaya website rather than raw project text.
+After the repository is pushed, open the Vercel deployment and select **Redeploy**. Confirm the build uses the settings above, then check `/api/health` before testing the homepage and `/admin/login`. The deployment should show the Trip Himalaya website rather than raw project text.

@@ -149,3 +149,13 @@
 - [x] Add a lightweight homepage hero slideshow that advances through authentic Himachal travel photos every four seconds with a restrained cross-fade and reduced-motion support.
 - [x] Verify the hero slideshow timing, desktop and phone presentation, accessibility treatment, and production build quality.
 - [x] Provide secure, exact local-PC and Vercel environment setup guidance explaining why private API keys are absent from the GitHub repository and which configuration values must be supplied by the project owner.
+- [x] Diagnose and repair the reported failure when an administrator adds a review or selects a local-device review photo outside the managed development environment.
+- [x] Simplify the Vercel deployment configuration and owner setup instructions while preserving secure secrets, database access, and administrator session controls.
+- [x] Audit project dependencies and runtime configuration for safe current-version compatibility without unnecessary or risky upgrades.
+- [x] Prepare an owner-controlled image-storage integration path for Vercel that does not rely on unavailable managed-platform credentials.
+- [x] Add a safe `.env.example` template listing every required and optional configuration key without real credentials.
+- [x] Create a concise start-from-zero guide for Windows local setup, database migration, administrator setup, Vercel deployment, and post-deployment checks.
+- [x] Add a codebase editing guide that identifies the primary public pages, administrator controls, content data, and safe customization points.
+- [x] Audit and apply only low-risk dependency updates compatible with the current Node, Vite, React, tRPC, Drizzle, and Vercel architecture.
+- [x] Verify the clean-restart package with fresh installation, tests, type checks, and Vercel-compatible production build commands.
+- [x] Restart the reported stopped development server and verify that the public preview and API service respond after the restart.

@@ -1,8 +1,10 @@
-// Preconfigured storage helpers for Manus WebDev templates
-// Uploads via Forge Server presigned URL to S3 (PUT direct).
-// Downloads return /manus-storage/{key} paths served via 307 redirect.
+// Storage helpers for administrator-selected files.
+// Owner-provided Cloudinary takes precedence for standalone local/Vercel use.
+// Managed Forge storage remains available inside the hosted development environment.
 
+import { createHash, randomUUID } from "node:crypto";
 import { ENV } from "./_core/env";
+import { parseCloudinaryUrl } from "./storageConfig";
 
 function getForgeConfig() {
   const forgeUrl = ENV.forgeApiUrl;
@@ -22,10 +24,62 @@ function normalizeKey(relKey: string): string {
 }
 
 function appendHashSuffix(relKey: string): string {
-  const hash = crypto.randomUUID().replace(/-/g, "").slice(0, 8);
+  const hash = randomUUID().replace(/-/g, "").slice(0, 8);
   const lastDot = relKey.lastIndexOf(".");
   if (lastDot === -1) return `${relKey}_${hash}`;
   return `${relKey.slice(0, lastDot)}_${hash}${relKey.slice(lastDot)}`;
+}
+
+function toBlob(data: Buffer | Uint8Array | string, contentType: string): Blob {
+  return typeof data === "string"
+    ? new Blob([data], { type: contentType })
+    : new Blob([data as any], { type: contentType });
+}
+
+function cloudinaryPublicId(key: string): string {
+  const extensionStart = key.lastIndexOf(".");
+  const withoutExtension = extensionStart === -1 ? key : key.slice(0, extensionStart);
+  return withoutExtension.replace(/[^a-zA-Z0-9_./-]+/g, "-");
+}
+
+async function uploadToCloudinary(
+  key: string,
+  data: Buffer | Uint8Array | string,
+  contentType: string,
+): Promise<{ key: string; url: string } | null> {
+  const config = parseCloudinaryUrl();
+  if (!config) return null;
+
+  const folder = "trip-himalaya";
+  const publicId = cloudinaryPublicId(key);
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const signature = createHash("sha1")
+    .update(`folder=${folder}&public_id=${publicId}&timestamp=${timestamp}${config.apiSecret}`)
+    .digest("hex");
+
+  const form = new FormData();
+  form.append("file", toBlob(data, contentType), key.split("/").at(-1) ?? "upload");
+  form.append("api_key", config.apiKey);
+  form.append("folder", folder);
+  form.append("public_id", publicId);
+  form.append("signature", signature);
+  form.append("timestamp", timestamp);
+
+  const response = await fetch(`https://api.cloudinary.com/v1_1/${config.cloudName}/image/upload`, {
+    method: "POST",
+    body: form,
+  });
+
+  if (!response.ok) {
+    throw new Error(`Cloudinary image upload failed (${response.status}). Check CLOUDINARY_URL in your deployment settings.`);
+  }
+
+  const result = (await response.json()) as { public_id?: string; secure_url?: string };
+  if (!result.public_id || !result.secure_url) {
+    throw new Error("Cloudinary returned an incomplete image-upload response.");
+  }
+
+  return { key: `cloudinary:${result.public_id}`, url: result.secure_url };
 }
 
 export async function storagePut(
@@ -33,8 +87,12 @@ export async function storagePut(
   data: Buffer | Uint8Array | string,
   contentType = "application/octet-stream",
 ): Promise<{ key: string; url: string }> {
-  const { forgeUrl, forgeKey } = getForgeConfig();
   const key = appendHashSuffix(normalizeKey(relKey));
+
+  const cloudinaryUpload = await uploadToCloudinary(key, data, contentType);
+  if (cloudinaryUpload) return cloudinaryUpload;
+
+  const { forgeUrl, forgeKey } = getForgeConfig();
 
   // 1. Get presigned PUT URL from Forge
   const presignUrl = new URL("v1/storage/presign/put", forgeUrl + "/");
@@ -53,10 +111,7 @@ export async function storagePut(
   if (!s3Url) throw new Error("Forge returned empty presign URL");
 
   // 2. PUT file directly to S3
-  const blob =
-    typeof data === "string"
-      ? new Blob([data], { type: contentType })
-      : new Blob([data as any], { type: contentType });
+  const blob = toBlob(data, contentType);
 
   const uploadResp = await fetch(s3Url, {
     method: "PUT",

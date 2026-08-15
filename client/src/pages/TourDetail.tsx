@@ -153,7 +153,7 @@ export default function TourDetail() {
             <CalendarDays className="size-4" /> Send tour request
           </Link>
           <a
-            href={`https://wa.me/919999999999?text=${whatsAppMessage}`}
+            href={`https://wa.me/918609752814?text=${whatsAppMessage}`}
             target="_blank"
             rel="noreferrer"
             className="focus-ring mt-3 flex h-11 items-center justify-center gap-2 border border-[#1fac55] bg-[#25d366] px-4 text-xs font-extrabold uppercase tracking-[.08em] text-white"

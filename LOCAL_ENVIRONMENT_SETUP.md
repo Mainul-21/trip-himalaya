@@ -1,5 +1,7 @@
 # Local environment and API keys
 
+> **Start with [`START_HERE.md`](./START_HERE.md)** for the short clean-install route. This document keeps the additional explanation.
+
 ## Why no keys are in GitHub
 
 The GitHub repository deliberately does **not** contain API keys, database passwords, or session secrets. They are excluded by `.gitignore` so nobody can take control of the database, administrator sessions, or uploaded files from a public or shared copy of the project.
@@ -27,6 +29,7 @@ For the full website, create your own MySQL-compatible database (for example, My
 ```env
 DATABASE_URL="mysql://DATABASE_USER:DATABASE_PASSWORD@DATABASE_HOST:3306/DATABASE_NAME"
 JWT_SECRET="PASTE_A_LONG_RANDOM_SECRET_HERE"
+CLOUDINARY_URL="cloudinary://API_KEY:API_SECRET@CLOUD_NAME"
 ```
 
 Generate a secure `JWT_SECRET` on your PC with Node.js:
@@ -50,12 +53,13 @@ When the site opens, go to `/admin/setup` to create the first principal administ
 | `JWT_SECRET` | Secure administrator session cookies | Generate it yourself with the command above |
 | `BUILT_IN_FORGE_API_URL` | Current managed image upload and delivery adapter | Automatically supplied only in the managed Manus environment |
 | `BUILT_IN_FORGE_API_KEY` | Current managed image upload and delivery adapter | Automatically supplied only in the managed Manus environment |
+| `CLOUDINARY_URL` | Owner-controlled image upload for local runs and Vercel | Complete API Environment Variable from your own Cloudinary dashboard |
 
 ## Important image-upload note
 
-The current photo-upload feature uses the managed Manus storage adapter. The two `BUILT_IN_FORGE_*` values are **not ordinary public API keys** and cannot be recovered from GitHub or copied from the live managed deployment.
+The website uses the managed storage adapter only when the managed environment provides it. For local development and Vercel, the same validated administrator upload flow automatically uses your own server-only `CLOUDINARY_URL` instead. The two `BUILT_IN_FORGE_*` values are **not ordinary public API keys** and cannot be recovered from GitHub or copied from the live managed deployment.
 
-For local development, you can run the site with the database and session secret above. Image uploads will need either the managed Manus environment or a future storage change to your own Amazon S3, Cloudflare R2, or Cloudinary account. Do not invent Forge values or paste unknown keys into the project.
+Do not invent Forge values or paste unknown keys into the project. Cloudinary receives the image through the server; the browser never receives the Cloudinary API secret.[1]
 
 ## Vercel setup
 
@@ -64,6 +68,7 @@ For Vercel, open **Project Settings → Environment Variables** and add your own
 ```text
 DATABASE_URL
 JWT_SECRET
+CLOUDINARY_URL
 ```
 
 Use the following build settings:
@@ -77,6 +82,10 @@ Use the following build settings:
 | Build Command | `pnpm vercel:build` |
 | Output Directory | `dist/public` |
 
-The public website can build with those settings. To make administrator photo uploads work on Vercel, the managed storage adapter must be replaced with a storage provider you own; the required service keys should be added in Vercel, never in GitHub. After deployment, test `https://YOUR-DOMAIN/api/health`; the expected response is `{"ok":true,"service":"trip-himalaya-api"}`.
+The public website can build with those settings. With `CLOUDINARY_URL` present, administrator tour and review photo uploads work through the owner-controlled Cloudinary fallback. Add the required service key in Vercel, never in GitHub. After deployment, test `https://YOUR-DOMAIN/api/health`; the expected response is `{"ok":true,"service":"trip-himalaya-api"}`.
 
 For the complete Vercel deployment settings, see [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md). For the basic Windows commands, see [WINDOWS_SETUP.md](./WINDOWS_SETUP.md).
+
+## References
+
+[1]: https://cloudinary.com/documentation/node_integration "Cloudinary Node.js integration"
