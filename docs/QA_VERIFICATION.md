@@ -35,3 +35,7 @@ The About page was reviewed again at desktop and phone widths after its concise 
 The authenticated administrator journey view was checked against the persisted tour records. Five journeys are present: one private draft and four published Top Trips in rank order #1 through #4. The portal had briefly displayed its empty message while the protected list query was unresolved, so that misleading state was replaced with a specific loading message and a separate recovery message for query errors. After the query resolves, the admin view shows every persisted journey, its publication state, and the correct homepage rank selector.
 
 The same corrected view was reviewed on a 375 px phone layout. The compact header, **Add journey** action, all five journey rows, and the rank, edit, and delete controls remain visible without horizontal clipping. The selected Top #1 through Top #4 ranks agree with the public homepage order.
+
+## Homepage hero slideshow verification — 15 August 2026
+
+The homepage hero now cross-fades through three existing authentic Himachal travel photographs at a four-second interval. Desktop and 375 px phone reviews confirmed that each image retains the dark readability overlay, clear headline, visible CTA controls, and usable search field. The slideshow only animates with standard motion preferences; for visitors who request reduced motion, the initial hero photo remains stable.

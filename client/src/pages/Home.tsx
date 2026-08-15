@@ -1,9 +1,10 @@
 import PublicLayout from "@/components/PublicLayout";
 import TourCard from "@/components/TourCard";
 import { selectTopFeaturedTours } from "@/lib/featuredTours";
+import { getNextHeroSlideIndex, heroSlides } from "@/lib/heroSlideshow";
 import { trpc } from "@/lib/trpc";
 import { ArrowRight, CalendarDays, CheckCircle2, Compass, MapPinned, MessageCircle, Mountain, Search, Star, UsersRound } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 
 const experiences = [
@@ -32,10 +33,21 @@ export default function Home() {
   const topTours = selectTopFeaturedTours(tours);
   const [, setLocation] = useLocation();
   const [query, setQuery] = useState("");
+  const [activeHeroSlide, setActiveHeroSlide] = useState(0);
   const newsletter = trpc.newsletter.subscribe.useMutation();
   const enquiry = trpc.enquiries.create.useMutation();
   const [email, setEmail] = useState("");
   const [enquirySent, setEnquirySent] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const timer = window.setInterval(() => {
+      setActiveHeroSlide(current => getNextHeroSlideIndex(current));
+    }, 4000);
+
+    return () => window.clearInterval(timer);
+  }, []);
 
   function search(event: FormEvent) {
     event.preventDefault();
@@ -61,7 +73,7 @@ export default function Home() {
 
   return <PublicLayout>
     <section className="relative isolate min-h-[610px] overflow-hidden bg-[#0e3d5c] text-white sm:min-h-[650px]">
-      <img src="/manus-storage/dharamshala-valley_971eee0a.jpg" alt="Dhauladhar views above Dharamshala" className="absolute inset-0 h-full w-full object-cover" fetchPriority="high" />
+      {heroSlides.map((slide, index) => <img key={slide.src} src={slide.src} alt="" aria-hidden="true" className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ease-out motion-reduce:transition-none ${activeHeroSlide === index ? "opacity-100" : "opacity-0"}`} fetchPriority={index === 0 ? "high" : "auto"} />)}
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,39,61,.92)_0%,rgba(7,39,61,.69)_48%,rgba(7,39,61,.18)_100%)]" />
       <div className="container relative flex min-h-[610px] flex-col justify-center py-28 sm:min-h-[650px]">
         <div className="max-w-2xl">
