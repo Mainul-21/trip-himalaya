@@ -217,3 +217,6 @@
 - [ ] Repair the localhost Agency Profile 500 caused by missing editable-branding columns in agencyProfiles without altering existing agency data.
 - [x] Replace the endless Agency Profile loader with a clear recovery state and safe retry action when the profile request fails.
 - [x] Add regression coverage and exact Windows recovery steps, then verify the agency profile query, tests, and production build.
+- [x] Apply a focused public visual-polish pass that reduces artificial gradients, glows, glass effects, and excessive animation without changing functionality or content structure.
+- [x] Refine public typography, spacing, buttons, cards, hierarchy, and mobile layout for a restrained professional travel-agency finish.
+- [x] Verify the visual-only update with desktop/mobile QA, tests, and build before publishing.

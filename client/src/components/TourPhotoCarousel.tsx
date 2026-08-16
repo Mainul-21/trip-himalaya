@@ -69,13 +69,13 @@ export default function TourPhotoCarousel({
         decoding="async"
         sizes={compact ? "(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 25vw" : "100vw"}
       />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#092e49]/82 via-[#092e49]/8 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#092e49]/70 via-[#092e49]/5 to-transparent" />
       {photos.length > 1 && (
         <>
           <button
             type="button"
             onClick={() => move(-1)}
-            className="focus-ring absolute left-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-white/60 bg-[#092e49]/60 text-white opacity-100 backdrop-blur-sm transition hover:bg-[#092e49]/85 sm:opacity-0 sm:group-hover:opacity-100"
+            className="focus-ring absolute left-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-md border border-white/45 bg-[#092e49]/82 text-white opacity-100 transition-colors hover:bg-[#092e49] sm:opacity-0 sm:group-hover:opacity-100"
             aria-label={`Previous photo for ${title}`}
           >
             <ChevronLeft className="size-5" />
@@ -83,12 +83,12 @@ export default function TourPhotoCarousel({
           <button
             type="button"
             onClick={() => move(1)}
-            className="focus-ring absolute right-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-full border border-white/60 bg-[#092e49]/60 text-white opacity-100 backdrop-blur-sm transition hover:bg-[#092e49]/85 sm:opacity-0 sm:group-hover:opacity-100"
+            className="focus-ring absolute right-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-md border border-white/45 bg-[#092e49]/82 text-white opacity-100 transition-colors hover:bg-[#092e49] sm:opacity-0 sm:group-hover:opacity-100"
             aria-label={`Next photo for ${title}`}
           >
             <ChevronRight className="size-5" />
           </button>
-          <div className="absolute bottom-4 right-4 flex items-center gap-1.5 rounded-full border border-white/25 bg-[#092e49]/55 px-2.5 py-1.5 text-[.65rem] font-bold text-white backdrop-blur-sm">
+          <div className="absolute bottom-4 right-4 flex items-center gap-1.5 border border-white/25 bg-[#092e49]/82 px-2.5 py-1.5 text-[.65rem] font-bold text-white">
             <Images className="size-3.5" aria-hidden="true" />
             <span>{activeIndex + 1}/{photos.length}</span>
           </div>
