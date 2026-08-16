@@ -16,6 +16,8 @@ describe("agency profile administration contract", () => {
     expect(schema).toContain('travelStylesJson: text("travelStylesJson")');
     expect(db).toContain("JSON.stringify(travelStyles)");
     expect(db).toContain("DEFAULT_TRAVEL_STYLES");
+    expect(db).toContain("schemaNeedsUpdate");
+    expect(db).toContain("isMissingAgencyBrandingColumn");
   });
 
   it("keeps public reads open and restricts profile updates to authenticated administrators", () => {
@@ -32,5 +34,8 @@ describe("agency profile administration contract", () => {
     expect(portal).toContain('name="exploreTitle"');
     expect(portal).toContain('name="exploreIntro"');
     expect(portal).toContain('name="travelStyles"');
+    expect(portal).toContain("retry: false");
+    expect(portal).toContain("One safe local database update is needed");
+    expect(portal).toContain("Try again");
   });
 });

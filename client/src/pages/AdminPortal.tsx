@@ -210,7 +210,7 @@ function Summary({
 
 function AgencyProfile() {
   const utils = trpc.useUtils();
-  const { data, isLoading } = trpc.agency.get.useQuery();
+  const { data, error, isLoading, refetch, isFetching } = trpc.agency.get.useQuery(undefined, { retry: false, refetchOnWindowFocus: false });
   const update = trpc.agency.update.useMutation({
     onSuccess: () => void utils.agency.get.invalidate(),
   });
@@ -241,7 +241,9 @@ function AgencyProfile() {
     });
   }
 
-  if (isLoading || !data) return <div className="py-14 text-sm text-slate-500">Loading public agency profile…</div>;
+  if (isLoading) return <div className="py-14 text-sm text-slate-500">Loading public agency profile…</div>;
+  if (error || !data) return <section className="max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-900"><h1 className="text-lg font-bold text-[#123d5b]">Agency profile could not load</h1><p className="mt-2 leading-6">Check that your local server and TiDB database are running, then try again. Your existing public website settings have not been changed.</p><Button type="button" onClick={() => void refetch()} disabled={isFetching} className="mt-4 rounded-xl bg-[#123d5b] font-bold hover:bg-[#0b2d46]">{isFetching ? "Trying again…" : "Try again"}</Button></section>;
+  if (data.schemaNeedsUpdate) return <section className="max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-900"><h1 className="text-lg font-bold text-[#123d5b]">One safe local database update is needed</h1><p className="mt-2 leading-6">Your older <code>agencyProfiles</code> table is missing the newer Explore Himachal fields. In the project folder, run <code>npm run db:push</code>, choose the non-destructive option if Drizzle asks, then stop and start <code>npm run dev</code> again. This does not delete your existing agency settings or tours.</p><p className="mt-3 leading-6">The public website can continue using its saved fallback details, but this editor stays protected until the local schema matches the current version.</p></section>;
   return <div>
     <Heading tag="Public website settings" title="Agency profile" />
     <form onSubmit={save} className="max-w-4xl space-y-6">

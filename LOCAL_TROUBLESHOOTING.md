@@ -45,6 +45,18 @@ SHOW CREATE TABLE tours;
 
 If a column already exists, do not add it again. Compare its type and nullability with `drizzle/schema.ts`, then apply only a reviewed additive change. If a primary key or unique index already exists, do not recreate it and do not truncate the table.
 
+## Agency Profile stays on “Loading public agency profile…”
+
+If the browser console shows a failed `agency.get` query selecting `exploreTitle`, `exploreIntro`, or `travelStylesJson`, the local `agencyProfiles` table is from an older project version. The current editor now shows a recovery message rather than retrying the failed request repeatedly.
+
+From the project folder, run:
+
+```powershell
+npm run db:push
+```
+
+If Drizzle asks whether to truncate data, choose the non-destructive option. After it finishes, stop the server with `Ctrl + C` and run `npm run dev` again. Do not delete the `agencyProfiles` row: the migration only adds the newer Explore Himachal fields and preserves existing contact, logo, and social-profile settings.
+
 ## Distinguish an empty catalogue from an unavailable API
 
 Start the server with `pnpm dev`. In a second PowerShell window, request the public tour procedure:

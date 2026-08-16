@@ -214,3 +214,6 @@
 - [x] Personalize the existing About Us page for Trip Himalaya, founder Ravi Kant, and the 2020 founding story without changing other site areas.
 - [x] Add authentic service, local-expertise, safety, comfort, transparent-pricing, personalized-support, and Why Trip Himalaya content without invented claims.
 - [x] Refine the existing About page imagery, subtle interactions, responsive layout, and regression coverage, then test and publish only the About update.
+- [ ] Repair the localhost Agency Profile 500 caused by missing editable-branding columns in agencyProfiles without altering existing agency data.
+- [x] Replace the endless Agency Profile loader with a clear recovery state and safe retry action when the profile request fails.
+- [x] Add regression coverage and exact Windows recovery steps, then verify the agency profile query, tests, and production build.

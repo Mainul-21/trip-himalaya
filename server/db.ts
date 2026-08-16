@@ -42,6 +42,20 @@ export const DEFAULT_AGENCY_PROFILE = {
 
 export type TravelStyle = { title: string; href: string; image: string; copy: string };
 export type AgencyProfileValues = Omit<typeof DEFAULT_AGENCY_PROFILE, "travelStyles"> & { travelStyles: TravelStyle[] };
+export type AgencyProfileReadValues = AgencyProfileValues & { schemaNeedsUpdate: boolean };
+
+function agencyProfileFallback(schemaNeedsUpdate = false): AgencyProfileReadValues {
+  return {
+    ...DEFAULT_AGENCY_PROFILE,
+    travelStyles: DEFAULT_AGENCY_PROFILE.travelStyles.map(style => ({ ...style })),
+    schemaNeedsUpdate,
+  };
+}
+
+function isMissingAgencyBrandingColumn(error: unknown) {
+  const message = error instanceof Error ? error.message : String(error);
+  return /(exploreTitle|exploreIntro|travelStylesJson)/i.test(message) && /(unknown column|no such column|failed query)/i.test(message);
+}
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -169,11 +183,37 @@ export async function updateOwnAdminAccount(id: number, values: { name?: string;
   await updateAdminAccount(id, values);
 }
 
-export async function getAgencyProfile(): Promise<AgencyProfileValues> {
+export async function getAgencyProfile(): Promise<AgencyProfileReadValues> {
   const db = await getDb();
-  if (!db) return DEFAULT_AGENCY_PROFILE;
-  const profile = (await db.select().from(agencyProfiles).limit(1))[0];
-  if (!profile) return DEFAULT_AGENCY_PROFILE;
+  if (!db) return agencyProfileFallback();
+  let profile: typeof agencyProfiles.$inferSelect | undefined;
+  try {
+    profile = (await db.select().from(agencyProfiles).limit(1))[0];
+  } catch (error) {
+    if (!isMissingAgencyBrandingColumn(error)) throw error;
+    const legacyProfile = (await db.select({
+      brandName: agencyProfiles.brandName,
+      tagline: agencyProfiles.tagline,
+      logoUrl: agencyProfiles.logoUrl,
+      phone: agencyProfiles.phone,
+      whatsapp: agencyProfiles.whatsapp,
+      email: agencyProfiles.email,
+      address: agencyProfiles.address,
+      instagramUrl: agencyProfiles.instagramUrl,
+      facebookUrl: agencyProfiles.facebookUrl,
+      youtubeUrl: agencyProfiles.youtubeUrl,
+      googleMapsUrl: agencyProfiles.googleMapsUrl,
+    }).from(agencyProfiles).limit(1))[0];
+    if (!legacyProfile) return agencyProfileFallback(true);
+    return {
+      ...legacyProfile,
+      exploreTitle: DEFAULT_AGENCY_PROFILE.exploreTitle,
+      exploreIntro: DEFAULT_AGENCY_PROFILE.exploreIntro,
+      travelStyles: DEFAULT_AGENCY_PROFILE.travelStyles.map(style => ({ ...style })),
+      schemaNeedsUpdate: true,
+    };
+  }
+  if (!profile) return agencyProfileFallback();
   let travelStyles = DEFAULT_AGENCY_PROFILE.travelStyles;
   try {
     const parsed = profile.travelStylesJson ? JSON.parse(profile.travelStylesJson) : [];
@@ -194,6 +234,7 @@ export async function getAgencyProfile(): Promise<AgencyProfileValues> {
     exploreTitle: profile.exploreTitle || DEFAULT_AGENCY_PROFILE.exploreTitle,
     exploreIntro: profile.exploreIntro || DEFAULT_AGENCY_PROFILE.exploreIntro,
     travelStyles,
+    schemaNeedsUpdate: false,
   };
 }
 
