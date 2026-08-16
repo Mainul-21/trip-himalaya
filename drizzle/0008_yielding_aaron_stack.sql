@@ -1,3 +1,3 @@
 ALTER TABLE `agencyProfiles` ADD `exploreTitle` varchar(220) DEFAULT 'Choose your travel style.' NOT NULL;--> statement-breakpoint
-ALTER TABLE `agencyProfiles` ADD `exploreIntro` text DEFAULT ('Start with the kind of mountain time you want. Every choice opens a filtered journey list.') NOT NULL;--> statement-breakpoint
-ALTER TABLE `agencyProfiles` ADD `travelStylesJson` text DEFAULT ('[]') NOT NULL;
+ALTER TABLE `agencyProfiles` ADD `exploreIntro` text;--> statement-breakpoint
+ALTER TABLE `agencyProfiles` ADD `travelStylesJson` text;--> statement-breakpoint
