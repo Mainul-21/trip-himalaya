@@ -181,12 +181,12 @@
 # Current Worklog
 
 - [ ] Stabilize localhost tour details, images, and API-backed content when the owner’s TiDB connection or managed storage is intermittent.
-- [ ] Add clear local diagnostics and recovery guidance for database timeout and unavailable API states.
+- [x] Add clear local diagnostics and recovery guidance for database timeout and unavailable API states.
 - [x] Add administrator-managed multi-photo tour galleries with automatic card rotation and previous/next controls.
 - [x] Make the site logo editable from the administrator portal.
 - [x] Make Explore Himachal travel-style content editable from the administrator portal.
 - [ ] Verify the owner’s TiDB endpoint reachability and SSL connection settings locally without exposing secrets.
-- [ ] Document the safe retry path for `connect ETIMEDOUT` during `npm run db:push`.
+- [x] Document the safe retry path for `connect ETIMEDOUT` during `npm run db:push`.
 - [ ] Repair the local `agencyProfiles` migration mismatch where Drizzle attempts to add a primary key that already exists, without truncating or deleting data.
 - [ ] Add regression coverage and safe Windows instructions for this migration state.
 - [ ] Determine whether localhost has zero tour rows or whether the public API is filtering existing tours incorrectly, then restore the existing records safely without seed data.
