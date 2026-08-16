@@ -11,8 +11,8 @@ function readProjectFile(relativePath: string) {
 describe("local stability guidance", () => {
   it("explains how to distinguish an unavailable catalogue from an empty result", () => {
     const toursPage = readProjectFile("client/src/pages/Tours.tsx");
-    expect(toursPage).toContain("The journey catalogue is temporarily unavailable.");
-    expect(toursPage).toContain("local database or network connection issue");
+    expect(toursPage).toContain("We could not load journeys right now.");
+    expect(toursPage).toContain("No journeys match this filter yet.");
     expect(toursPage).toContain("Try again");
   });
 

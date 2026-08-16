@@ -217,6 +217,10 @@
 - [ ] Repair the localhost Agency Profile 500 caused by missing editable-branding columns in agencyProfiles without altering existing agency data.
 - [x] Replace the endless Agency Profile loader with a clear recovery state and safe retry action when the profile request fails.
 - [x] Add regression coverage and exact Windows recovery steps, then verify the agency profile query, tests, and production build.
+- [x] Audit current public and admin surfaces for visible placeholders, broken images or links, weak mobile states, and high-impact authenticity gaps.
+- [x] Remove verified placeholder or test content and strengthen fact-safe Trip Himalaya presentation without inventing reviews, awards, statistics, or business claims.
+- [x] Refine travel-style, tour-card, search, CTA, and responsive presentation quality while preserving existing functionality and content structure.
+- [x] Verify the premium website upgrade with focused tests, desktop/mobile QA, and a publishable checkpoint.
 - [x] Apply a focused public visual-polish pass that reduces artificial gradients, glows, glass effects, and excessive animation without changing functionality or content structure.
 - [x] Refine public typography, spacing, buttons, cards, hierarchy, and mobile layout for a restrained professional travel-agency finish.
 - [x] Verify the visual-only update with desktop/mobile QA, tests, and build before publishing.

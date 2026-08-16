@@ -18,8 +18,8 @@ describe("tour Best Seller and trip-style experience", () => {
     expect(homeSource).toContain("Why choose Trip Himalaya");
     expect(homeSource).toContain("/tours?style=short-breaks");
     expect(homeSource).toContain("/tours?style=best-sellers");
-    expect(toursSource).toContain("Short breaks");
-    expect(toursSource).toContain("Best sellers");
+    expect(toursSource).toContain("Short Breaks");
+    expect(toursSource).toContain("Best Sellers");
     expect(toursSource).toContain("filterMatches");
   });
 });

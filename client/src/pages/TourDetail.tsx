@@ -4,6 +4,7 @@ import { trpc } from "@/lib/trpc";
 import { buildTourWhatsAppMessage } from "@/lib/tourWhatsApp";
 import {
   ArrowLeft,
+  BadgeIndianRupee,
   CalendarDays,
   Check,
   CircleAlert,
@@ -84,12 +85,20 @@ export default function TourDetail() {
               <Mountain className="size-4 text-[#f39a48]" />
               {tour.difficulty}
             </span>
+            <span className="inline-flex items-center gap-2">
+              <BadgeIndianRupee className="size-4 text-[#f39a48]" />
+              From ₹{tour.priceFrom.toLocaleString("en-IN")} per person
+            </span>
           </div>
         </div>
       </section>
       <section className="container grid gap-12 py-16 lg:grid-cols-[1fr_340px] lg:py-20">
         <div>
-          <p className="text-lg leading-8 text-slate-600">{tour.overview}</p>
+          <section>
+            <p className="eyebrow">Overview</p>
+            <h2 className="section-title mt-3">The journey.</h2>
+            <p className="mt-5 text-lg leading-8 text-slate-600">{tour.overview}</p>
+          </section>
           <div className="mt-12">
             <p className="eyebrow">Good to know</p>
             <h2 className="section-title mt-3">Trip highlights</h2>
@@ -129,16 +138,39 @@ export default function TourDetail() {
           </div>
           <div className="mt-14 grid gap-6 sm:grid-cols-2">
             <DetailList
-              title="Included"
+              title="What’s included"
               icon={Check}
               entries={tour.inclusions}
             />
             <DetailList
-              title="Not included"
+              title="What’s not included"
               icon={CircleAlert}
               entries={tour.exclusions}
             />
           </div>
+          <section className="mt-14 border-y border-[#dfe8e8] py-10">
+            <p className="eyebrow">Important information</p>
+            <h2 className="section-title mt-3">Prepare with the conditions in mind.</h2>
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">Before confirming, discuss your dates, fitness level, expected mountain weather, and any stay or dietary needs with Trip Himalaya. The team can help you understand the practical preparations for this journey.</p>
+          </section>
+          <section className="mt-14">
+            <p className="eyebrow">Questions before you go</p>
+            <h2 className="section-title mt-3">Frequently asked questions.</h2>
+            <div className="mt-7 divide-y divide-[#dfe8e8] border-y border-[#dfe8e8]">
+              <details className="group py-4">
+                <summary className="cursor-pointer list-none pr-8 text-sm font-bold text-[#123d5b] marker:hidden">How do I check availability for my preferred dates?</summary>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">Send a tour request with your dates and group size. Trip Himalaya will confirm the current availability before anything is final.</p>
+              </details>
+              <details className="group py-4">
+                <summary className="cursor-pointer list-none pr-8 text-sm font-bold text-[#123d5b] marker:hidden">Can I ask questions before I book?</summary>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">Yes. Use WhatsApp or the enquiry form to discuss the journey, timing, and any practical questions before you decide.</p>
+              </details>
+              <details className="group py-4">
+                <summary className="cursor-pointer list-none pr-8 text-sm font-bold text-[#123d5b] marker:hidden">What should I bring?</summary>
+                <p className="mt-3 max-w-2xl text-sm leading-6 text-slate-600">Packing needs can change with dates and weather. Ask Trip Himalaya for current preparation guidance for your planned journey.</p>
+              </details>
+            </div>
+          </section>
         </div>
         <aside className="h-fit border border-[#dfe8e8] bg-[#fbfcfb] p-6 shadow-[0_12px_26px_rgba(18,61,91,.07)] lg:sticky lg:top-24">
           <p className="text-xs font-extrabold uppercase tracking-[.12em] text-slate-400">
@@ -158,7 +190,7 @@ export default function TourDetail() {
             href={`/book/${tour.slug}`}
             className="focus-ring mt-6 flex h-12 items-center justify-center gap-2 bg-[#e9781c] px-4 text-xs font-extrabold uppercase tracking-[.09em] text-white transition hover:bg-[#d86b12] active:scale-[.97]"
           >
-            <CalendarDays className="size-4" /> Send tour request
+            <CalendarDays className="size-4" /> Plan your trip
           </Link>
           <a
             href={`https://wa.me/918609752814?text=${whatsAppMessage}`}
@@ -166,9 +198,21 @@ export default function TourDetail() {
             rel="noreferrer"
             className="focus-ring mt-3 flex h-12 items-center justify-center gap-2 rounded-lg border border-[#1fac55] bg-[#25d366] px-4 text-xs font-extrabold uppercase tracking-[.08em] text-white shadow-[0_8px_18px_rgba(37,211,102,.22)] transition hover:bg-[#1fae54] active:scale-[.98]"
           >
-            <WhatsAppIcon className="size-4" /> Ask about this tour
+            <WhatsAppIcon className="size-4" /> WhatsApp us
           </a>
         </aside>
+      </section>
+      <section className="border-t border-[#254f68] bg-[#0d3653] py-14 text-white sm:py-16">
+        <div className="container flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
+          <div>
+            <p className="text-xs font-extrabold uppercase tracking-[.14em] text-[#f39a48]">Ready to experience Himachal?</p>
+            <h2 className="font-display mt-2 text-3xl font-bold leading-none sm:text-4xl">Start planning this journey.</h2>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/contact" className="focus-ring inline-flex h-12 items-center gap-2 bg-[#e9781c] px-5 text-sm font-bold text-white transition hover:bg-[#d86b12] active:scale-[.98]">Plan your trip <CalendarDays className="size-4" /></Link>
+            <a href={`https://wa.me/918609752814?text=${whatsAppMessage}`} target="_blank" rel="noreferrer" className="focus-ring inline-flex h-12 items-center gap-2 border border-white/35 bg-white/10 px-5 text-sm font-bold text-white transition hover:bg-white/18 active:scale-[.98]"><WhatsAppIcon className="size-4" /> WhatsApp us</a>
+          </div>
+        </div>
       </section>
     </PublicLayout>
   );
