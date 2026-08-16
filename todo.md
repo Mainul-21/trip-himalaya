@@ -211,3 +211,6 @@
 - [x] Verify image byte savings, responsive visual quality, tests, and production build before publishing.
 - [x] Reduce remaining perceived first-viewport image delay by prioritizing the critical hero image and deferring nonessential image work.
 - [x] Measure first-viewport image request timing and verify the perceived loading improvement with tests, build, and browser QA.
+- [x] Personalize the existing About Us page for Trip Himalaya, founder Ravi Kant, and the 2020 founding story without changing other site areas.
+- [x] Add authentic service, local-expertise, safety, comfort, transparent-pricing, personalized-support, and Why Trip Himalaya content without invented claims.
+- [x] Refine the existing About page imagery, subtle interactions, responsive layout, and regression coverage, then test and publish only the About update.

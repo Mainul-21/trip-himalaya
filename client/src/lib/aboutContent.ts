@@ -7,13 +7,15 @@ export type AboutPoint = {
 };
 
 export const aboutServices: AboutPoint[] = [
-  { icon: Mountain, title: "Treks", copy: "Guided mountain walks at the right pace." },
-  { icon: MapPinned, title: "Dharamshala days", copy: "Local plans around McLeod Ganj and Kangra." },
-  { icon: UsersRound, title: "Private trips", copy: "Flexible travel for friends, families and small groups." },
+  { icon: Mountain, title: "Trekking journeys", copy: "Thoughtful routes, practical preparation, and a pace that fits your group." },
+  { icon: Compass, title: "Spiritual and Himachal tours", copy: "Meaningful visits and mountain days planned with local context and breathing room." },
+  { icon: MapPinned, title: "Camping and village experiences", copy: "Time outdoors, local landscapes, and stays that help you see more than a checklist." },
+  { icon: UsersRound, title: "Custom tours", copy: "A flexible plan for families, friends, couples, and travellers with a clear idea of their own." },
 ];
 
 export const aboutReasons: AboutPoint[] = [
-  { icon: Compass, title: "Local planning", copy: "Routes built around your dates and time." },
-  { icon: ShieldCheck, title: "Clear details", copy: "Straight guidance on the plan and preparation." },
-  { icon: HeartHandshake, title: "Direct support", copy: "Speak to the team before you travel." },
+  { icon: Compass, title: "Local Himalayan understanding", copy: "Trip plans are shaped around Dharamshala, Kangra, and Himachal conditions—not copied from a template." },
+  { icon: ShieldCheck, title: "Safety and clear details", copy: "We explain routes, stays, timing, inclusions, and practical preparation before you commit." },
+  { icon: HeartHandshake, title: "Comfort with honest pricing", copy: "A well-paced journey, sensible choices, and transparent conversations about what your plan includes." },
+  { icon: UsersRound, title: "Personal support", copy: "From the first conversation to the journey itself, you can speak with the team when you need help." },
 ];
