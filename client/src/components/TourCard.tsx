@@ -6,7 +6,7 @@ import TourPhotoCarousel from "./TourPhotoCarousel";
 
 export type TourCardData = { id: number; title: string; slug: string; category: string; location: string; duration: string; difficulty: string; priceFrom: number; heroImage: string; gallery?: string[]; shortDescription: string; isBestSeller?: boolean };
 
-export default function TourCard({ tour, compact = false }: { tour: TourCardData; compact?: boolean }) {
+export default function TourCard({ tour, compact = true }: { tour: TourCardData; compact?: boolean }) {
   const whatsappMessage = buildTourWhatsAppMessage(tour);
   return <article className="tour-card group overflow-hidden rounded-[1.25rem] border border-[#dfe8e8] bg-white shadow-[0_8px_22px_rgba(18,61,91,.06)] transition-[transform,box-shadow] duration-200 hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(18,61,91,.11)]">
     <div className="relative">

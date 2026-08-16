@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/_core/hooks/useAuth";
+import { prepareImageUpload } from "@/lib/imageUpload";
 import { trpc } from "@/lib/trpc";
 import { addJourneyDay, addJourneyItem, cleanJourneyDetails, removeJourneyDay, removeJourneyItem, updateJourneyDay, updateJourneyItem } from "@/lib/journeyEditor";
 import {
@@ -487,30 +488,11 @@ function TourImagePicker({
   });
   async function handleFile(file?: File) {
     if (!file) return;
-    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-      alert("Choose a JPG, PNG, or WebP image.");
-      return;
+    try {
+      upload.mutate(await prepareImageUpload(file));
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "That image could not be prepared.");
     }
-    if (file.size > 1.5 * 1024 * 1024) {
-      alert("Choose an image smaller than 1.5 MB.");
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = String(reader.result);
-      const [prefix, dataBase64] = result.split(",");
-      const mimeType = prefix.match(/data:(image\/(?:jpeg|png|webp))/)?.[1] as
-        | "image/jpeg"
-        | "image/png"
-        | "image/webp"
-        | undefined;
-      if (!mimeType || !dataBase64) {
-        alert("That image could not be read.");
-        return;
-      }
-      upload.mutate({ filename: file.name, mimeType, dataBase64 });
-    };
-    reader.readAsDataURL(file);
   }
   const choices = [
     ...uploaded.map(asset => ({ url: asset.url, label: asset.filename })),
@@ -528,7 +510,7 @@ function TourImagePicker({
           <p className="mt-1 text-xs leading-5 text-slate-500">
             This is the photo travellers see first on the tour card and in the
             homepage Top Trips section. Upload a JPG, PNG, or WebP image up to
-            1.5 MB.
+            12 MB; it is automatically resized and converted to fast WebP.
           </p>
         </div>
         <label className="focus-ring inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#123d5b] px-4 text-xs font-bold text-white hover:bg-[#0b2d46]">
@@ -595,28 +577,13 @@ function TourGalleryPicker({
       );
     },
   });
-  function uploadFile(file?: File) {
+  async function uploadFile(file?: File) {
     if (!file) return;
-    if (
-      !["image/jpeg", "image/png", "image/webp"].includes(file.type) ||
-      file.size > 1.5 * 1024 * 1024
-    ) {
-      alert("Choose a JPG, PNG, or WebP image smaller than 1.5 MB.");
-      return;
+    try {
+      upload.mutate(await prepareImageUpload(file));
+    } catch (error) {
+      alert(error instanceof Error ? error.message : "That image could not be prepared.");
     }
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = String(reader.result);
-      const [prefix, dataBase64] = result.split(",");
-      const mimeType = prefix.match(/data:(image\/(?:jpeg|png|webp))/)?.[1] as
-        | "image/jpeg"
-        | "image/png"
-        | "image/webp"
-        | undefined;
-      if (mimeType && dataBase64)
-        upload.mutate({ filename: file.name, mimeType, dataBase64 });
-    };
-    reader.readAsDataURL(file);
   }
   const choices = [
     ...uploaded.map(asset => ({ url: asset.url, label: asset.filename })),

@@ -207,3 +207,5 @@
 - [x] Compact and professionally redesign tour cards while preserving gallery, badges, metadata, and CTAs.
 - [x] Improve tour-detail gallery image positioning and add clear real WhatsApp CTA actions.
 - [x] Verify performance-oriented changes with tests, build, and responsive visual QA before publishing.
+- [x] Reduce public image-transfer bytes with responsive optimized derivatives, priority loading for only first-visible images, lazy gallery behavior, and automatic WebP compression for new administrator uploads.
+- [x] Verify image byte savings, responsive visual quality, tests, and production build before publishing.

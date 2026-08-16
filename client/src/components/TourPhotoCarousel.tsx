@@ -1,5 +1,6 @@
 import { ChevronLeft, ChevronRight, Images } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { getImageVariant } from "@/lib/imageDelivery";
 
 type TourPhotoCarouselProps = {
   title: string;
@@ -44,6 +45,7 @@ export default function TourPhotoCarousel({
   }
 
   const activePhoto = photos[activeIndex] ?? heroImage;
+  const deliveredPhoto = getImageVariant(activePhoto, compact ? "card" : "hero");
   const height = compact ? "h-44" : "h-[22rem] sm:h-[28rem]";
 
   return (
@@ -58,13 +60,14 @@ export default function TourPhotoCarousel({
       aria-label={`${title} photo gallery`}
     >
       <img
-        key={activePhoto}
-        src={activePhoto}
+        key={deliveredPhoto}
+        src={deliveredPhoto}
         alt={`${title} in ${location}`}
         className="absolute inset-0 h-full w-full object-cover object-[center_42%] transition-opacity duration-300 motion-reduce:transition-none"
         loading={priority ? "eager" : "lazy"}
         fetchPriority={priority ? "high" : "low"}
         decoding="async"
+        sizes={compact ? "(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 25vw" : "100vw"}
       />
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#092e49]/82 via-[#092e49]/8 to-transparent" />
       {photos.length > 1 && (
