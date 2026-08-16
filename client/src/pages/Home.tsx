@@ -81,10 +81,10 @@ export default function Home() {
       <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(7,39,61,.92)_0%,rgba(7,39,61,.69)_48%,rgba(7,39,61,.18)_100%)]" />
       <div className="container relative flex min-h-[660px] flex-col justify-center pb-28 pt-36 sm:min-h-[700px]">
         <div className="max-w-2xl">
-          <p className="rise text-xs font-extrabold uppercase tracking-[.17em] text-[#f6a85c]">Trip Himalaya · Dharamshala, Himachal</p>
+         
           <h1 className="rise-2 mt-4 font-display text-[clamp(3.1rem,6.4vw,5.7rem)] font-bold leading-[.9] tracking-[-.045em]">Discover Himachal.<span className="mt-2 block text-[#f39a48]">Travel the Himalayas.</span></h1>
 
-          <p className="rise-3 mt-5 max-w-xl text-base leading-7 text-white/84 sm:text-lg">Treks, local stays and private Himachal journeys planned around your time, group and comfort.</p>
+          <p className="rise-3 mt-5 max-w-xl text-base leading-7 text-white/84 sm:text-lg">Curated journeys. Local expertise. Unforgettable memories.</p>
         </div>
         <div className="rise-3 mt-7 flex flex-wrap gap-3">
           <Link href="/tours" className="focus-ring inline-flex h-12 items-center gap-2 rounded-md bg-[#e9781c] px-5 text-sm font-bold text-white transition hover:bg-[#d86b12] active:scale-[.98]">Explore journeys <ArrowRight className="size-4" /></Link>
