@@ -130,6 +130,9 @@ export const agencyProfiles = mysqlTable("agencyProfiles", {
   facebookUrl: varchar("facebookUrl", { length: 2048 }).notNull(),
   youtubeUrl: varchar("youtubeUrl", { length: 2048 }).notNull(),
   googleMapsUrl: varchar("googleMapsUrl", { length: 2048 }).notNull(),
+  exploreTitle: varchar("exploreTitle", { length: 220 }).notNull().default("Choose your travel style."),
+  exploreIntro: text("exploreIntro"),
+  travelStylesJson: text("travelStylesJson"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

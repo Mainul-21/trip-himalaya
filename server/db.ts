@@ -15,6 +15,15 @@ import {
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
 
+export const DEFAULT_TRAVEL_STYLES = [
+  { title: "Trekking", href: "/tours?style=trekking", image: "/manus-storage/triund-hikers_7653a06a.jpg", copy: "Guided walks with a pace that makes sense." },
+  { title: "Culture & local", href: "/tours?style=experiences", image: "/manus-storage/dharamshala-prayer-flags_26329188.jpg", copy: "Dharamshala, food and local context." },
+  { title: "Adventure", href: "/tours?style=adventure", image: "/manus-storage/triund-camp_ded436f5.jpg", copy: "Active Himachal escapes with practical planning." },
+  { title: "Short breaks", href: "/tours?style=short-breaks", image: "/manus-storage/dharamshala-valley_971eee0a.jpg", copy: "One- and two-day plans for a quick reset." },
+  { title: "Best sellers", href: "/tours?style=best-sellers", image: "/manus-storage/triund-hikers_7653a06a.jpg", copy: "Journeys the Trip Himalaya team has marked." },
+  { title: "Custom plan", href: "/contact", image: "/manus-storage/dharamshala-prayer-flags_26329188.jpg", copy: "Share your dates and build your own route." },
+] as const;
+
 export const DEFAULT_AGENCY_PROFILE = {
   brandName: "Trip Himalaya",
   tagline: "Explore. Experience. Live.",
@@ -27,9 +36,13 @@ export const DEFAULT_AGENCY_PROFILE = {
   facebookUrl: "",
   youtubeUrl: "",
   googleMapsUrl: "",
+  exploreTitle: "Choose your travel style.",
+  exploreIntro: "Start with the kind of mountain time you want. Every choice opens a filtered journey list.",
+  travelStyles: DEFAULT_TRAVEL_STYLES.map(style => ({ ...style })),
 };
 
-export type AgencyProfileValues = typeof DEFAULT_AGENCY_PROFILE;
+export type TravelStyle = { title: string; href: string; image: string; copy: string };
+export type AgencyProfileValues = Omit<typeof DEFAULT_AGENCY_PROFILE, "travelStyles"> & { travelStyles: TravelStyle[] };
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -162,6 +175,11 @@ export async function getAgencyProfile(): Promise<AgencyProfileValues> {
   if (!db) return DEFAULT_AGENCY_PROFILE;
   const profile = (await db.select().from(agencyProfiles).limit(1))[0];
   if (!profile) return DEFAULT_AGENCY_PROFILE;
+  let travelStyles = DEFAULT_AGENCY_PROFILE.travelStyles;
+  try {
+    const parsed = profile.travelStylesJson ? JSON.parse(profile.travelStylesJson) : [];
+    if (Array.isArray(parsed) && parsed.length) travelStyles = parsed;
+  } catch { /* Keep the safe built-in styles if old or malformed content exists. */ }
   return {
     brandName: profile.brandName,
     tagline: profile.tagline,
@@ -174,14 +192,19 @@ export async function getAgencyProfile(): Promise<AgencyProfileValues> {
     facebookUrl: profile.facebookUrl,
     youtubeUrl: profile.youtubeUrl,
     googleMapsUrl: profile.googleMapsUrl,
+    exploreTitle: profile.exploreTitle || DEFAULT_AGENCY_PROFILE.exploreTitle,
+    exploreIntro: profile.exploreIntro || DEFAULT_AGENCY_PROFILE.exploreIntro,
+    travelStyles,
   };
 }
 
 export async function updateAgencyProfile(values: AgencyProfileValues): Promise<AgencyProfileValues> {
   const db = requireDb(await getDb());
+  const { travelStyles, ...profileValues } = values;
+  const persistedValues = { ...profileValues, travelStylesJson: JSON.stringify(travelStyles) };
   const existing = (await db.select({ id: agencyProfiles.id }).from(agencyProfiles).limit(1))[0];
-  if (existing) await db.update(agencyProfiles).set(values).where(eq(agencyProfiles.id, existing.id));
-  else await db.insert(agencyProfiles).values(values);
+  if (existing) await db.update(agencyProfiles).set(persistedValues).where(eq(agencyProfiles.id, existing.id));
+  else await db.insert(agencyProfiles).values(persistedValues);
   return getAgencyProfile();
 }
 

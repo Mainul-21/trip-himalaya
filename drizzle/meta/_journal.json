@@ -57,6 +57,20 @@
       "when": 1786855397659,
       "tag": "0007_perfect_cassandra_nova",
       "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "5",
+      "when": 1786865974654,
+      "tag": "0008_yielding_aaron_stack",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1786866016421,
+      "tag": "0009_neat_genesis",
+      "breakpoints": true
     }
   ]
 }

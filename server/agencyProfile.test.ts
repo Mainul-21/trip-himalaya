@@ -13,6 +13,9 @@ describe("agency profile administration contract", () => {
     expect(schema).toContain('googleMapsUrl: varchar("googleMapsUrl"');
     expect(db).toContain("DEFAULT_AGENCY_PROFILE");
     expect(db).toContain("updateAgencyProfile");
+    expect(schema).toContain('travelStylesJson: text("travelStylesJson")');
+    expect(db).toContain("JSON.stringify(travelStyles)");
+    expect(db).toContain("DEFAULT_TRAVEL_STYLES");
   });
 
   it("keeps public reads open and restricts profile updates to authenticated administrators", () => {
@@ -26,5 +29,8 @@ describe("agency profile administration contract", () => {
     expect(portal).toContain('title="Agency profile"');
     expect(portal).toContain("Save public agency profile");
     expect(portal).toContain("Public profiles");
+    expect(portal).toContain('name="exploreTitle"');
+    expect(portal).toContain('name="exploreIntro"');
+    expect(portal).toContain('name="travelStyles"');
   });
 });

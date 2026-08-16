@@ -62,6 +62,12 @@ const imageUploadInput = z.object({
   mimeType: z.enum(["image/jpeg", "image/png", "image/webp"]),
   dataBase64: z.string().min(8).max(2_100_000),
 });
+const travelStyleInput = z.object({
+  title: z.string().trim().min(2).max(80),
+  href: z.string().trim().regex(/^(\/tours\?style=|\/contact)/),
+  image: z.string().url().or(z.string().startsWith("/manus-storage/")),
+  copy: z.string().trim().min(2).max(180),
+});
 const agencyProfileInput = z.object({
   brandName: z.string().trim().min(2).max(160),
   tagline: z.string().trim().min(2).max(220),
@@ -74,6 +80,9 @@ const agencyProfileInput = z.object({
   facebookUrl: z.string().trim().url().max(2048).or(z.literal("")),
   youtubeUrl: z.string().trim().url().max(2048).or(z.literal("")),
   googleMapsUrl: z.string().trim().url().max(2048).or(z.literal("")),
+  exploreTitle: z.string().trim().min(2).max(220),
+  exploreIntro: z.string().trim().min(2).max(1000),
+  travelStyles: z.array(travelStyleInput).min(1).max(8),
 });
 
 function matchesInitialSetupKey(expected: string, received: string | undefined) {

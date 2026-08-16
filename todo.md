@@ -195,3 +195,6 @@
 - [ ] Resolve the local schema ambiguity after TiDB reports duplicate `isPublished`, using exact column-definition inspection before any further ALTER operation.
 - [x] Add administrator-managed multi-photo galleries to tours, including add, remove, and ordering controls.
 - [x] Add accessible automatic rotation plus previous/next buttons to tour cards and tour-detail galleries.
+- [x] Add editable agency logo guidance and persisted Explore Himachal heading, intro, and travel-style card content in the Agency Profile editor.
+- [x] Connect the public homepage Explore Himachal section to administrator-managed agency settings with safe fallbacks.
+- [x] Validate editable branding changes with tests, TypeScript, production build, and responsive homepage visual verification.
