@@ -117,5 +117,22 @@ export const mediaAssets = mysqlTable("mediaAssets", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
+export const agencyProfiles = mysqlTable("agencyProfiles", {
+  id: int("id").autoincrement().primaryKey(),
+  brandName: varchar("brandName", { length: 160 }).notNull(),
+  tagline: varchar("tagline", { length: 220 }).notNull(),
+  logoUrl: text("logoUrl").notNull(),
+  phone: varchar("phone", { length: 40 }).notNull(),
+  whatsapp: varchar("whatsapp", { length: 40 }).notNull(),
+  email: varchar("email", { length: 320 }).notNull(),
+  address: text("address").notNull(),
+  instagramUrl: varchar("instagramUrl", { length: 2048 }).notNull(),
+  facebookUrl: varchar("facebookUrl", { length: 2048 }).notNull(),
+  youtubeUrl: varchar("youtubeUrl", { length: 2048 }).notNull(),
+  googleMapsUrl: varchar("googleMapsUrl", { length: 2048 }).notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+
 export type User = typeof users.$inferSelect;
 export type InsertUser = typeof users.$inferInsert;

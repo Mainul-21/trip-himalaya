@@ -2,6 +2,7 @@ import { and, asc, desc, eq, inArray, isNotNull, isNull, like, or } from "drizzl
 import { drizzle } from "drizzle-orm/mysql2";
 import { randomUUID } from "crypto";
 import {
+  agencyProfiles,
   blogs,
   bookings,
   enquiries,
@@ -13,6 +14,22 @@ import {
   users,
 } from "../drizzle/schema";
 import { ENV } from "./_core/env";
+
+export const DEFAULT_AGENCY_PROFILE = {
+  brandName: "Trip Himalaya",
+  tagline: "Explore. Experience. Live.",
+  logoUrl: "/manus-storage/logo_triphimalaya_598a0ec2.jpg",
+  phone: "+918609752814",
+  whatsapp: "918609752814",
+  email: "hello@triphimalaya.in",
+  address: "Dharamshala, Himachal Pradesh, India",
+  instagramUrl: "",
+  facebookUrl: "",
+  youtubeUrl: "",
+  googleMapsUrl: "",
+};
+
+export type AgencyProfileValues = typeof DEFAULT_AGENCY_PROFILE;
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
@@ -138,6 +155,34 @@ export async function deleteAdminAccount(id: number) {
 
 export async function updateOwnAdminAccount(id: number, values: { name?: string; email?: string; passwordHash?: string }) {
   await updateAdminAccount(id, values);
+}
+
+export async function getAgencyProfile(): Promise<AgencyProfileValues> {
+  const db = await getDb();
+  if (!db) return DEFAULT_AGENCY_PROFILE;
+  const profile = (await db.select().from(agencyProfiles).limit(1))[0];
+  if (!profile) return DEFAULT_AGENCY_PROFILE;
+  return {
+    brandName: profile.brandName,
+    tagline: profile.tagline,
+    logoUrl: profile.logoUrl,
+    phone: profile.phone,
+    whatsapp: profile.whatsapp,
+    email: profile.email,
+    address: profile.address,
+    instagramUrl: profile.instagramUrl,
+    facebookUrl: profile.facebookUrl,
+    youtubeUrl: profile.youtubeUrl,
+    googleMapsUrl: profile.googleMapsUrl,
+  };
+}
+
+export async function updateAgencyProfile(values: AgencyProfileValues): Promise<AgencyProfileValues> {
+  const db = requireDb(await getDb());
+  const existing = (await db.select({ id: agencyProfiles.id }).from(agencyProfiles).limit(1))[0];
+  if (existing) await db.update(agencyProfiles).set(values).where(eq(agencyProfiles.id, existing.id));
+  else await db.insert(agencyProfiles).values(values);
+  return getAgencyProfile();
 }
 
 export async function listPublishedTours() {

@@ -167,7 +167,12 @@
 - [x] Reassess and resolve the persistent local administrator sign-in loop after the HTTP session-cookie repair is pulled and restarted on the owner’s PC.
 - [x] Diagnose and repair the reported missing public and uploaded images when the project is run locally on the owner’s PC.
 - [ ] Diagnose and repair the local administrator sign-in API request returning an HTML page instead of a tRPC JSON response.
-- [ ] Provide a complete, owner-friendly Vercel deployment procedure with required environment variables and production checks.
+- [x] Provide a complete, owner-friendly Vercel deployment procedure with required environment variables and production checks.
 - [x] Add administrator-controlled Best Seller status to tours and display an accessible Best Seller badge on applicable public cards.
 - [x] Expand homepage trip-style filters with clear visual categories and working links to filtered tour results.
 - [x] Add a concise, responsive Why Choose Trip Himalaya section with original agency-focused service reasons.
+- [x] Refine the homepage into an original navy-and-orange mountain-agency composition with clearer hero, trust, and trip-style presentation inspired by the supplied reference.
+- [ ] Make the administrator Best Seller control and public Best Seller ribbon more prominent, then verify the badge appears when enabled on a tour.
+- [x] Apply the supplied Trip Himalaya logo across public brand placements using deployment-safe image delivery.
+- [x] Add administrator-editable public contact details and social-profile links to the website footer.
+- [x] Refine Why Choose Trip Himalaya with original local-expertise, safety, value, support, and responsible-travel themes inspired by the supplied visual reference.

@@ -9,6 +9,7 @@ import { trpc } from "@/lib/trpc";
 import { addJourneyDay, addJourneyItem, cleanJourneyDetails, removeJourneyDay, removeJourneyItem, updateJourneyDay, updateJourneyItem } from "@/lib/journeyEditor";
 import {
   BookOpen,
+  Building2,
   CircleHelp,
   ClipboardList,
   FilePlus2,
@@ -52,7 +53,7 @@ type Tour = {
   exclusions: string[];
   isPublished: boolean;
   isFeatured: boolean;
-  isBestSeller: boolean;
+  isBestSeller?: boolean;
   featureOrder: number;
 };
 
@@ -76,6 +77,8 @@ export default function AdminPortal() {
       <Reviews />
     ) : view === "profile" ? (
       <Profile />
+    ) : view === "agency" ? (
+      <AgencyProfile />
     ) : view === "administrators" ? (
       <Administrators />
     ) : (
@@ -205,6 +208,52 @@ function Summary({
       </div>
     </section>
   );
+}
+
+function AgencyProfile() {
+  const utils = trpc.useUtils();
+  const { data, isLoading } = trpc.agency.get.useQuery();
+  const update = trpc.agency.update.useMutation({
+    onSuccess: () => void utils.agency.get.invalidate(),
+  });
+
+  function save(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    update.mutate({
+      brandName: String(form.get("brandName") || "").trim(),
+      tagline: String(form.get("tagline") || "").trim(),
+      logoUrl: String(form.get("logoUrl") || "").trim(),
+      phone: String(form.get("phone") || "").trim(),
+      whatsapp: String(form.get("whatsapp") || "").trim(),
+      email: String(form.get("email") || "").trim(),
+      address: String(form.get("address") || "").trim(),
+      instagramUrl: String(form.get("instagramUrl") || "").trim(),
+      facebookUrl: String(form.get("facebookUrl") || "").trim(),
+      youtubeUrl: String(form.get("youtubeUrl") || "").trim(),
+      googleMapsUrl: String(form.get("googleMapsUrl") || "").trim(),
+    });
+  }
+
+  if (isLoading || !data) return <div className="py-14 text-sm text-slate-500">Loading public agency profile…</div>;
+  return <div>
+    <Heading tag="Public website settings" title="Agency profile" />
+    <form onSubmit={save} className="max-w-4xl space-y-6">
+      <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6">
+        <div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#eef4f2] text-[#e17818]"><Building2 className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Brand and logo</h2><p className="mt-1 text-sm leading-6 text-slate-500">These details appear in the public header and footer. For a new logo, upload it in Photo library first, then paste its URL here.</p></div></div>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Agency name" name="brandName" defaultValue={data.brandName} required /><Field label="Short tagline" name="tagline" defaultValue={data.tagline} required /><div className="sm:col-span-2"><Field label="Logo URL" name="logoUrl" type="url" defaultValue={data.logoUrl} required /><p className="mt-2 text-xs text-slate-500">Example: /manus-storage/your-logo.jpg or an HTTPS image URL.</p></div></div>
+      </section>
+      <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><h2 className="font-bold text-[#123d5b]">Contact details</h2><p className="mt-1 text-sm text-slate-500">Used in the footer, call button, WhatsApp button, and public contact areas.</p><div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Phone number" name="phone" type="tel" defaultValue={data.phone} required /><Field label="WhatsApp number" name="whatsapp" type="tel" defaultValue={data.whatsapp} required /><Field label="Public email" name="email" type="email" defaultValue={data.email} required /><div className="sm:col-span-2"><Label htmlFor="agency-address">Office / service address</Label><Textarea id="agency-address" name="address" defaultValue={data.address} className="mt-2 min-h-24 bg-white" required /></div></div></section>
+      <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><h2 className="font-bold text-[#123d5b]">Public profiles</h2><p className="mt-1 text-sm text-slate-500">Only links you enter here are shown in the public footer. Leave a field empty to hide it.</p><div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Instagram URL" name="instagramUrl" type="url" defaultValue={data.instagramUrl} /><Field label="Facebook URL" name="facebookUrl" type="url" defaultValue={data.facebookUrl} /><Field label="YouTube URL" name="youtubeUrl" type="url" defaultValue={data.youtubeUrl} /><Field label="Google Maps URL" name="googleMapsUrl" type="url" defaultValue={data.googleMapsUrl} /></div></section>
+      {update.error && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{update.error.message}</p>}
+      {update.isSuccess && <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">Public agency details saved. Refresh the public website to see the updated footer.</p>}
+      <Button type="submit" disabled={update.isPending} className="h-12 rounded-xl bg-[#123d5b] px-6 font-bold hover:bg-[#0b2d46]">{update.isPending ? "Saving public profile…" : "Save public agency profile"}</Button>
+    </form>
+  </div>;
+}
+
+function Field({ label, name, defaultValue, type = "text", required = false }: { label: string; name: string; defaultValue: string; type?: string; required?: boolean }) {
+  return <div><Label htmlFor={`agency-${name}`}>{label}</Label><Input id={`agency-${name}`} name={name} type={type} defaultValue={defaultValue} required={required} className="mt-2 h-11 bg-white" /></div>;
 }
 
 function Tours() {
@@ -348,6 +397,7 @@ function Tours() {
               >
                 {tour.isPublished ? "Live" : "Draft"}
               </Badge>
+              {"isBestSeller" in tour && Boolean(tour.isBestSeller) && <Badge className="bg-[#fff0df] text-[#c85a08] hover:bg-[#fff0df]">Best Seller</Badge>}
               <button
                 onClick={() => setEditing(tour)}
                 className="focus-ring grid size-8 place-items-center rounded-lg bg-[#eef4f2] text-[#123d5b]"
@@ -1021,11 +1071,11 @@ function TourForm({ original, close }: { original: Tour; close: () => void }) {
                   setTour(x => ({ ...x, isBestSeller: e.target.checked }))
                 }
               />{" "}
-              Show Best Seller badge
+              Mark as Best Seller
             </label>
-            <p className="flex items-center gap-2 text-xs font-medium leading-5 text-slate-500">
+            <p className="flex max-w-xs items-center gap-2 text-xs font-medium leading-5 text-slate-500">
               <CircleHelp className="size-4 shrink-0 text-[#e17818]" />
-              Save first, then choose a homepage position from the list below.
+              Turn this on to show the orange Best Seller ribbon on public tour cards. Save first, then choose a homepage position below.
             </p>
           </div>
         </EditorSection>

@@ -8,7 +8,7 @@ const cardSource = readFileSync(new URL("../client/src/components/TourCard.tsx",
 
 describe("tour Best Seller and trip-style experience", () => {
   it("keeps Best Seller status under administrator control and visible on public cards", () => {
-    expect(adminSource).toContain("Show Best Seller badge");
+    expect(adminSource).toContain("Mark as Best Seller");
     expect(adminSource).toContain("isBestSeller: false");
     expect(cardSource).toContain("tour.isBestSeller");
     expect(cardSource).toContain("Best Seller");

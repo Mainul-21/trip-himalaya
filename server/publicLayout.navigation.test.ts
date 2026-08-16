@@ -13,8 +13,8 @@ describe("PublicLayout mobile navigation contract", () => {
 
   it("keeps all public links and the call, WhatsApp, and plan-your-trip actions inside the phone menu", () => {
     expect(source).toContain("navigation.map(([label, href])");
-    expect(source).toContain('href="tel:+918609752814"');
-    expect(source).toContain('href="https://wa.me/918609752814"');
+    expect(source).toContain("const phoneHref = `tel:${profile.phone.replace(/[^+0-9]/g, \"\")}`");
+    expect(source).toContain("https://wa.me/${whatsappNumber}");
     expect(source).toContain('href="/contact"');
     expect(source).toContain("onClick={() => setMobileOpen(false)}");
   });
@@ -22,5 +22,12 @@ describe("PublicLayout mobile navigation contract", () => {
   it("shows a direct dashboard link in the desktop header only for a signed-in administrator", () => {
     expect(source).toContain('{user && <Link href="/admin"');
     expect(source).toContain("Admin dashboard");
+  });
+
+  it("uses the supplied logo and exposes saved public contact and social profile details in the footer", () => {
+    expect(source).toContain("logo_triphimalaya_598a0ec2.jpg");
+    expect(source).toContain("trpc.agency.get.useQuery");
+    expect(source).toContain('>Contact</p>');
+    expect(source).toContain("profile.instagramUrl");
   });
 });

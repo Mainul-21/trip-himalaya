@@ -50,6 +50,13 @@
       "when": 1786854422714,
       "tag": "0006_smart_lionheart",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "5",
+      "when": 1786855397659,
+      "tag": "0007_perfect_cassandra_nova",
+      "breakpoints": true
     }
   ]
 }

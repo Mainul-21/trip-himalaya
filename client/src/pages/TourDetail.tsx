@@ -39,8 +39,9 @@ export default function TourDetail() {
           </Link>
         </div>
       </PublicLayout>
-    );
+  );
   const whatsAppMessage = buildTourWhatsAppMessage(tour);
+  const isBestSeller = "isBestSeller" in tour && Boolean(tour.isBestSeller);
   return (
     <PublicLayout>
       <section className="relative isolate overflow-hidden bg-[#123d5b] text-white">
@@ -59,7 +60,7 @@ export default function TourDetail() {
           </Link>
           <div className="mt-8 flex flex-wrap items-center gap-3 text-xs font-extrabold uppercase tracking-[.16em]">
             <p className="text-[#f39a48]">{tour.category}</p>
-            {tour.isBestSeller && <span className="border border-[#f39a48]/55 bg-[#e9781c] px-2.5 py-1 text-[.6rem] tracking-[.12em] text-white">Best Seller</span>}
+            {isBestSeller && <span className="border border-[#f39a48]/55 bg-[#e9781c] px-2.5 py-1 text-[.6rem] tracking-[.12em] text-white">Best Seller</span>}
           </div>
           <h1 className="display mt-3 max-w-3xl text-[clamp(2.8rem,6.4vw,5rem)] font-bold leading-[.92] tracking-[-.035em]">
             {tour.title}

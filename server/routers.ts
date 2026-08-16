@@ -62,6 +62,19 @@ const imageUploadInput = z.object({
   mimeType: z.enum(["image/jpeg", "image/png", "image/webp"]),
   dataBase64: z.string().min(8).max(2_100_000),
 });
+const agencyProfileInput = z.object({
+  brandName: z.string().trim().min(2).max(160),
+  tagline: z.string().trim().min(2).max(220),
+  logoUrl: z.string().trim().url().or(z.string().startsWith("/manus-storage/")),
+  phone: z.string().trim().min(7).max(40),
+  whatsapp: z.string().trim().regex(/^\+?[0-9\s-]{7,40}$/, "Enter a WhatsApp number with digits only, optionally with +, spaces, or hyphens."),
+  email,
+  address: z.string().trim().min(2).max(2000),
+  instagramUrl: z.string().trim().url().max(2048).or(z.literal("")),
+  facebookUrl: z.string().trim().url().max(2048).or(z.literal("")),
+  youtubeUrl: z.string().trim().url().max(2048).or(z.literal("")),
+  googleMapsUrl: z.string().trim().url().max(2048).or(z.literal("")),
+});
 
 function matchesInitialSetupKey(expected: string, received: string | undefined) {
   if (!expected || !received) return false;
@@ -155,6 +168,13 @@ export const appRouter = router({
     delete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(async ({ input }) => {
       await db.deleteTour(input.id);
       return { success: true } as const;
+    }),
+  }),
+  agency: router({
+    get: publicProcedure.query(() => db.getAgencyProfile()),
+    update: adminProcedure.input(agencyProfileInput).mutation(async ({ input }) => {
+      const normalizedWhatsapp = input.whatsapp.replace(/[^0-9]/g, "");
+      return db.updateAgencyProfile({ ...input, whatsapp: normalizedWhatsapp });
     }),
   }),
   media: router({
