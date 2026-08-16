@@ -42,6 +42,7 @@ export const tours = mysqlTable("tours", {
   exclusions: json("exclusions").$type<string[]>().notNull(),
   isPublished: boolean("isPublished").default(false).notNull(),
   isFeatured: boolean("isFeatured").default(false).notNull(),
+  isBestSeller: boolean("isBestSeller").default(false).notNull(),
   featureOrder: int("featureOrder").default(0).notNull(),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),

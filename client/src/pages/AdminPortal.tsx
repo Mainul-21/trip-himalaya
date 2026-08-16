@@ -52,6 +52,7 @@ type Tour = {
   exclusions: string[];
   isPublished: boolean;
   isFeatured: boolean;
+  isBestSeller: boolean;
   featureOrder: number;
 };
 
@@ -406,6 +407,7 @@ function newTour(): Tour {
     exclusions: [],
     isPublished: false,
     isFeatured: false,
+    isBestSeller: false,
     featureOrder: 0,
   };
 }
@@ -787,7 +789,7 @@ function TourForm({ original, close }: { original: Tour; close: () => void }) {
       return;
     }
     if (!tour.isPublished) {
-      const payload = { title: tour.title, slug: tour.slug || makeSlug(tour.title), category: tour.category, location: tour.location, duration: tour.duration, difficulty: tour.difficulty, priceFrom: tour.priceFrom, heroImage: tour.heroImage, gallery: tour.gallery.length ? tour.gallery : [tour.heroImage], shortDescription: tour.shortDescription, overview: tour.overview, highlights, itinerary, inclusions, exclusions, isPublished: false, isFeatured: false, featureOrder: 0 };
+      const payload = { title: tour.title, slug: tour.slug || makeSlug(tour.title), category: tour.category, location: tour.location, duration: tour.duration, difficulty: tour.difficulty, priceFrom: tour.priceFrom, heroImage: tour.heroImage, gallery: tour.gallery.length ? tour.gallery : [tour.heroImage], shortDescription: tour.shortDescription, overview: tour.overview, highlights, itinerary, inclusions, exclusions, isPublished: false, isFeatured: false, isBestSeller: tour.isBestSeller, featureOrder: 0 };
       if (tour.id) update.mutate({ id: tour.id, ...payload }); else create.mutate(payload);
       return;
     }
@@ -827,6 +829,7 @@ function TourForm({ original, close }: { original: Tour; close: () => void }) {
       exclusions,
       isPublished: tour.isPublished,
       isFeatured: tour.isFeatured,
+      isBestSeller: tour.isBestSeller,
       featureOrder: tour.isFeatured
         ? Math.min(4, Math.max(1, tour.featureOrder || 1))
         : 0,
@@ -1009,6 +1012,16 @@ function TourForm({ original, close }: { original: Tour; close: () => void }) {
                 }
               />{" "}
               Publish on public website
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="checkbox"
+                checked={tour.isBestSeller}
+                onChange={e =>
+                  setTour(x => ({ ...x, isBestSeller: e.target.checked }))
+                }
+              />{" "}
+              Show Best Seller badge
             </label>
             <p className="flex items-center gap-2 text-xs font-medium leading-5 text-slate-500">
               <CircleHelp className="size-4 shrink-0 text-[#e17818]" />

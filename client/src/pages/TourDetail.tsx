@@ -57,9 +57,10 @@ export default function TourDetail() {
           >
             <ArrowLeft className="size-4" /> All journeys
           </Link>
-          <p className="mt-8 text-xs font-extrabold uppercase tracking-[.16em] text-[#f39a48]">
-            {tour.category}
-          </p>
+          <div className="mt-8 flex flex-wrap items-center gap-3 text-xs font-extrabold uppercase tracking-[.16em]">
+            <p className="text-[#f39a48]">{tour.category}</p>
+            {tour.isBestSeller && <span className="border border-[#f39a48]/55 bg-[#e9781c] px-2.5 py-1 text-[.6rem] tracking-[.12em] text-white">Best Seller</span>}
+          </div>
           <h1 className="display mt-3 max-w-3xl text-[clamp(2.8rem,6.4vw,5rem)] font-bold leading-[.92] tracking-[-.035em]">
             {tour.title}
           </h1>

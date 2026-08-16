@@ -36,6 +36,7 @@ const tourInput = z.object({
   exclusions: z.array(draftContent),
   isPublished: z.boolean(),
   isFeatured: z.boolean(),
+  isBestSeller: z.boolean().default(false),
   featureOrder: z.number().int().min(0).max(999),
 }).superRefine((tour, ctx) => {
   if (!tour.isPublished) return;

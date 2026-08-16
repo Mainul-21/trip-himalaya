@@ -43,6 +43,13 @@
       "when": 1786706980777,
       "tag": "0005_charming_meteorite",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "5",
+      "when": 1786854422714,
+      "tag": "0006_smart_lionheart",
+      "breakpoints": true
     }
   ]
 }

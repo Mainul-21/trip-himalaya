@@ -1,0 +1,1 @@
+ALTER TABLE `tours` ADD `isBestSeller` boolean DEFAULT false NOT NULL;

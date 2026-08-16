@@ -251,9 +251,9 @@ describe("tour gallery management", () => {
       shortDescription: "A carefully paced sunrise trek from Dharamshala with local mountain guides.",
       overview: "Walk through cedar forests to Triund with a local guide, a relaxed camp evening, and a memorable Himalayan sunrise.",
       highlights: ["Triund sunrise", "Local guide"], itinerary: [{ day: "Day 1", title: "Walk to Triund", description: "Meet the guide and walk through the forest to the campsite." }],
-      inclusions: ["Local guide"], exclusions: ["Personal purchases"], isPublished: true, isFeatured: true, featureOrder: 1,
+      inclusions: ["Local guide"], exclusions: ["Personal purchases"], isPublished: true, isFeatured: true, isBestSeller: true, featureOrder: 1,
     })).resolves.toEqual({ success: true });
-    expect(db.createTour).toHaveBeenCalledWith(expect.objectContaining({ heroImage: photos[0], gallery: photos }));
+    expect(db.createTour).toHaveBeenCalledWith(expect.objectContaining({ heroImage: photos[0], gallery: photos, isBestSeller: true }));
   });
 
   it("allows an administrator to save an unfinished named journey as a draft but requires complete details before publishing", async () => {
