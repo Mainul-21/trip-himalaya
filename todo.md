@@ -209,3 +209,5 @@
 - [x] Verify performance-oriented changes with tests, build, and responsive visual QA before publishing.
 - [x] Reduce public image-transfer bytes with responsive optimized derivatives, priority loading for only first-visible images, lazy gallery behavior, and automatic WebP compression for new administrator uploads.
 - [x] Verify image byte savings, responsive visual quality, tests, and production build before publishing.
+- [x] Reduce remaining perceived first-viewport image delay by prioritizing the critical hero image and deferring nonessential image work.
+- [x] Measure first-viewport image request timing and verify the perceived loading improvement with tests, build, and browser QA.
