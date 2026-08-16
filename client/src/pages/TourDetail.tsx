@@ -1,4 +1,5 @@
 import PublicLayout, { WhatsAppIcon } from "@/components/PublicLayout";
+import TourPhotoCarousel from "@/components/TourPhotoCarousel";
 import { trpc } from "@/lib/trpc";
 import { buildTourWhatsAppMessage } from "@/lib/tourWhatsApp";
 import {
@@ -44,11 +45,14 @@ export default function TourDetail() {
   const isBestSeller = "isBestSeller" in tour && Boolean(tour.isBestSeller);
   return (
     <PublicLayout>
-      <section className="relative isolate overflow-hidden bg-[#123d5b] text-white">
-        <img
-          src={tour.heroImage}
-          alt={`${tour.title} in ${tour.location}`}
-          className="absolute inset-0 h-full w-full object-cover"
+      <section className="relative isolate min-h-[34rem] overflow-hidden bg-[#123d5b] text-white">
+        <TourPhotoCarousel
+          title={tour.title}
+          location={tour.location}
+          heroImage={tour.heroImage}
+          gallery={tour.gallery}
+          priority
+          className="absolute inset-0 h-full w-full rounded-none"
         />
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,35,55,.9),rgba(5,35,55,.48),rgba(5,35,55,.2))]" />
         <div className="container relative py-20 sm:py-28">

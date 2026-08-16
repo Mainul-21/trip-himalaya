@@ -176,3 +176,22 @@
 - [x] Apply the supplied Trip Himalaya logo across public brand placements using deployment-safe image delivery.
 - [x] Add administrator-editable public contact details and social-profile links to the website footer.
 - [x] Refine Why Choose Trip Himalaya with original local-expertise, safety, value, support, and responsible-travel themes inspired by the supplied visual reference.
+- [ ] Stabilize localhost tour details, images, and API-backed content when the owner’s TiDB connection or managed storage is intermittent.
+
+# Current Worklog
+
+- [ ] Stabilize localhost tour details, images, and API-backed content when the owner’s TiDB connection or managed storage is intermittent.
+- [ ] Add clear local diagnostics and recovery guidance for database timeout and unavailable API states.
+- [x] Add administrator-managed multi-photo tour galleries with automatic card rotation and previous/next controls.
+- [ ] Make the site logo editable from the administrator portal.
+- [ ] Make Explore Himachal travel-style content editable from the administrator portal.
+- [ ] Verify the owner’s TiDB endpoint reachability and SSL connection settings locally without exposing secrets.
+- [ ] Document the safe retry path for `connect ETIMEDOUT` during `npm run db:push`.
+- [ ] Repair the local `agencyProfiles` migration mismatch where Drizzle attempts to add a primary key that already exists, without truncating or deleting data.
+- [ ] Add regression coverage and safe Windows instructions for this migration state.
+- [ ] Determine whether localhost has zero tour rows or whether the public API is filtering existing tours incorrectly, then restore the existing records safely without seed data.
+- [ ] Verify why localhost Admin Portal has no tour rows even though the managed project database contains published tours, without deleting or fabricating tour data.
+- [ ] Diagnose and repair localhost `tours.list` returning HTTP 500 while the same database contains four published tours, without changing tour data.
+- [ ] Resolve the local schema ambiguity after TiDB reports duplicate `isPublished`, using exact column-definition inspection before any further ALTER operation.
+- [x] Add administrator-managed multi-photo galleries to tours, including add, remove, and ordering controls.
+- [x] Add accessible automatic rotation plus previous/next buttons to tour cards and tour-detail galleries.

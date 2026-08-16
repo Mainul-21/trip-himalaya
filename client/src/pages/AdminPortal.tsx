@@ -630,8 +630,9 @@ function TourGalleryPicker({
             Tour gallery
           </Label>
           <p className="mt-1 text-xs leading-5 text-slate-500">
-            Add up to 10 photos for the tour page. Select a photo below to add
-            it, then use the arrows to choose the display order.
+            Add up to 10 photos for this journey. The first photo appears on
+            tour cards and homepage Top Trips; all selected photos rotate on the
+            cards and detail page. Use the arrows to choose the display order.
           </p>
         </div>
         <label className="focus-ring inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#123d5b] px-4 text-xs font-bold text-white hover:bg-[#0b2d46]">
@@ -988,8 +989,8 @@ function TourForm({ original, close }: { original: Tour; close: () => void }) {
           />
         </EditorSection>
         <EditorSection
-          title="3. Tour gallery"
-          where="The photo gallery on the tour detail page."
+          title="3. Tour photo gallery"
+          where="The rotating photos on tour cards, homepage Top Trips, and the tour detail page."
         >
           <TourGalleryPicker
             value={tour.gallery}
