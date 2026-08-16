@@ -80,20 +80,6 @@ export const newsletterSubscribers = mysqlTable("newsletterSubscribers", {
   createdAt: timestamp("createdAt").defaultNow().notNull(),
 });
 
-export const blogs = mysqlTable("blogs", {
-  id: int("id").autoincrement().primaryKey(),
-  title: text("title").notNull(),
-  slug: varchar("slug", { length: 200 }).notNull().unique(),
-  excerpt: text("excerpt").notNull(),
-  content: text("content").notNull(),
-  coverImage: text("coverImage").notNull(),
-  author: text("author").notNull(),
-  isPublished: boolean("isPublished").default(false).notNull(),
-  publishedAt: timestamp("publishedAt"),
-  createdAt: timestamp("createdAt").defaultNow().notNull(),
-  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
-});
-
 export const reviews = mysqlTable("reviews", {
   id: int("id").autoincrement().primaryKey(),
   reviewerName: text("reviewerName").notNull(),

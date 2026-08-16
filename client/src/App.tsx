@@ -9,8 +9,6 @@ import { Mountain } from "lucide-react";
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
 const AdminPortal = lazy(() => import("./pages/AdminPortal"));
 const AdminSetup = lazy(() => import("./pages/AdminSetup"));
-const BlogDetail = lazy(() => import("./pages/BlogDetail"));
-const BlogList = lazy(() => import("./pages/BlogList"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Home = lazy(() => import("./pages/Home"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -31,8 +29,6 @@ function Router() {
     <Route path="/experiences"><PublicPage kind="experiences" /></Route>
     <Route path="/about"><PublicPage kind="about" /></Route>
     <Route path="/contact" component={Contact} />
-    <Route path="/blog" component={BlogList} />
-    <Route path="/blog/:slug" component={BlogDetail} />
     <Route path="/search" component={SearchPage} />
     <Route path="/admin/setup" component={AdminSetup} />
     <Route path="/admin/login" component={AdminLogin} />

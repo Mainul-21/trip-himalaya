@@ -198,3 +198,12 @@
 - [x] Add editable agency logo guidance and persisted Explore Himachal heading, intro, and travel-style card content in the Agency Profile editor.
 - [x] Connect the public homepage Explore Himachal section to administrator-managed agency settings with safe fallbacks.
 - [x] Validate editable branding changes with tests, TypeScript, production build, and responsive homepage visual verification.
+- [ ] Remove the Blog feature completely from public navigation, routes, admin controls, backend procedures, schema usage, and database records.
+- [ ] Align Explore Himachal travel-style cards with the requested concise reference points.
+- [ ] Redesign tour cards with a more professional, restrained travel-agency presentation while preserving gallery controls and actions.
+- [ ] Verify blog removal, travel-style content, and tour-card redesign with tests, build, responsive visual QA, and checkpoint publication.
+- [x] Improve image loading and page responsiveness across public pages without sacrificing relevant visual quality.
+- [x] Replace generic dataset-style travel imagery with properly sourced relevant Himachal travel images and optimize their delivery.
+- [x] Compact and professionally redesign tour cards while preserving gallery, badges, metadata, and CTAs.
+- [x] Improve tour-detail gallery image positioning and add clear real WhatsApp CTA actions.
+- [x] Verify performance-oriented changes with tests, build, and responsive visual QA before publishing.

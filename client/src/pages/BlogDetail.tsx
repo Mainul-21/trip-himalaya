@@ -1,6 +1,0 @@
-import PublicLayout from "@/components/PublicLayout";
-import { trpc } from "@/lib/trpc";
-import { ArrowLeft } from "lucide-react";
-import { Link, useRoute } from "wouter";
-
-export default function BlogDetail() { const [, params] = useRoute("/blog/:slug"); const { data: blog } = trpc.blogs.bySlug.useQuery({ slug: params?.slug || "" }, { enabled: Boolean(params?.slug) }); if (!blog) return <PublicLayout><div className="container py-28 text-center text-slate-500">Finding this field note…</div></PublicLayout>; return <PublicLayout><article><header className="container max-w-4xl py-14 sm:py-20"><Link href="/blog" className="focus-ring inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[.1em] text-[#123d5b]"><ArrowLeft className="size-4" /> Field notes</Link><p className="eyebrow mt-9">By {blog.author}</p><h1 className="section-title mt-3">{blog.title}</h1><p className="mt-6 text-lg leading-8 text-slate-600">{blog.excerpt}</p></header><img src={blog.coverImage} alt="" className="h-[350px] w-full object-cover sm:h-[470px]" /><div className="container max-w-3xl py-14"><div className="whitespace-pre-wrap text-base leading-8 text-slate-700">{blog.content}</div></div></article></PublicLayout>; }

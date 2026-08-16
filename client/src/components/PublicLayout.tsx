@@ -5,7 +5,7 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 
 const navigation = [
-  ["Home", "/"], ["Tours", "/tours"], ["Treks", "/treks"], ["Experiences", "/experiences"], ["About us", "/about"], ["Blogs", "/blog"], ["Contact", "/contact"],
+  ["Home", "/"], ["Tours", "/tours"], ["Treks", "/treks"], ["Experiences", "/experiences"], ["About us", "/about"], ["Contact", "/contact"],
 ];
 
 const fallbackAgencyProfile = {

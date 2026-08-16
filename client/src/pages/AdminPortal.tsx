@@ -8,7 +8,6 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { addJourneyDay, addJourneyItem, cleanJourneyDetails, removeJourneyDay, removeJourneyItem, updateJourneyDay, updateJourneyItem } from "@/lib/journeyEditor";
 import {
-  BookOpen,
   Building2,
   CircleHelp,
   ClipboardList,
@@ -29,10 +28,10 @@ import { FormEvent, useState } from "react";
 import { Link, useLocation } from "wouter";
 
 const images = [
-  "/manus-storage/triund-hikers_7653a06a.jpg",
-  "/manus-storage/dharamshala-valley_971eee0a.jpg",
-  "/manus-storage/triund-camp_ded436f5.jpg",
-  "/manus-storage/dharamshala-prayer-flags_26329188.jpg",
+  "/manus-storage/triund-trek-unsplash_2dd49872.jpg",
+  "/manus-storage/dhauladhar-dharamshala_8ddd37f7.jpg",
+  "/manus-storage/triund-lake-unsplash_d755f9cf.jpg",
+  "/manus-storage/dhauladhar-hut-panorama_c5effca1.jpg",
 ];
 type Tour = {
   id: number;
@@ -71,8 +70,6 @@ export default function AdminPortal() {
       <Enquiries />
     ) : view === "newsletter" ? (
       <Newsletter />
-    ) : view === "blogs" ? (
-      <Blogs />
     ) : view === "reviews" ? (
       <Reviews />
     ) : view === "profile" ? (
@@ -1375,158 +1372,6 @@ function Newsletter() {
         )}
       </section>
     </div>
-  );
-}
-
-function Blogs() {
-  const utils = trpc.useUtils();
-  const { data = [] } = trpc.blogs.adminList.useQuery();
-  const create = trpc.blogs.create.useMutation({
-    onSuccess: () => void utils.blogs.adminList.invalidate(),
-  });
-  const remove = trpc.blogs.delete.useMutation({
-    onSuccess: () => void utils.blogs.adminList.invalidate(),
-  });
-  const [formOpen, setFormOpen] = useState(false);
-  function submit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    const f = new FormData(e.currentTarget);
-    const title = String(f.get("title"));
-    create.mutate(
-      {
-        title,
-        slug: makeSlug(title),
-        excerpt: String(f.get("excerpt")),
-        content: String(f.get("content")),
-        coverImage: String(f.get("image")),
-        author: String(f.get("author")),
-        isPublished: f.get("published") === "on",
-      },
-      {
-        onSuccess: () => {
-          setFormOpen(false);
-          e.currentTarget.reset();
-        },
-      }
-    );
-  }
-  return (
-    <div>
-      <Heading
-        tag="Publishing"
-        title="Field notes"
-        action={
-          <Button
-            onClick={() => setFormOpen(true)}
-            className="rounded-xl bg-[#e9781c] text-xs font-bold hover:bg-[#d86b12]"
-          >
-            <FilePlus2 className="mr-2 size-4" /> New note
-          </Button>
-        }
-      />
-      {formOpen && (
-        <SimplePostForm
-          onCancel={() => setFormOpen(false)}
-          onSubmit={submit}
-          pending={create.isPending}
-        />
-      )}
-      <div className="grid gap-4 md:grid-cols-2">
-        {data.map(x => (
-          <article
-            className="flex gap-4 rounded-2xl border border-[#dfe8e8] bg-white p-4"
-            key={x.id}
-          >
-            <img
-              src={x.coverImage}
-              alt=""
-              className="size-20 rounded-xl object-cover"
-            />
-            <div className="min-w-0 flex-1">
-              <div className="flex gap-2">
-                <h2 className="display min-w-0 flex-1 text-2xl font-bold leading-none text-[#123d5b]">
-                  {x.title}
-                </h2>
-                <button
-                  onClick={() => {
-                    if (confirm(`Delete “${x.title}”?`))
-                      remove.mutate({ id: x.id });
-                  }}
-                  className="focus-ring grid size-8 place-items-center rounded-lg bg-red-50 text-red-600"
-                >
-                  <Trash2 className="size-3.5" />
-                </button>
-              </div>
-              <p className="mt-2 text-xs text-slate-500">
-                {x.isPublished ? "Published" : "Draft"} · {x.author}
-              </p>
-            </div>
-          </article>
-        ))}
-        {!data.length && (
-          <p className="col-span-full rounded-2xl border border-dashed border-[#ccd9d7] p-12 text-center text-sm text-slate-500">
-            Create the first field note for the public website.
-          </p>
-        )}
-      </div>
-    </div>
-  );
-}
-function SimplePostForm({
-  onCancel,
-  onSubmit,
-  pending,
-}: {
-  onCancel: () => void;
-  onSubmit: (e: FormEvent<HTMLFormElement>) => void;
-  pending: boolean;
-}) {
-  return (
-    <form
-      onSubmit={onSubmit}
-      className="mb-7 grid gap-5 rounded-2xl border border-[#d7e3de] bg-white p-6"
-    >
-      <p className="rounded-xl border border-[#d7e3de] bg-[#f8fbf9] px-4 py-3 text-sm leading-6 text-slate-600">
-        Write the note in your own style. There is no word-count limit for the
-        title, summary, author name, or full note.
-      </p>
-      <div className="grid gap-5 md:grid-cols-2">
-        <NamedInput label="Title" name="title" />
-        <NamedInput label="Author" name="author" defaultValue="Trip Himalaya" />
-        <div>
-          <Label>Cover photo</Label>
-          <select
-            name="image"
-            className="mt-2 h-10 w-full rounded-lg border border-input bg-white px-3 text-sm"
-          >
-            {images.map(x => (
-              <option key={x}>{x}</option>
-            ))}
-          </select>
-        </div>
-        <label className="mt-7 flex items-center gap-2 text-sm font-semibold text-[#123d5b]">
-          <input type="checkbox" name="published" /> Publish now
-        </label>
-      </div>
-      <NamedArea label="Short summary" name="excerpt" />
-      <NamedArea label="Full note" name="content" />
-      <div className="flex gap-3">
-        <Button
-          disabled={pending}
-          className="h-11 rounded-xl bg-[#123d5b] text-xs font-bold"
-        >
-          Save field note
-        </Button>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={onCancel}
-          className="h-11 rounded-xl text-xs font-bold"
-        >
-          Cancel
-        </Button>
-      </div>
-    </form>
   );
 }
 

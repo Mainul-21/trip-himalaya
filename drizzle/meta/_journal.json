@@ -71,6 +71,13 @@
       "when": 1786866016421,
       "tag": "0009_neat_genesis",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1786869059600,
+      "tag": "0010_open_blue_marvel",
+      "breakpoints": true
     }
   ]
 }

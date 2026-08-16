@@ -48,15 +48,6 @@ const tourInput = z.object({
     ctx.addIssue({ code: z.ZodIssueCode.custom, path: ["itinerary"], message: "Add one complete day plan before publishing." });
   }
 });
-const blogInput = z.object({
-  title: adminContent,
-  slug: z.string().trim().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).max(200),
-  excerpt: adminContent,
-  content: adminContent,
-  coverImage: z.string().url().or(z.string().startsWith("/manus-storage/")),
-  author: adminContent,
-  isPublished: z.boolean(),
-});
 const imageUploadInput = z.object({
   filename: z.string().trim().min(1).max(180),
   mimeType: z.enum(["image/jpeg", "image/png", "image/webp"]),
@@ -229,16 +220,6 @@ export const appRouter = router({
     list: adminProcedure.query(() => db.listSubscribers()),
     delete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(async ({ input }) => { await db.deleteSubscriber(input.id); return { success: true } as const; }),
   }),
-  blogs: router({
-    list: publicProcedure.query(() => db.listPublishedBlogs()),
-    bySlug: publicProcedure.input(z.object({ slug: z.string().min(1).max(200) })).query(({ input }) => db.getBlogBySlug(input.slug)),
-    adminList: adminProcedure.query(() => db.listAdminBlogs()),
-    create: adminProcedure.input(blogInput).mutation(async ({ input }) => { await db.createBlog({ ...input, publishedAt: input.isPublished ? new Date() : null }); return { success: true } as const; }),
-    update: adminProcedure.input(blogInput.extend({ id: z.number().int().positive() })).mutation(async ({ input }) => {
-      const { id, ...values } = input; await db.updateBlog(id, { ...values, publishedAt: values.isPublished ? new Date() : null }); return { success: true } as const;
-    }),
-    delete: adminProcedure.input(z.object({ id: z.number().int().positive() })).mutation(async ({ input }) => { await db.deleteBlog(input.id); return { success: true } as const; }),
-  }),
   reviews: router({
     list: publicProcedure.query(() => db.listPublishedReviews()),
     adminList: adminProcedure.query(() => db.listAdminReviews()),
@@ -250,8 +231,8 @@ export const appRouter = router({
   }),
   admin: router({
     overview: adminProcedure.query(async () => {
-      const [bookings, enquiries, subscribers, tours, blogs] = await Promise.all([db.listBookings(), db.listEnquiries(), db.listSubscribers(), db.listAdminTours(), db.listAdminBlogs()]);
-      return { bookings, enquiries, subscribers, tours, blogs };
+      const [bookings, enquiries, subscribers, tours] = await Promise.all([db.listBookings(), db.listEnquiries(), db.listSubscribers(), db.listAdminTours()]);
+      return { bookings, enquiries, subscribers, tours };
     }),
     profile: adminProcedure.query(({ ctx }) => ctx.user),
     updateProfile: adminProcedure.input(z.object({ name: textLine.max(160).optional(), email: email.optional(), password: password.optional() })).mutation(async ({ ctx, input }) => {

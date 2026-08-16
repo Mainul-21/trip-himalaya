@@ -4,13 +4,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { BookOpen, BriefcaseBusiness, Building2, ClipboardList, ImagePlus, LayoutDashboard, LogOut, Mail, MessageSquare, Mountain, Settings, ShieldCheck, Users } from "lucide-react";
+import { BriefcaseBusiness, Building2, ClipboardList, ImagePlus, LayoutDashboard, LogOut, Mail, MessageSquare, Mountain, Settings, ShieldCheck, Users } from "lucide-react";
 import { useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { DashboardLayoutSkeleton } from "./DashboardLayoutSkeleton";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Overview", path: "/admin" }, { icon: Mountain, label: "Tours & placement", path: "/admin/tours" }, { icon: ImagePlus, label: "Photo library", path: "/admin/media" }, { icon: ClipboardList, label: "Booking requests", path: "/admin/bookings" }, { icon: MessageSquare, label: "Enquiries", path: "/admin/enquiries" }, { icon: Mail, label: "Newsletter", path: "/admin/newsletter" }, { icon: BookOpen, label: "Field notes", path: "/admin/blogs" }, { icon: BriefcaseBusiness, label: "Reviews", path: "/admin/reviews" }, { icon: Building2, label: "Public agency profile", path: "/admin/agency" }, { icon: Settings, label: "My profile", path: "/admin/profile" },
+  { icon: LayoutDashboard, label: "Overview", path: "/admin" }, { icon: Mountain, label: "Tours & placement", path: "/admin/tours" }, { icon: ImagePlus, label: "Photo library", path: "/admin/media" }, { icon: ClipboardList, label: "Booking requests", path: "/admin/bookings" }, { icon: MessageSquare, label: "Enquiries", path: "/admin/enquiries" }, { icon: Mail, label: "Newsletter", path: "/admin/newsletter" }, { icon: BriefcaseBusiness, label: "Reviews", path: "/admin/reviews" }, { icon: Building2, label: "Public agency profile", path: "/admin/agency" }, { icon: Settings, label: "My profile", path: "/admin/profile" },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {

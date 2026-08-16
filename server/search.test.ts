@@ -15,13 +15,12 @@ function createPublicContext(): TrpcContext {
 }
 
 describe("public search", () => {
-  it("returns tour, trek, and blog matches from the public search contract", async () => {
+  it("returns tour matches from the public search contract", async () => {
     const expected = {
       tours: [
         { id: 1, title: "Triund Sunrise Trek", category: "Trekking" },
         { id: 2, title: "Dharamshala Culture & Monasteries", category: "Experiences" },
       ],
-      blogs: [{ id: 3, title: "Preparing for a Dharamshala Trek", slug: "prepare-dharamshala-trek" }],
     };
     mocks.searchPublicContent.mockResolvedValueOnce(expected);
 
@@ -30,12 +29,11 @@ describe("public search", () => {
     expect(mocks.searchPublicContent).toHaveBeenCalledWith("Dharamshala");
     expect(result).toEqual(expected);
     expect(result.tours.some(item => item.category === "Trekking")).toBe(true);
-    expect(result.blogs).toHaveLength(1);
   });
 
-  it("returns an explicit empty result collection when no public content matches", async () => {
-    mocks.searchPublicContent.mockResolvedValueOnce({ tours: [], blogs: [] });
+  it("returns an explicit empty tour collection when no public content matches", async () => {
+    mocks.searchPublicContent.mockResolvedValueOnce({ tours: [] });
     const result = await appRouter.createCaller(createPublicContext()).tours.search({ query: "Kinnaur" });
-    expect(result).toEqual({ tours: [], blogs: [] });
+    expect(result).toEqual({ tours: [] });
   });
 });

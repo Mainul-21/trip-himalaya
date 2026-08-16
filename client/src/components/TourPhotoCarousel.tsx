@@ -57,17 +57,16 @@ export default function TourPhotoCarousel({
       }}
       aria-label={`${title} photo gallery`}
     >
-      {photos.map((photo, index) => (
-        <img
-          key={photo}
-          src={photo}
-          alt={index === activeIndex ? `${title} in ${location}` : ""}
-          aria-hidden={index !== activeIndex}
-          className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-500 motion-reduce:transition-none ${index === activeIndex ? "opacity-100" : "opacity-0"}`}
-          loading={priority && index === 0 ? "eager" : "lazy"}
-        />
-      ))}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#092e49]/80 via-transparent to-transparent" />
+      <img
+        key={activePhoto}
+        src={activePhoto}
+        alt={`${title} in ${location}`}
+        className="absolute inset-0 h-full w-full object-cover object-[center_42%] transition-opacity duration-300 motion-reduce:transition-none"
+        loading={priority ? "eager" : "lazy"}
+        fetchPriority={priority ? "high" : "low"}
+        decoding="async"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#092e49]/82 via-[#092e49]/8 to-transparent" />
       {photos.length > 1 && (
         <>
           <button

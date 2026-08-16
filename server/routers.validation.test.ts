@@ -12,7 +12,6 @@ vi.mock("./db", () => ({
   listMediaAssets: vi.fn(),
   removeUnusedMediaAsset: vi.fn(),
   createTour: vi.fn(),
-  createBlog: vi.fn(),
   credentialAdminExists: vi.fn(),
   getUserByEmail: vi.fn(),
   createCredentialAdmin: vi.fn(),
@@ -312,18 +311,5 @@ describe("tour gallery management", () => {
     expect(savedTour?.title.length).toBe(expectedLength);
     expect(savedTour?.overview.length).toBe(expectedLength);
 
-    await expect(caller.blogs.create({
-      title: longText,
-      slug: "long-form-local-field-note",
-      excerpt: longText,
-      content: longText,
-      coverImage: photo,
-      author: longText,
-      isPublished: false,
-    })).resolves.toEqual({ success: true });
-    const savedBlog = vi.mocked(db.createBlog).mock.calls[0]?.[0];
-    expect(savedBlog?.title.length).toBe(expectedLength);
-    expect(savedBlog?.content.length).toBe(expectedLength);
-    expect(savedBlog?.author.length).toBe(expectedLength);
   });
 });

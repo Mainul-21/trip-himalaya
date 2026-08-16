@@ -45,17 +45,19 @@ export default function TourDetail() {
   const isBestSeller = "isBestSeller" in tour && Boolean(tour.isBestSeller);
   return (
     <PublicLayout>
-      <section className="relative isolate min-h-[34rem] overflow-hidden bg-[#123d5b] text-white">
-        <TourPhotoCarousel
-          title={tour.title}
-          location={tour.location}
-          heroImage={tour.heroImage}
-          gallery={tour.gallery}
-          priority
-          className="absolute inset-0 h-full w-full rounded-none"
-        />
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(5,35,55,.9),rgba(5,35,55,.48),rgba(5,35,55,.2))]" />
-        <div className="container relative py-20 sm:py-28">
+      <section className="relative isolate min-h-[30rem] overflow-hidden bg-[#123d5b] text-white sm:min-h-[34rem] lg:min-h-[38rem]">
+        <div className="absolute inset-0 z-0">
+          <TourPhotoCarousel
+            title={tour.title}
+            location={tour.location}
+            heroImage={tour.heroImage}
+            gallery={tour.gallery}
+            priority
+            className="h-full w-full rounded-none"
+          />
+        </div>
+        <div className="absolute inset-0 z-10 bg-[linear-gradient(90deg,rgba(5,35,55,.9),rgba(5,35,55,.48),rgba(5,35,55,.2))]" />
+        <div className="container relative z-20 flex min-h-[30rem] flex-col justify-end py-14 sm:min-h-[34rem] sm:py-20 lg:min-h-[38rem] lg:py-24">
           <Link
             href="/tours"
             className="focus-ring inline-flex items-center gap-2 rounded-lg text-xs font-bold uppercase tracking-[.1em] text-white/80 hover:text-white"
@@ -162,7 +164,7 @@ export default function TourDetail() {
             href={`https://wa.me/918609752814?text=${whatsAppMessage}`}
             target="_blank"
             rel="noreferrer"
-            className="focus-ring mt-3 flex h-11 items-center justify-center gap-2 border border-[#1fac55] bg-[#25d366] px-4 text-xs font-extrabold uppercase tracking-[.08em] text-white"
+            className="focus-ring mt-3 flex h-12 items-center justify-center gap-2 rounded-lg border border-[#1fac55] bg-[#25d366] px-4 text-xs font-extrabold uppercase tracking-[.08em] text-white shadow-[0_8px_18px_rgba(37,211,102,.22)] transition hover:bg-[#1fae54] active:scale-[.98]"
           >
             <WhatsAppIcon className="size-4" /> Ask about this tour
           </a>

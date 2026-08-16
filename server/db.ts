@@ -3,7 +3,6 @@ import { drizzle } from "drizzle-orm/mysql2";
 import { randomUUID } from "crypto";
 import {
   agencyProfiles,
-  blogs,
   bookings,
   enquiries,
   InsertUser,
@@ -16,12 +15,12 @@ import {
 import { ENV } from "./_core/env";
 
 export const DEFAULT_TRAVEL_STYLES = [
-  { title: "Trekking", href: "/tours?style=trekking", image: "/manus-storage/triund-hikers_7653a06a.jpg", copy: "Guided walks with a pace that makes sense." },
-  { title: "Culture & local", href: "/tours?style=experiences", image: "/manus-storage/dharamshala-prayer-flags_26329188.jpg", copy: "Dharamshala, food and local context." },
-  { title: "Adventure", href: "/tours?style=adventure", image: "/manus-storage/triund-camp_ded436f5.jpg", copy: "Active Himachal escapes with practical planning." },
-  { title: "Short breaks", href: "/tours?style=short-breaks", image: "/manus-storage/dharamshala-valley_971eee0a.jpg", copy: "One- and two-day plans for a quick reset." },
-  { title: "Best sellers", href: "/tours?style=best-sellers", image: "/manus-storage/triund-hikers_7653a06a.jpg", copy: "Journeys the Trip Himalaya team has marked." },
-  { title: "Custom plan", href: "/contact", image: "/manus-storage/dharamshala-prayer-flags_26329188.jpg", copy: "Share your dates and build your own route." },
+  { title: "Trekking", href: "/tours?style=trekking", image: "/manus-storage/triund-trek-unsplash_2dd49872.jpg", copy: "Guided walks with a pace that makes sense." },
+  { title: "Culture & local", href: "/tours?style=experiences", image: "/manus-storage/dhauladhar-hut-panorama_c5effca1.jpg", copy: "Dharamshala, food and local context." },
+  { title: "Adventure", href: "/tours?style=adventure", image: "/manus-storage/triund-lake-unsplash_d755f9cf.jpg", copy: "Active Himachal escapes with practical planning." },
+  { title: "Short breaks", href: "/tours?style=short-breaks", image: "/manus-storage/dhauladhar-dharamshala_8ddd37f7.jpg", copy: "One- and two-day plans for a quick reset." },
+  { title: "Best sellers", href: "/tours?style=best-sellers", image: "/manus-storage/triund-trek-unsplash_2dd49872.jpg", copy: "Journeys the Trip Himalaya team has marked." },
+  { title: "Custom plan", href: "/contact", image: "/manus-storage/dhauladhar-hut-panorama_c5effca1.jpg", copy: "Share your dates and build your own route." },
 ] as const;
 
 export const DEFAULT_AGENCY_PROFILE = {
@@ -280,36 +279,6 @@ export async function deleteSubscriber(id: number) {
   await db.delete(newsletterSubscribers).where(eq(newsletterSubscribers.id, id));
 }
 
-export async function listPublishedBlogs() {
-  const db = requireDb(await getDb());
-  return db.select().from(blogs).where(eq(blogs.isPublished, true)).orderBy(desc(blogs.publishedAt));
-}
-
-export async function listAdminBlogs() {
-  const db = requireDb(await getDb());
-  return db.select().from(blogs).orderBy(desc(blogs.createdAt));
-}
-
-export async function getBlogBySlug(slug: string) {
-  const db = requireDb(await getDb());
-  return (await db.select().from(blogs).where(and(eq(blogs.slug, slug), eq(blogs.isPublished, true))).limit(1))[0];
-}
-
-export async function createBlog(values: typeof blogs.$inferInsert) {
-  const db = requireDb(await getDb());
-  await db.insert(blogs).values(values);
-}
-
-export async function updateBlog(id: number, values: Partial<typeof blogs.$inferInsert>) {
-  const db = requireDb(await getDb());
-  await db.update(blogs).set(values).where(eq(blogs.id, id));
-}
-
-export async function deleteBlog(id: number) {
-  const db = requireDb(await getDb());
-  await db.delete(blogs).where(eq(blogs.id, id));
-}
-
 export async function listPublishedReviews() {
   const db = requireDb(await getDb());
   return db.select().from(reviews).where(eq(reviews.isPublished, true)).orderBy(desc(reviews.createdAt));
@@ -338,11 +307,8 @@ export async function deleteReview(id: number) {
 export async function searchPublicContent(query: string) {
   const db = requireDb(await getDb());
   const needle = `%${query}%`;
-  const [tourResults, blogResults] = await Promise.all([
-    db.select().from(tours).where(and(eq(tours.isPublished, true), or(like(tours.title, needle), like(tours.location, needle), like(tours.category, needle)))).orderBy(asc(tours.featureOrder)),
-    db.select().from(blogs).where(and(eq(blogs.isPublished, true), or(like(blogs.title, needle), like(blogs.excerpt, needle)))).orderBy(desc(blogs.publishedAt)),
-  ]);
-  return { tours: tourResults, blogs: blogResults };
+  const toursResult = await db.select().from(tours).where(and(eq(tours.isPublished, true), or(like(tours.title, needle), like(tours.location, needle), like(tours.category, needle)))).orderBy(asc(tours.featureOrder));
+  return { tours: toursResult };
 }
 
 async function ensureInitialTours() {
@@ -351,10 +317,10 @@ async function ensureInitialTours() {
   const existing = await db.select({ id: tours.id }).from(tours).limit(1);
   if (existing.length > 0) return;
 
-  const triund = "/manus-storage/triund-hikers_7653a06a.jpg";
-  const valley = "/manus-storage/dharamshala-valley_971eee0a.jpg";
-  const camp = "/manus-storage/triund-camp_ded436f5.jpg";
-  const flags = "/manus-storage/dharamshala-prayer-flags_26329188.jpg";
+  const triund = "/manus-storage/triund-trek-unsplash_2dd49872.jpg";
+  const valley = "/manus-storage/dhauladhar-dharamshala_8ddd37f7.jpg";
+  const camp = "/manus-storage/triund-lake-unsplash_d755f9cf.jpg";
+  const flags = "/manus-storage/dhauladhar-hut-panorama_c5effca1.jpg";
   await db.insert(tours).values([
     {
       title: "Triund Sunrise Trek", slug: "triund-sunrise-trek", category: "Trekking", location: "McLeod Ganj, Dharamshala", duration: "2 Days / 1 Night", difficulty: "Easy–Moderate", priceFrom: 2400,
