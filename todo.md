@@ -183,8 +183,8 @@
 - [ ] Stabilize localhost tour details, images, and API-backed content when the owner’s TiDB connection or managed storage is intermittent.
 - [ ] Add clear local diagnostics and recovery guidance for database timeout and unavailable API states.
 - [x] Add administrator-managed multi-photo tour galleries with automatic card rotation and previous/next controls.
-- [ ] Make the site logo editable from the administrator portal.
-- [ ] Make Explore Himachal travel-style content editable from the administrator portal.
+- [x] Make the site logo editable from the administrator portal.
+- [x] Make Explore Himachal travel-style content editable from the administrator portal.
 - [ ] Verify the owner’s TiDB endpoint reachability and SSL connection settings locally without exposing secrets.
 - [ ] Document the safe retry path for `connect ETIMEDOUT` during `npm run db:push`.
 - [ ] Repair the local `agencyProfiles` migration mismatch where Drizzle attempts to add a primary key that already exists, without truncating or deleting data.
@@ -198,10 +198,10 @@
 - [x] Add editable agency logo guidance and persisted Explore Himachal heading, intro, and travel-style card content in the Agency Profile editor.
 - [x] Connect the public homepage Explore Himachal section to administrator-managed agency settings with safe fallbacks.
 - [x] Validate editable branding changes with tests, TypeScript, production build, and responsive homepage visual verification.
-- [ ] Remove the Blog feature completely from public navigation, routes, admin controls, backend procedures, schema usage, and database records.
-- [ ] Align Explore Himachal travel-style cards with the requested concise reference points.
-- [ ] Redesign tour cards with a more professional, restrained travel-agency presentation while preserving gallery controls and actions.
-- [ ] Verify blog removal, travel-style content, and tour-card redesign with tests, build, responsive visual QA, and checkpoint publication.
+- [x] Remove the Blog feature completely from public navigation, routes, admin controls, backend procedures, schema usage, and database records; clear records completed, empty legacy table retained because DROP TABLE was blocked by the database safety layer.
+- [x] Align Explore Himachal travel-style cards with the requested concise reference points.
+- [x] Redesign tour cards with a more professional, restrained travel-agency presentation while preserving gallery controls and actions.
+- [x] Verify blog removal, travel-style content, and tour-card redesign with tests, build, responsive visual QA, and checkpoint publication.
 - [x] Improve image loading and page responsiveness across public pages without sacrificing relevant visual quality.
 - [x] Replace generic dataset-style travel imagery with properly sourced relevant Himachal travel images and optimize their delivery.
 - [x] Compact and professionally redesign tour cards while preserving gallery, badges, metadata, and CTAs.

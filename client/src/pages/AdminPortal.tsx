@@ -910,7 +910,7 @@ function TourForm({ original, close }: { original: Tour; close: () => void }) {
           <p className="mt-2 text-sm text-slate-500">
             Clear sections show exactly where each detail appears for
             travellers. Write naturally: tour text, highlights, daily plans, and
-            blog-style notes have no word-count limit.
+            Trip details have no word-count limit.
           </p>
           <p className="mt-3 rounded-xl border border-[#efd9bf] bg-[#fff8ef] px-3 py-2 text-xs leading-5 text-[#7c4d21]"><strong>Easy start:</strong> write a tour name and choose a photo, then press <strong>Save draft</strong>. Add the other details when you are ready to publish.</p>
         </div>
