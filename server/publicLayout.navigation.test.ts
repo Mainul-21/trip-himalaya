@@ -26,6 +26,7 @@ describe("PublicLayout mobile navigation contract", () => {
 
   it("uses the supplied logo and exposes saved public contact and social profile details in the footer", () => {
     expect(source).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
+    expect(source).toContain("resolveImageUrl(profile.logoUrl)");
     expect(source).toContain("trpc.agency.get.useQuery");
     expect(source).toContain('>Contact</p>');
     expect(source).toContain("profile.instagramUrl");

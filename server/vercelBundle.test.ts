@@ -1,4 +1,4 @@
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
@@ -27,6 +27,6 @@ describe("Vercel serverless bundle configuration", () => {
 
     expect(config.functions["api/index.ts"].includeFiles).toBe("api/_bundle.cjs");
     expect(config.functions["api/[...path].ts"].includeFiles).toBe("api/_bundle.cjs");
-    expect(existsSync(resolve(root, "api", "_bundle.cjs"))).toBe(false);
+    expect(readFileSync(resolve(root, ".gitignore"), "utf8")).toContain("api/_bundle.cjs");
   });
 });

@@ -21,7 +21,8 @@ describe("premium journey presentation", () => {
   });
 
   it("keeps tour discovery helpful without exposing local implementation details", () => {
-    expect(tours).toContain("Find the right journey for your time in Himachal.");
+    expect(tours).toContain("Filter trips");
+    expect(tours).toContain('label: "All journeys"');
     expect(tours).toContain("We could not load journeys right now.");
     expect(tours).not.toContain("Check your DATABASE_URL");
     expect(search).toContain("Search Triund, Bir, Dharamshala or a trip type");

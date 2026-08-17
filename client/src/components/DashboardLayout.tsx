@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
 import { OFFICIAL_TRIP_HIMALAYA_LOGO } from "@/lib/brand";
+import { resolveImageUrl } from "@/lib/imageDelivery";
 import { DashboardLayoutSkeleton } from "./DashboardLayoutSkeleton";
 
 const menuItems = [
@@ -19,7 +20,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const { data: agencyProfile } = trpc.agency.get.useQuery(undefined, { retry: false, refetchOnWindowFocus: false });
   const { loading, user, logout } = useAuth();
   const [, setLocation] = useLocation();
-  const logoUrl = agencyProfile?.logoUrl || OFFICIAL_TRIP_HIMALAYA_LOGO;
+  const logoUrl = resolveImageUrl(agencyProfile?.logoUrl || OFFICIAL_TRIP_HIMALAYA_LOGO);
   useEffect(() => { if (!loading && !user) setLocation("/admin/login"); }, [loading, user, setLocation]);
   if (loading) return <DashboardLayoutSkeleton />;
   if (!user) return <div className="grid min-h-screen place-items-center bg-[#eef4f2]"><div className="flex flex-col items-center gap-3"><img src={logoUrl} alt="Trip Himalaya" className="size-14 rounded-xl border border-[#d5e0df] bg-white object-contain p-1.5 shadow-sm" /><p className="text-sm text-slate-500">Taking you to the secure portal…</p></div></div>;

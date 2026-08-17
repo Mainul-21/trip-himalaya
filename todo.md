@@ -267,4 +267,5 @@
 - [ ] Exercise and document one signed-in administrator interaction at desktop and mobile, such as opening the journey editor or principal administrator detail editor, without exposing credentials.
 - [ ] Help resolve the user’s local PublicPage.tsx merge conflict and confirm the Vite server compiles again.
 - [ ] Diagnose and resolve the Vercel deployment where tour data and images are not loading.
+- [ ] Restore existing tour-image rendering on Vercel after confirming the public tour API is loading correctly.
 - [x] Fix the Vercel serverless bundle so `api/index.js` can resolve the shared server entrypoint at runtime.

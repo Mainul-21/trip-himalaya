@@ -2,6 +2,12 @@ type ImageVariant = "card" | "hero";
 
 type Variants = Record<ImageVariant, string>;
 
+export const LEGACY_MANUS_MEDIA_ORIGIN = "https://himalayatrip-ahqqbylp.manus.space";
+
+export function resolveImageUrl(source: string) {
+  return source.startsWith("/manus-storage/") ? `${LEGACY_MANUS_MEDIA_ORIGIN}${source}` : source;
+}
+
 const MANAGED_VARIANTS: Record<string, Variants> = {
   "/manus-storage/dhauladhar-hut-panorama_c5effca1.jpg": {
     card: "/manus-storage/dhauladhar-hut-panorama-card_80577092.webp",
@@ -39,8 +45,10 @@ const MANAGED_VARIANTS: Record<string, Variants> = {
 
 /**
  * Keep administrator-uploaded URLs untouched, while common published Himachal
- * photos use a deliberately smaller WebP file for the visible component.
+ * photos use a deliberately smaller WebP file for the visible component. Legacy
+ * managed-storage paths are then resolved through the public project origin so
+ * they remain available when the frontend is hosted on Vercel.
  */
 export function getImageVariant(source: string, variant: ImageVariant) {
-  return MANAGED_VARIANTS[source]?.[variant] ?? source;
+  return resolveImageUrl(MANAGED_VARIANTS[source]?.[variant] ?? source);
 }
