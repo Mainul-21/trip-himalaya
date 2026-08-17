@@ -106,7 +106,7 @@
 - [x] Extend administrator-managed reviews with a real traveller name, location, optional photo, star rating, and a simpler professional form and public display.
 - [x] Validate the redesigned homepage, fixed planning CTA, and rated-review workflow at desktop and phone breakpoints.
 - [ ] Visually verify the signed-in administrator review form, including traveller name, location, star rating, optional photo selection, and published-review cards.
-- [ ] Visually check the public rated-review display at desktop and phone breakpoints after an administrator-reviewed rating is shown.
+- [x] Visually check the public rated-review display at desktop and phone breakpoints after an administrator-reviewed rating is shown.
 - [x] Show a visible Admin Dashboard link in the public mobile three-dots menu only when an administrator is signed in.
 - [x] Diagnose and repair the administrator journey form so valid new tours save reliably instead of failing on confusing input validation.
 - [x] Add simple examples and clear “how to write this” help for every important journey-editor field, especially highlights, daily itinerary, inclusions, and exclusions.
