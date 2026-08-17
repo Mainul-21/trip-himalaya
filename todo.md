@@ -265,3 +265,6 @@
 - [x] Replace the current public WhatsApp mark with a recognizable official-style WhatsApp logo while preserving accessible labels and enquiry links.
 - [ ] Capture reviewed authenticated desktop and mobile evidence for protected administrator routes, confirming that each displays the workspace rather than a sign-in redirect.
 - [ ] Exercise and document one signed-in administrator interaction at desktop and mobile, such as opening the journey editor or principal administrator detail editor, without exposing credentials.
+- [ ] Help resolve the user’s local PublicPage.tsx merge conflict and confirm the Vite server compiles again.
+- [ ] Diagnose and resolve the Vercel deployment where tour data and images are not loading.
+- [x] Fix the Vercel serverless bundle so `api/index.js` can resolve the shared server entrypoint at runtime.

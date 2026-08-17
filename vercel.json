@@ -3,6 +3,14 @@
   "framework": "vite",
   "buildCommand": "pnpm vercel:build",
   "outputDirectory": "dist/public",
+  "functions": {
+    "api/index.ts": {
+      "includeFiles": "api/_bundle.cjs"
+    },
+    "api/[...path].ts": {
+      "includeFiles": "api/_bundle.cjs"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/:path*",

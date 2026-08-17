@@ -1,14 +1,9 @@
-import "dotenv/config";
-import express from "express";
 import { createServer } from "http";
 import net from "net";
-import { createExpressMiddleware } from "@trpc/server/adapters/express";
-import { registerOAuthRoutes } from "./oauth";
-import { registerStorageProxy } from "./storageProxy";
-import { appRouter } from "../routers";
-import { createContext } from "./context";
 import { serveStatic, setupVite } from "./vite";
-import { applySecurityHeaders, PUBLIC_BODY_LIMIT } from "../httpSecurity";
+import { createApp } from "./app";
+
+export { createApp } from "./app";
 
 function isPortAvailable(port: number): Promise<boolean> {
   return new Promise(resolve => {
@@ -27,28 +22,6 @@ async function findAvailablePort(startPort: number = 3000): Promise<number> {
     }
   }
   throw new Error(`No available port found starting from ${startPort}`);
-}
-
-export function createApp() {
-  const app = express();
-  app.disable("x-powered-by");
-  app.use((_req, res, next) => {
-    applySecurityHeaders(res, process.env.NODE_ENV === "production");
-    next();
-  });
-  app.use(express.json({ limit: PUBLIC_BODY_LIMIT }));
-  app.use(express.urlencoded({ limit: PUBLIC_BODY_LIMIT, extended: true }));
-  registerStorageProxy(app);
-  registerOAuthRoutes(app);
-  // tRPC API
-  app.use(
-    "/api/trpc",
-    createExpressMiddleware({
-      router: appRouter,
-      createContext,
-    })
-  );
-  return app;
 }
 
 async function startServer() {
