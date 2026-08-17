@@ -25,11 +25,11 @@ const trustPoints = [
 ] as const;
 
 const whyChoosePoints = [
-  [MapPinned, "Local expertise", "Routes, stays and timing explained by a Dharamshala-based team."],
-  [ShieldCheck, "Safety first", "Clear conditions, a sensible pace and practical preparation before you leave."],
-  [BadgeIndianRupee, "Clear value", "Straightforward inclusions and prices, so you know what your trip covers."],
-  [Headphones, "Personal support", "Ask questions and shape the starting plan around your dates and group."],
-  [Leaf, "Responsible travel", "Respectful mountain journeys that value local places, people and pace."],
+  [MapPinned, "LOCAL EXPERTS", "We are locals, we know the himalayas best."],
+  [ShieldCheck, "SAFE & RELIABLE", "Your safety and comfort is our top priority."],
+  [BadgeIndianRupee, "BEST PRICE GUARANTEE", "Transparent pricing with no hidden charges."],
+  [Headphones, "PERSONALISED SUPPORT", "From planing to journey, we are with you."],
+  [Leaf, "RESPONSIBLE TOURISM", "We respect nature & support local communites."],
 ];
 
 export default function Home() {
