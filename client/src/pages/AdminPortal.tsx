@@ -25,7 +25,7 @@ import {
   Users,
   X,
 } from "lucide-react";
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { Link, useLocation } from "wouter";
 
 const images = [
@@ -34,6 +34,8 @@ const images = [
   "/manus-storage/triund-lake-unsplash_d755f9cf.jpg",
   "/manus-storage/dhauladhar-hut-panorama_c5effca1.jpg",
 ];
+type AgencyTravelStyle = { title: string; href: string; image: string; copy: string };
+
 type Tour = {
   id: number;
   title: string;
@@ -211,18 +213,24 @@ function Summary({
 function AgencyProfile() {
   const utils = trpc.useUtils();
   const { data, error, isLoading, refetch, isFetching } = trpc.agency.get.useQuery(undefined, { retry: false, refetchOnWindowFocus: false });
+  const [travelStyles, setTravelStyles] = useState<AgencyTravelStyle[]>([]);
+  const [logoUrl, setLogoUrl] = useState("");
   const update = trpc.agency.update.useMutation({
     onSuccess: () => void utils.agency.get.invalidate(),
   });
 
+  useEffect(() => {
+    if (data?.travelStyles) setTravelStyles(data.travelStyles);
+    if (data?.logoUrl) setLogoUrl(data.logoUrl);
+  }, [data?.travelStyles, data?.logoUrl]);
+
+  function updateStyle(index: number, patch: Partial<AgencyTravelStyle>) {
+    setTravelStyles(current => current.map((style, styleIndex) => styleIndex === index ? { ...style, ...patch } : style));
+  }
+
   function save(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = new FormData(event.currentTarget);
-    let travelStyles = data?.travelStyles ?? [];
-    try {
-      const parsed = JSON.parse(String(form.get("travelStyles") || "[]"));
-      if (Array.isArray(parsed)) travelStyles = parsed;
-    } catch { /* The server will retain the last valid content on malformed drafts. */ }
     update.mutate({
       brandName: String(form.get("brandName") || "").trim(),
       tagline: String(form.get("tagline") || "").trim(),
@@ -248,29 +256,36 @@ function AgencyProfile() {
   if (isLoading) return <div className="py-14 text-sm text-slate-500">Loading public agency profile…</div>;
   if (error || !data) return <section className="max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-900"><h1 className="text-lg font-bold text-[#123d5b]">Agency profile could not load</h1><p className="mt-2 leading-6">Check that your local server and TiDB database are running, then try again. Your existing public website settings have not been changed.</p><Button type="button" onClick={() => void refetch()} disabled={isFetching} className="mt-4 rounded-xl bg-[#123d5b] font-bold hover:bg-[#0b2d46]">{isFetching ? "Trying again…" : "Try again"}</Button></section>;
   if (data.databaseNeedsAttention) return <section className="max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-900"><h1 className="text-lg font-bold text-[#123d5b]">Connect the local database to edit this profile</h1><p className="mt-2 leading-6">The public website is using its saved safe fallback, but this editor cannot save changes until the local server can reach TiDB. Check <code>DATABASE_URL</code>, confirm the database is running, then restart the local server.</p><Button type="button" onClick={() => void refetch()} disabled={isFetching} className="mt-4 rounded-xl bg-[#123d5b] font-bold hover:bg-[#0b2d46]">{isFetching ? "Checking connection…" : "Check again"}</Button></section>;
-  if (data.schemaNeedsUpdate) return <section className="max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-900"><h1 className="text-lg font-bold text-[#123d5b]">One safe local database update is needed</h1><p className="mt-2 leading-6">Your older <code>agencyProfiles</code> table is missing the newer Explore Himachal fields. In the project folder, run <code>npm run db:push</code>, choose the non-destructive option if Drizzle asks, then stop and start <code>npm run dev</code> again. This does not delete your existing agency settings or tours.</p><p className="mt-3 leading-6">The public website can continue using its saved fallback details, but this editor stays protected until the local schema matches the current version.</p></section>;
+  if (data.schemaNeedsUpdate) return <section className="max-w-2xl rounded-2xl border border-amber-200 bg-amber-50 p-6 text-sm text-amber-900"><h1 className="text-lg font-bold text-[#123d5b]">One safe local database update is needed</h1><p className="mt-2 leading-6">Your older <code>agencyProfiles</code> table is missing newer profile fields. In the project folder, run <code>npm run db:push</code>, choose the non-destructive option if Drizzle asks, then stop and start <code>npm run dev</code> again. This does not delete your existing agency settings or tours.</p><p className="mt-3 leading-6">The public website can continue using its saved fallback details, but this editor stays protected until the local schema matches the current version.</p></section>;
   return <div>
     <Heading tag="Public website settings" title="Agency profile" />
     <form onSubmit={save} className="max-w-4xl space-y-6">
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6">
-        <div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#eef4f2] text-[#e17818]"><Building2 className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Brand and logo</h2><p className="mt-1 text-sm leading-6 text-slate-500">These details appear in the public header and footer. Upload a new logo in Photo library, then paste its image URL here.</p></div></div>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Agency name" name="brandName" defaultValue={data.brandName} required /><Field label="Short tagline" name="tagline" defaultValue={data.tagline} required /><div className="sm:col-span-2"><Field label="Logo image URL" name="logoUrl" type="url" defaultValue={data.logoUrl} required /><p className="mt-2 text-xs text-slate-500">Use the image URL from Photo library, for example /manus-storage/your-logo.jpg.</p></div></div>
+        <div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#eef4f2] text-[#e17818]"><Building2 className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Brand and logo</h2><p className="mt-1 text-sm leading-6 text-slate-500">Update the public name, tagline, and logo. Uploading a logo saves it to the protected media library and uses it in the public header and footer.</p></div></div>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Agency name" name="brandName" defaultValue={data.brandName} required /><Field label="Short tagline" name="tagline" defaultValue={data.tagline} required /><div className="sm:col-span-2"><input type="hidden" name="logoUrl" value={logoUrl} readOnly /><AgencyImageUploader label="Agency logo" value={logoUrl} onChange={setLogoUrl} help="Use a clear horizontal logo. JPG, PNG, or WebP up to 12 MB; it is resized and converted to fast WebP." /></div></div>
       </section>
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6">
-        <div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#fff1e5] text-[#e17818]"><Mountain className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Travel styles</h2><p className="mt-1 text-sm leading-6 text-slate-500">Edit the heading, intro, and cards. Use one JSON object per card with title, href, image, and copy.</p></div></div>
-        <div className="mt-6 grid gap-4"><Field label="Heading" name="exploreTitle" defaultValue={data.exploreTitle} required /><div><Label htmlFor="agency-exploreIntro">Short introduction</Label><Textarea id="agency-exploreIntro" name="exploreIntro" defaultValue={data.exploreIntro} className="mt-2 min-h-24 bg-white" required /></div><div><Label htmlFor="agency-travelStyles">Travel-style cards</Label><Textarea id="agency-travelStyles" name="travelStyles" defaultValue={JSON.stringify(data.travelStyles, null, 2)} className="mt-2 min-h-72 bg-white font-mono text-xs leading-5" required /><p className="mt-2 text-xs leading-5 text-slate-500">Keep the current image paths and links. Titles and copy appear directly on the website.</p></div></div>
+        <div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#fff1e5] text-[#e17818]"><Mountain className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Travel styles</h2><p className="mt-1 text-sm leading-6 text-slate-500">Edit each card directly. Upload a relevant Himalayan image, then adjust its title, link, and short visitor-facing copy.</p></div></div>
+        <div className="mt-6 grid gap-4"><Field label="Section heading" name="exploreTitle" defaultValue={data.exploreTitle} required /><div><Label htmlFor="agency-exploreIntro">Short introduction</Label><Textarea id="agency-exploreIntro" name="exploreIntro" defaultValue={data.exploreIntro} className="mt-2 min-h-20 bg-white" required /></div><input type="hidden" name="travelStyles" value={JSON.stringify(travelStyles)} readOnly /><div className="grid gap-4 md:grid-cols-2">{travelStyles.map((style, index) => <div key={`${style.title}-${index}`} className="rounded-2xl border border-[#d7e3de] bg-[#f8fbf9] p-4"><div className="mb-3 flex items-center justify-between"><h3 className="font-bold text-[#123d5b]">Style {index + 1}</h3><span className="text-xs text-slate-500">Shown on homepage</span></div><AgencyImageUploader label="Card image" value={style.image} onChange={value => updateStyle(index, { image: value })} help="Choose a clear, relevant Himachal photo." /><div className="mt-4 grid gap-3"><div><Label htmlFor={`style-title-${index}`}>Title</Label><Input id={`style-title-${index}`} value={style.title} onChange={event => updateStyle(index, { title: event.target.value })} className="mt-2 h-11 bg-white" required /></div><div><Label htmlFor={`style-copy-${index}`}>Short copy</Label><Input id={`style-copy-${index}`} value={style.copy} onChange={event => updateStyle(index, { copy: event.target.value })} className="mt-2 h-11 bg-white" required /></div><div><Label htmlFor={`style-href-${index}`}>Link</Label><Input id={`style-href-${index}`} value={style.href} onChange={event => updateStyle(index, { href: event.target.value })} className="mt-2 h-11 bg-white" required /></div></div></div>)}</div></div>
       </section>
-      <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6">
-        <div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#fff1e5] text-[#e17818]"><Star className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Verified trip figures</h2><p className="mt-1 text-sm leading-6 text-slate-500">Optional homepage figures. Enter only confirmed numbers or wording; blank fields stay hidden from visitors.</p></div></div>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Total tourists" name="touristCount" defaultValue={data.touristCount} placeholder="Example: 120+" /><Field label="Total tours" name="tourCount" defaultValue={data.tourCount} placeholder="Example: 18" /><Field label="Third metric label" name="thirdMetricLabel" defaultValue={data.thirdMetricLabel} placeholder="Example: Local routes" /><Field label="Third metric value" name="thirdMetricValue" defaultValue={data.thirdMetricValue} placeholder="Example: 12" /></div>
-      </section>
+      <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#fff1e5] text-[#e17818]"><Star className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Verified trip figures</h2><p className="mt-1 text-sm leading-6 text-slate-500">Optional homepage figures. Enter only confirmed numbers or wording; blank fields stay hidden from visitors.</p></div></div><div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Total tourists" name="touristCount" defaultValue={data.touristCount} placeholder="Example: 120+" /><Field label="Total tours" name="tourCount" defaultValue={data.tourCount} placeholder="Example: 18" /><Field label="Third metric label" name="thirdMetricLabel" defaultValue={data.thirdMetricLabel} placeholder="Example: Local routes" /><Field label="Third metric value" name="thirdMetricValue" defaultValue={data.thirdMetricValue} placeholder="Example: 12" /></div></section>
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><h2 className="font-bold text-[#123d5b]">Contact details</h2><p className="mt-1 text-sm text-slate-500">Used in the footer, call button, WhatsApp button, and public contact areas.</p><div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Phone number" name="phone" type="tel" defaultValue={data.phone} required /><Field label="WhatsApp number" name="whatsapp" type="tel" defaultValue={data.whatsapp} required /><Field label="Public email" name="email" type="email" defaultValue={data.email} required /><div className="sm:col-span-2"><Label htmlFor="agency-address">Office / service address</Label><Textarea id="agency-address" name="address" defaultValue={data.address} className="mt-2 min-h-24 bg-white" required /></div></div></section>
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><h2 className="font-bold text-[#123d5b]">Public profiles</h2><p className="mt-1 text-sm text-slate-500">Only links you enter here are shown in the public footer. Leave a field empty to hide it.</p><div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Instagram URL" name="instagramUrl" type="url" defaultValue={data.instagramUrl} /><Field label="Facebook URL" name="facebookUrl" type="url" defaultValue={data.facebookUrl} /><Field label="YouTube URL" name="youtubeUrl" type="url" defaultValue={data.youtubeUrl} /><Field label="Google Maps URL" name="googleMapsUrl" type="url" defaultValue={data.googleMapsUrl} /></div></section>
       {update.error && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{update.error.message}</p>}
-      {update.isSuccess && <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">Public agency details saved. Refresh the public website to see the updated footer.</p>}
+      {update.isSuccess && <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">Public agency details saved. Refresh the public website to see the updated branding and travel styles.</p>}
       <Button type="submit" disabled={update.isPending} className="h-12 rounded-xl bg-[#123d5b] px-6 font-bold hover:bg-[#0b2d46]">{update.isPending ? "Saving public profile…" : "Save public agency profile"}</Button>
     </form>
   </div>;
+}
+
+function AgencyImageUploader({ label, value, onChange, help }: { label: string; value: string; onChange: (value: string) => void; help: string }) {
+  const utils = trpc.useUtils();
+  const upload = trpc.media.upload.useMutation({ onSuccess: result => { void utils.media.list.invalidate(); onChange(result.asset.url); } });
+  async function handleFile(file?: File) {
+    if (!file) return;
+    try { upload.mutate(await prepareImageUpload(file)); } catch (error) { alert(error instanceof Error ? error.message : "That image could not be prepared."); }
+  }
+  return <div className="rounded-2xl border border-[#d7e3de] bg-[#f8fbf9] p-4"><div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><div><Label className="text-sm font-bold text-[#123d5b]">{label}</Label><p className="mt-1 text-xs leading-5 text-slate-500">{help}</p></div><label className="focus-ring inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-xl bg-[#123d5b] px-4 text-xs font-bold text-white hover:bg-[#0b2d46]"><Upload className="size-3.5" />{upload.isPending ? "Uploading…" : "Upload image"}<input type="file" accept="image/jpeg,image/png,image/webp" className="sr-only" disabled={upload.isPending} onChange={event => void handleFile(event.target.files?.[0])} /></label></div>{upload.error && <p className="mt-3 text-xs font-semibold text-red-600">{upload.error.message}</p>}{value && <div className="mt-4 overflow-hidden rounded-xl border border-[#d7e3de] bg-white"><img src={value} alt="" className="max-h-48 w-full object-cover" /></div>}</div>;
 }
 
 function Field({ label, name, defaultValue, type = "text", required = false, placeholder }: { label: string; name: string; defaultValue: string; type?: string; required?: boolean; placeholder?: string }) {
