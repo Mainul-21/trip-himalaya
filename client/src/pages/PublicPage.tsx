@@ -15,7 +15,7 @@ function PageHero({ eyebrow, title, copy }: { eyebrow: string; title: React.Reac
 
 function AboutPage() {
   const { data: agencyProfile } = trpc.agency.get.useQuery();
-  const storyTitle = agencyProfile?.aboutStoryTitle || "A mountain journey that started in Dharamshala.";
+  const storyTitle = agencyProfile?.aboutStoryTitle || "Our story";
   const storyBody = agencyProfile?.aboutStoryBody || "Trip Himalaya was founded in 2020 by Ravi Kant with a simple belief: travelling in the Himalayas should feel personal, clear, and connected to the place. We create journeys across Himachal for people who want more than a hurried list of stops.";
   const storySecondBody = agencyProfile?.aboutStorySecondBody || "Our work brings together trekking, spiritual journeys, camping, village experiences, Himachal tours, and custom plans. We help you choose a route that suits your time, comfort, interests, and the season you are visiting.";
   return <>

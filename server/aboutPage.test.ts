@@ -9,6 +9,10 @@ const aboutContent = readFileSync(resolve(projectRoot, "client/src/lib/aboutCont
 describe("Trip Himalaya About Us page", () => {
   it("keeps the existing About route personalized to the confirmed business", () => {
     expect(aboutPage).toContain("About Trip Himalaya");
+    expect(aboutPage).toContain('aboutStoryTitle || "Our story"');
+    expect(aboutPage).not.toContain("A mountain journey that started in Dharamshala.");
+    expect(aboutPage).toContain("founded in 2020 by Ravi Kant");
+    expect(aboutPage).not.toContain("A mountain journey that started in Dharamshala.");
     expect(aboutPage).toContain("founded in 2020 by Ravi Kant");
     expect(aboutPage).toContain("Meet the founder");
     expect(aboutPage).toContain("Ravi Kant founded Trip Himalaya");

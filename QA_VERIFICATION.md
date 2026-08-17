@@ -17,3 +17,5 @@ One existing featured journey has the title `Hdhddhbd`, a zero price, and placeh
 The incomplete journey was subsequently unpublished and removed from the featured selection while retaining its database record for later administrator correction. A follow-up live catalogue check confirmed that only the four complete, priced journeys appear in public results and that the former `Hdhddhbd` entry is absent.
 
 The live public `tours.list` endpoint was also requested directly. It returned structured JSON for the four published journeys, rather than the single-page application HTML fallback, confirming that the public catalogue is receiving API-backed data correctly on the published domain.
+
+Desktop and mobile checks confirm that the About page now displays the concise heading “Our story” and that every shared WhatsApp call-to-action uses a recognizable speech-bubble-and-handset glyph. The floating WhatsApp action remains visibly distinct, has a screen-reader label, and retains the existing WhatsApp enquiry link.
