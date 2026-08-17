@@ -46,13 +46,14 @@ export const DEFAULT_AGENCY_PROFILE = {
 
 export type TravelStyle = { title: string; href: string; image: string; copy: string };
 export type AgencyProfileValues = Omit<typeof DEFAULT_AGENCY_PROFILE, "travelStyles"> & { travelStyles: TravelStyle[] };
-export type AgencyProfileReadValues = AgencyProfileValues & { schemaNeedsUpdate: boolean };
+export type AgencyProfileReadValues = AgencyProfileValues & { schemaNeedsUpdate: boolean; databaseNeedsAttention: boolean };
 
-function agencyProfileFallback(schemaNeedsUpdate = false): AgencyProfileReadValues {
+function agencyProfileFallback(schemaNeedsUpdate = false, databaseNeedsAttention = false): AgencyProfileReadValues {
   return {
     ...DEFAULT_AGENCY_PROFILE,
     travelStyles: DEFAULT_AGENCY_PROFILE.travelStyles.map(style => ({ ...style })),
     schemaNeedsUpdate,
+    databaseNeedsAttention,
   };
 }
 
@@ -189,12 +190,15 @@ export async function updateOwnAdminAccount(id: number, values: { name?: string;
 
 export async function getAgencyProfile(): Promise<AgencyProfileReadValues> {
   const db = await getDb();
-  if (!db) return agencyProfileFallback();
+  if (!db) return agencyProfileFallback(false, true);
   let profile: typeof agencyProfiles.$inferSelect | undefined;
   try {
     profile = (await db.select().from(agencyProfiles).limit(1))[0];
   } catch (error) {
-    if (!isMissingAgencyBrandingColumn(error)) throw error;
+    if (!isMissingAgencyBrandingColumn(error)) {
+      console.warn("[Agency] Profile read unavailable; using safe fallback.", error instanceof Error ? error.message : String(error));
+      return agencyProfileFallback(false, true);
+    }
     const legacyProfile = (await db.select({
       brandName: agencyProfiles.brandName,
       tagline: agencyProfiles.tagline,
@@ -223,6 +227,7 @@ export async function getAgencyProfile(): Promise<AgencyProfileReadValues> {
       thirdMetricValue: DEFAULT_AGENCY_PROFILE.thirdMetricValue,
       travelStyles: DEFAULT_AGENCY_PROFILE.travelStyles.map(style => ({ ...style })),
       schemaNeedsUpdate: true,
+      databaseNeedsAttention: false,
     };
   }
   if (!profile) return agencyProfileFallback();
@@ -249,9 +254,10 @@ export async function getAgencyProfile(): Promise<AgencyProfileReadValues> {
     thirdMetricValue: profile.thirdMetricValue || "",
     exploreTitle: profile.exploreTitle || DEFAULT_AGENCY_PROFILE.exploreTitle,
     exploreIntro: profile.exploreIntro || DEFAULT_AGENCY_PROFILE.exploreIntro,
-    travelStyles,
-    schemaNeedsUpdate: false,
-  };
+      travelStyles,
+      schemaNeedsUpdate: false,
+      databaseNeedsAttention: false,
+    };
 }
 
 export async function updateAgencyProfile(values: AgencyProfileValues): Promise<AgencyProfileValues> {

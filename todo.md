@@ -234,3 +234,5 @@
 - [ ] Redeploy the updated repository on Vercel after the new `/api` rewrite/config change and verify the live URL no longer shows a blank page.
 - [ ] Verify live `/api/trpc` requests on the Vercel deployment return JSON and power the public site correctly after redeployment.
 - [ ] Capture post-redeploy browser QA on the live Vercel domain for homepage/app rendering and key API-backed pages.
+- [x] Diagnose and fix the reported Agency Profile loading failure without changing existing public settings.
+- [x] Add regression coverage for the Agency Profile unavailable-database and legacy-schema recovery states, then verify the UI and publish the fix.

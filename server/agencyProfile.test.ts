@@ -17,6 +17,8 @@ describe("agency profile administration contract", () => {
     expect(db).toContain("JSON.stringify(travelStyles)");
     expect(db).toContain("DEFAULT_TRAVEL_STYLES");
     expect(db).toContain("schemaNeedsUpdate");
+    expect(db).toContain("databaseNeedsAttention");
+    expect(db).toContain("using safe fallback");
     expect(db).toContain("isMissingAgencyBrandingColumn");
     expect(schema).toContain('touristCount: varchar("touristCount"');
     expect(schema).toContain('tourCount: varchar("tourCount"');
@@ -44,6 +46,8 @@ describe("agency profile administration contract", () => {
     expect(portal).toContain('name="thirdMetricValue"');
     expect(portal).toContain("retry: false");
     expect(portal).toContain("One safe local database update is needed");
+    expect(portal).toContain("Connect the local database to edit this profile");
+    expect(portal).toContain("databaseNeedsAttention");
     expect(portal).toContain("Try again");
   });
 });
