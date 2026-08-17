@@ -119,6 +119,10 @@ export const agencyProfiles = mysqlTable("agencyProfiles", {
   exploreTitle: varchar("exploreTitle", { length: 220 }).notNull().default("Choose your travel style."),
   exploreIntro: text("exploreIntro"),
   travelStylesJson: text("travelStylesJson"),
+  touristCount: varchar("touristCount", { length: 80 }),
+  tourCount: varchar("tourCount", { length: 80 }),
+  thirdMetricLabel: varchar("thirdMetricLabel", { length: 80 }),
+  thirdMetricValue: varchar("thirdMetricValue", { length: 80 }),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

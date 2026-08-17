@@ -237,6 +237,10 @@ function AgencyProfile() {
       googleMapsUrl: String(form.get("googleMapsUrl") || "").trim(),
       exploreTitle: String(form.get("exploreTitle") || "").trim(),
       exploreIntro: String(form.get("exploreIntro") || "").trim(),
+      touristCount: String(form.get("touristCount") || "").trim(),
+      tourCount: String(form.get("tourCount") || "").trim(),
+      thirdMetricLabel: String(form.get("thirdMetricLabel") || "").trim(),
+      thirdMetricValue: String(form.get("thirdMetricValue") || "").trim(),
       travelStyles,
     });
   }
@@ -255,6 +259,10 @@ function AgencyProfile() {
         <div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#fff1e5] text-[#e17818]"><Mountain className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Explore Himachal section</h2><p className="mt-1 text-sm leading-6 text-slate-500">Edit the heading and short introduction. To edit a card, keep one JSON object per card with title, href, image, and copy.</p></div></div>
         <div className="mt-6 grid gap-4"><Field label="Section heading" name="exploreTitle" defaultValue={data.exploreTitle} required /><div><Label htmlFor="agency-exploreIntro">Section introduction</Label><Textarea id="agency-exploreIntro" name="exploreIntro" defaultValue={data.exploreIntro} className="mt-2 min-h-24 bg-white" required /></div><div><Label htmlFor="agency-travelStyles">Travel-style cards</Label><Textarea id="agency-travelStyles" name="travelStyles" defaultValue={JSON.stringify(data.travelStyles, null, 2)} className="mt-2 min-h-72 bg-white font-mono text-xs leading-5" required /><p className="mt-2 text-xs leading-5 text-slate-500">Keep the existing image paths and links unless you intend to replace them. Titles and copy are shown directly to visitors.</p></div></div>
       </section>
+      <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6">
+        <div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#fff1e5] text-[#e17818]"><Star className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Verified trip figures</h2><p className="mt-1 text-sm leading-6 text-slate-500">Optional homepage figures. Enter only confirmed numbers or wording; blank fields stay hidden from visitors.</p></div></div>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Total tourists" name="touristCount" defaultValue={data.touristCount} placeholder="Example: 120+" /><Field label="Total tours" name="tourCount" defaultValue={data.tourCount} placeholder="Example: 18" /><Field label="Third metric label" name="thirdMetricLabel" defaultValue={data.thirdMetricLabel} placeholder="Example: Local routes" /><Field label="Third metric value" name="thirdMetricValue" defaultValue={data.thirdMetricValue} placeholder="Example: 12" /></div>
+      </section>
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><h2 className="font-bold text-[#123d5b]">Contact details</h2><p className="mt-1 text-sm text-slate-500">Used in the footer, call button, WhatsApp button, and public contact areas.</p><div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Phone number" name="phone" type="tel" defaultValue={data.phone} required /><Field label="WhatsApp number" name="whatsapp" type="tel" defaultValue={data.whatsapp} required /><Field label="Public email" name="email" type="email" defaultValue={data.email} required /><div className="sm:col-span-2"><Label htmlFor="agency-address">Office / service address</Label><Textarea id="agency-address" name="address" defaultValue={data.address} className="mt-2 min-h-24 bg-white" required /></div></div></section>
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><h2 className="font-bold text-[#123d5b]">Public profiles</h2><p className="mt-1 text-sm text-slate-500">Only links you enter here are shown in the public footer. Leave a field empty to hide it.</p><div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Instagram URL" name="instagramUrl" type="url" defaultValue={data.instagramUrl} /><Field label="Facebook URL" name="facebookUrl" type="url" defaultValue={data.facebookUrl} /><Field label="YouTube URL" name="youtubeUrl" type="url" defaultValue={data.youtubeUrl} /><Field label="Google Maps URL" name="googleMapsUrl" type="url" defaultValue={data.googleMapsUrl} /></div></section>
       {update.error && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{update.error.message}</p>}
@@ -264,8 +272,8 @@ function AgencyProfile() {
   </div>;
 }
 
-function Field({ label, name, defaultValue, type = "text", required = false }: { label: string; name: string; defaultValue: string; type?: string; required?: boolean }) {
-  return <div><Label htmlFor={`agency-${name}`}>{label}</Label><Input id={`agency-${name}`} name={name} type={type} defaultValue={defaultValue} required={required} className="mt-2 h-11 bg-white" /></div>;
+function Field({ label, name, defaultValue, type = "text", required = false, placeholder }: { label: string; name: string; defaultValue: string; type?: string; required?: boolean; placeholder?: string }) {
+  return <div><Label htmlFor={`agency-${name}`}>{label}</Label><Input id={`agency-${name}`} name={name} type={type} defaultValue={defaultValue} placeholder={placeholder} required={required} className="mt-2 h-11 bg-white" /></div>;
 }
 
 function Tours() {

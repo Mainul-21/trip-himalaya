@@ -18,6 +18,10 @@ describe("agency profile administration contract", () => {
     expect(db).toContain("DEFAULT_TRAVEL_STYLES");
     expect(db).toContain("schemaNeedsUpdate");
     expect(db).toContain("isMissingAgencyBrandingColumn");
+    expect(schema).toContain('touristCount: varchar("touristCount"');
+    expect(schema).toContain('tourCount: varchar("tourCount"');
+    expect(schema).toContain('thirdMetricLabel: varchar("thirdMetricLabel"');
+    expect(schema).toContain('thirdMetricValue: varchar("thirdMetricValue"');
   });
 
   it("keeps public reads open and restricts profile updates to authenticated administrators", () => {
@@ -34,6 +38,10 @@ describe("agency profile administration contract", () => {
     expect(portal).toContain('name="exploreTitle"');
     expect(portal).toContain('name="exploreIntro"');
     expect(portal).toContain('name="travelStyles"');
+    expect(portal).toContain('name="touristCount"');
+    expect(portal).toContain('name="tourCount"');
+    expect(portal).toContain('name="thirdMetricLabel"');
+    expect(portal).toContain('name="thirdMetricValue"');
     expect(portal).toContain("retry: false");
     expect(portal).toContain("One safe local database update is needed");
     expect(portal).toContain("Try again");

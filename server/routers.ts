@@ -73,6 +73,10 @@ const agencyProfileInput = z.object({
   googleMapsUrl: z.string().trim().url().max(2048).or(z.literal("")),
   exploreTitle: z.string().trim().min(2).max(220),
   exploreIntro: z.string().trim().min(2).max(1000),
+  touristCount: z.string().trim().max(80),
+  tourCount: z.string().trim().max(80),
+  thirdMetricLabel: z.string().trim().max(80),
+  thirdMetricValue: z.string().trim().max(80),
   travelStyles: z.array(travelStyleInput).min(1).max(8),
 });
 

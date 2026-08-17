@@ -37,6 +37,10 @@ export const DEFAULT_AGENCY_PROFILE = {
   googleMapsUrl: "",
   exploreTitle: "Choose your travel style.",
   exploreIntro: "Start with the kind of mountain time you want. Every choice opens a filtered journey list.",
+  touristCount: "",
+  tourCount: "",
+  thirdMetricLabel: "",
+  thirdMetricValue: "",
   travelStyles: DEFAULT_TRAVEL_STYLES.map(style => ({ ...style })),
 };
 
@@ -203,12 +207,20 @@ export async function getAgencyProfile(): Promise<AgencyProfileReadValues> {
       facebookUrl: agencyProfiles.facebookUrl,
       youtubeUrl: agencyProfiles.youtubeUrl,
       googleMapsUrl: agencyProfiles.googleMapsUrl,
+      touristCount: agencyProfiles.touristCount,
+      tourCount: agencyProfiles.tourCount,
+      thirdMetricLabel: agencyProfiles.thirdMetricLabel,
+      thirdMetricValue: agencyProfiles.thirdMetricValue,
     }).from(agencyProfiles).limit(1))[0];
     if (!legacyProfile) return agencyProfileFallback(true);
     return {
       ...legacyProfile,
       exploreTitle: DEFAULT_AGENCY_PROFILE.exploreTitle,
       exploreIntro: DEFAULT_AGENCY_PROFILE.exploreIntro,
+      touristCount: DEFAULT_AGENCY_PROFILE.touristCount,
+      tourCount: DEFAULT_AGENCY_PROFILE.tourCount,
+      thirdMetricLabel: DEFAULT_AGENCY_PROFILE.thirdMetricLabel,
+      thirdMetricValue: DEFAULT_AGENCY_PROFILE.thirdMetricValue,
       travelStyles: DEFAULT_AGENCY_PROFILE.travelStyles.map(style => ({ ...style })),
       schemaNeedsUpdate: true,
     };
@@ -231,6 +243,10 @@ export async function getAgencyProfile(): Promise<AgencyProfileReadValues> {
     facebookUrl: profile.facebookUrl,
     youtubeUrl: profile.youtubeUrl,
     googleMapsUrl: profile.googleMapsUrl,
+    touristCount: profile.touristCount || "",
+    tourCount: profile.tourCount || "",
+    thirdMetricLabel: profile.thirdMetricLabel || "",
+    thirdMetricValue: profile.thirdMetricValue || "",
     exploreTitle: profile.exploreTitle || DEFAULT_AGENCY_PROFILE.exploreTitle,
     exploreIntro: profile.exploreIntro || DEFAULT_AGENCY_PROFILE.exploreIntro,
     travelStyles,

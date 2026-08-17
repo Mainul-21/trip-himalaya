@@ -38,6 +38,11 @@ export default function Home() {
   const { data: agency } = trpc.agency.get.useQuery(undefined, { staleTime: 60_000 });
   const topTours = selectTopFeaturedTours(tours);
   const visibleTripStyles = agency?.travelStyles?.length ? agency.travelStyles : tripStyles;
+  const verifiedStats = [
+    { label: "Total tourists", value: agency?.touristCount ?? "" },
+    { label: "Total tours", value: agency?.tourCount ?? "" },
+    { label: agency?.thirdMetricLabel ?? "", value: agency?.thirdMetricValue ?? "" },
+  ].filter(stat => stat.label && stat.value);
   const [, setLocation] = useLocation();
   const [query, setQuery] = useState("");
   const [activeHeroSlide, setActiveHeroSlide] = useState(0);
@@ -102,6 +107,10 @@ export default function Home() {
       </div>
       <div className="relative border-t border-white/14 bg-[#0b3553]/95"><div className="container grid divide-y divide-white/12 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0">{trustPoints.map(([Icon, title, copy]) => <div key={title} className="flex items-center gap-3 px-4 py-4 sm:px-5"><span aria-hidden="true" className="grid size-9 shrink-0 place-items-center rounded-full border border-[#f6a85c]/30 bg-white/8 text-[#f6a85c]"><Icon className="size-[18px]" /></span><span><strong className="block text-xs font-extrabold uppercase tracking-[.08em] text-white">{title}</strong><span className="mt-0.5 block text-xs leading-5 text-white/66">{copy}</span></span></div>)}</div></div>
     </section>
+
+    <section aria-label="Experience the Himalayas" className="border-b border-[#e5ece7] bg-[#f8f5ef] py-6"><div className="container"><p className="text-center font-display text-2xl font-bold tracking-[-.02em] text-[#123d5b] sm:text-3xl">Experience the Himalayas, thoughtfully.</p></div></section>
+
+    {verifiedStats.length > 0 && <section aria-label="Trip Himalaya figures" className="border-b border-[#e5ece7] bg-white py-10"><div className="container"><div className="grid gap-3 sm:grid-cols-3">{verifiedStats.map(stat => <article key={stat.label} className="border-l-2 border-[#e9781c] bg-[#fbfaf6] px-5 py-4"><p className="font-display text-3xl font-bold text-[#123d5b]">{stat.value}</p><p className="mt-1 text-xs font-extrabold uppercase tracking-[.1em] text-slate-500">{stat.label}</p></article>)}</div></div></section>}
 
     <section className="py-16 sm:py-20"><div className="container"><div className="grid gap-5 lg:grid-cols-[1fr_.68fr] lg:items-end"><div><p className="eyebrow">Explore Himachal</p><h2 className="section-title mt-3">{agency?.exploreTitle ?? "Choose your travel style."}</h2><p className="mt-3 max-w-xl text-sm leading-6 text-slate-600">{agency?.exploreIntro ?? "Start with the kind of mountain time you want. Every choice opens a filtered journey list."}</p></div><Link href="/tours" className="focus-ring inline-flex items-center gap-2 text-sm font-bold text-[#123d5b] hover:text-[#e17818] lg:justify-self-end">Browse all journeys <ArrowRight className="size-4" /></Link></div><div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{visibleTripStyles.map(item => <Link key={item.title} href={item.href} className="group relative isolate h-52 overflow-hidden rounded-xl border border-[#dfe8e8] bg-[#123d5b] shadow-[0_10px_24px_rgba(18,61,91,.08)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e9781c] focus-visible:ring-offset-4"><img src={getImageVariant(item.image, "card")} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]" loading="lazy" fetchPriority="low" decoding="async" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" /><div className="absolute inset-0 bg-gradient-to-t from-[#082f4b]/96 via-[#082f4b]/24 to-transparent" /><div className="absolute inset-x-0 bottom-0 p-5 text-white"><h3 className="font-display text-2xl font-bold leading-none">{item.title}</h3><p className="mt-2 text-sm leading-5 text-white/75">{item.copy}</p></div></Link>)}</div></div></section>
 

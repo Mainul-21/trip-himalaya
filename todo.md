@@ -221,6 +221,12 @@
 - [x] Remove verified placeholder or test content and strengthen fact-safe Trip Himalaya presentation without inventing reviews, awards, statistics, or business claims.
 - [x] Refine travel-style, tour-card, search, CTA, and responsive presentation quality while preserving existing functionality and content structure.
 - [x] Verify the premium website upgrade with focused tests, desktop/mobile QA, and a publishable checkpoint.
+- [ ] Sign in with a valid administrator account, then verify /admin/tours on desktop and mobile with an authenticated session.
+- [ ] Confirm the journey editor, box-based inputs, photo controls, and Top Trips rank selector are visible and usable after authentication without changing protected data.
 - [x] Apply a focused public visual-polish pass that reduces artificial gradients, glows, glass effects, and excessive animation without changing functionality or content structure.
 - [x] Refine public typography, spacing, buttons, cards, hierarchy, and mobile layout for a restrained professional travel-agency finish.
 - [x] Verify the visual-only update with desktop/mobile QA, tests, and build before publishing.
+
+- [x] Add a concise one-line “Experience the Himalayas” homepage statement.
+- [x] Add administrator-editable statistic fields for total tourists, total tours, and a third metric without inventing default numbers.
+- [x] Verify the new homepage statement and editable statistics section with tests, responsive QA, and a published checkpoint.
