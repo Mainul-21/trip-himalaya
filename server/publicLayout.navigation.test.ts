@@ -30,4 +30,9 @@ describe("PublicLayout mobile navigation contract", () => {
     expect(source).toContain('>Contact</p>');
     expect(source).toContain("profile.instagramUrl");
   });
+
+  it("uses the recognizable WhatsApp speech-bubble and handset glyph for public WhatsApp actions", () => {
+    expect(source).toContain("M17.472 14.382");
+    expect(source).not.toContain('transform="scale(.72) translate(4.7 4.7)"');
+  });
 });

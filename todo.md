@@ -261,3 +261,7 @@
 - [x] Make the optional short tagline safe to leave blank across administrator inputs and public rendering.
 - [x] Verify logo consistency, principal-admin access control, tagline validation, and tour-card layout with tests, build, responsive QA, and a published checkpoint.
 - [x] Unpublish the incomplete placeholder-style featured journey found during live production QA while preserving its administrator data.
+- [x] Replace the public About-page heading “A mountain journey that started in Dharamshala.” with “Our story”.
+- [x] Replace the current public WhatsApp mark with a recognizable official-style WhatsApp logo while preserving accessible labels and enquiry links.
+- [ ] Capture reviewed authenticated desktop and mobile evidence for protected administrator routes, confirming that each displays the workspace rather than a sign-in redirect.
+- [ ] Exercise and document one signed-in administrator interaction at desktop and mobile, such as opening the journey editor or principal administrator detail editor, without exposing credentials.
