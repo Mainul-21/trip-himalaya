@@ -230,3 +230,7 @@
 - [x] Add a concise one-line “Experience the Himalayas” homepage statement.
 - [x] Add administrator-editable statistic fields for total tourists, total tours, and a third metric without inventing default numbers.
 - [x] Verify the new homepage statement and editable statistics section with tests, responsive QA, and a published checkpoint.
+- [x] Add and verify a Vercel serverless API entrypoint and rewrite so external Vercel `/api/trpc` requests reach the Express tRPC router instead of the static HTML fallback.
+- [ ] Redeploy the updated repository on Vercel after the new `/api` rewrite/config change and verify the live URL no longer shows a blank page.
+- [ ] Verify live `/api/trpc` requests on the Vercel deployment return JSON and power the public site correctly after redeployment.
+- [ ] Capture post-redeploy browser QA on the live Vercel domain for homepage/app rendering and key API-backed pages.
