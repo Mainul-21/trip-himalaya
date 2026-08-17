@@ -260,3 +260,4 @@
 - [x] Repair responsive tour-card price layout so the price never overlaps other metadata or actions.
 - [x] Make the optional short tagline safe to leave blank across administrator inputs and public rendering.
 - [x] Verify logo consistency, principal-admin access control, tagline validation, and tour-card layout with tests, build, responsive QA, and a published checkpoint.
+- [x] Unpublish the incomplete placeholder-style featured journey found during live production QA while preserving its administrator data.
