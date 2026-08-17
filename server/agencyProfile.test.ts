@@ -40,6 +40,9 @@ describe("agency profile administration contract", () => {
     expect(portal).toContain('name="exploreTitle"');
     expect(portal).toContain('name="exploreIntro"');
     expect(portal).toContain('name="travelStyles"');
+    expect(portal).toContain('>Travel styles</h2>');
+    expect(portal).toContain('Edit the heading, intro, and cards.');
+    expect(portal).toContain('one JSON object per card with title, href, image, and copy');
     expect(portal).toContain('name="touristCount"');
     expect(portal).toContain('name="tourCount"');
     expect(portal).toContain('name="thirdMetricLabel"');
