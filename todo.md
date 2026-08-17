@@ -240,3 +240,7 @@
 - [x] Verify the simplified travel-style section with focused tests, production build, responsive QA, and a published checkpoint.
 - [x] Reinvestigate the repeated Agency Profile loading failure and identify whether the local API, TiDB connection, schema state, or retry path is responsible.
 - [x] Apply and verify a safe Agency Profile recovery fix without changing saved public settings.
+- [x] Let administrators upload or replace the agency logo directly from the Agency Profile editor using the protected media-storage workflow.
+- [x] Let administrators upload or replace each travel-style card image directly, while keeping title, link, and copy editable and preserving the JSON compatibility contract.
+- [x] Refine travel-style presentation toward the supplied Trip Himalaya reference using relevant Himalayan imagery without copying unverified reviews, ratings, statistics, or contact details.
+- [x] Verify protected uploads, public rendering, responsive presentation, tests, build, and publish the image-management upgrade.
