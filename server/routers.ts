@@ -59,6 +59,11 @@ const travelStyleInput = z.object({
   image: z.string().url().or(z.string().startsWith("/manus-storage/")),
   copy: z.string().trim().min(2).max(180),
 });
+const experienceInput = z.object({
+  title: z.string().trim().min(2).max(220),
+  copy: z.string().trim().min(2).max(500),
+  href: z.string().trim().min(1).max(2048),
+});
 const agencyProfileInput = z.object({
   brandName: z.string().trim().min(2).max(160),
   tagline: z.string().trim().min(2).max(220),
@@ -77,6 +82,12 @@ const agencyProfileInput = z.object({
   tourCount: z.string().trim().max(80),
   thirdMetricLabel: z.string().trim().max(80),
   thirdMetricValue: z.string().trim().max(80),
+  experiencesTitle: z.string().trim().min(2).max(220),
+  experiencesIntro: z.string().trim().min(2).max(1000),
+  experiences: z.array(experienceInput).min(1).max(12),
+  aboutStoryTitle: z.string().trim().min(2).max(220),
+  aboutStoryBody: z.string().trim().min(2).max(4000),
+  aboutStorySecondBody: z.string().trim().min(2).max(4000),
   travelStyles: z.array(travelStyleInput).min(1).max(8),
 });
 

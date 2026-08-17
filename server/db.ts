@@ -23,6 +23,17 @@ export const DEFAULT_TRAVEL_STYLES = [
   { title: "Custom plan", href: "/contact", image: "/manus-storage/dhauladhar-hut-panorama_c5effca1.jpg", copy: "Share your dates and build your own route." },
 ] as const;
 
+export type TravelStyle = { title: string; href: string; image: string; copy: string };
+export type ExperienceItem = { title: string; copy: string; href: string };
+export const DEFAULT_EXPERIENCES: ExperienceItem[] = [
+  { title: "A day around McLeod Ganj", copy: "Culture, food and a clear feel for upper Dharamshala.", href: "/contact" },
+  { title: "A private family escape", copy: "Flexible timing and smaller distances for more shared time.", href: "/contact" },
+  { title: "A trail with a guide", copy: "Walk a route that matches your confidence and time.", href: "/contact" },
+  { title: "A slow Kangra Valley day", copy: "Views, local stops and space to take it in.", href: "/contact" },
+  { title: "A celebration in the hills", copy: "A useful plan for a birthday, reunion or meaningful pause.", href: "/contact" },
+  { title: "A made-to-fit week", copy: "Join treks, local stays and free days in one simple plan.", href: "/contact" },
+];
+
 export const DEFAULT_AGENCY_PROFILE = {
   brandName: "Trip Himalaya",
   tagline: "Explore. Experience. Live.",
@@ -42,9 +53,14 @@ export const DEFAULT_AGENCY_PROFILE = {
   thirdMetricLabel: "",
   thirdMetricValue: "",
   travelStyles: DEFAULT_TRAVEL_STYLES.map(style => ({ ...style })),
+  experiencesTitle: "Experiences for your kind of mountain time.",
+  experiencesIntro: "Choose a slower day, a local plan or a route made around you.",
+  experiences: DEFAULT_EXPERIENCES.map(item => ({ ...item })),
+  aboutStoryTitle: "A mountain journey that started in Dharamshala.",
+  aboutStoryBody: "Trip Himalaya was founded in 2020 by Ravi Kant with a simple belief: travelling in the Himalayas should feel personal, clear, and connected to the place.",
+  aboutStorySecondBody: "We create journeys across Himachal for people who want more than a hurried list of stops. Our work brings together trekking, spiritual journeys, camping, village experiences, Himachal tours, and custom plans.",
 };
 
-export type TravelStyle = { title: string; href: string; image: string; copy: string };
 export type AgencyProfileValues = Omit<typeof DEFAULT_AGENCY_PROFILE, "travelStyles"> & { travelStyles: TravelStyle[] };
 export type AgencyProfileReadValues = AgencyProfileValues & { schemaNeedsUpdate: boolean; databaseNeedsAttention: boolean };
 
@@ -59,7 +75,7 @@ function agencyProfileFallback(schemaNeedsUpdate = false, databaseNeedsAttention
 
 function isMissingAgencyBrandingColumn(error: unknown) {
   const message = error instanceof Error ? error.message : String(error);
-  return /(exploreTitle|exploreIntro|travelStylesJson|touristCount|tourCount|thirdMetricLabel|thirdMetricValue)/i.test(message) && /(unknown column|no such column|failed query)/i.test(message);
+  return /(exploreTitle|exploreIntro|travelStylesJson|touristCount|tourCount|thirdMetricLabel|thirdMetricValue|experiencesTitle|experiencesIntro|experiencesJson|aboutStoryTitle|aboutStoryBody|aboutStorySecondBody)/i.test(message) && /(unknown column|no such column|failed query)/i.test(message);
 }
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -221,6 +237,12 @@ export async function getAgencyProfile(): Promise<AgencyProfileReadValues> {
       tourCount: DEFAULT_AGENCY_PROFILE.tourCount,
       thirdMetricLabel: DEFAULT_AGENCY_PROFILE.thirdMetricLabel,
       thirdMetricValue: DEFAULT_AGENCY_PROFILE.thirdMetricValue,
+      experiencesTitle: DEFAULT_AGENCY_PROFILE.experiencesTitle,
+      experiencesIntro: DEFAULT_AGENCY_PROFILE.experiencesIntro,
+      experiences: DEFAULT_EXPERIENCES.map(item => ({ ...item })),
+      aboutStoryTitle: DEFAULT_AGENCY_PROFILE.aboutStoryTitle,
+      aboutStoryBody: DEFAULT_AGENCY_PROFILE.aboutStoryBody,
+      aboutStorySecondBody: DEFAULT_AGENCY_PROFILE.aboutStorySecondBody,
       travelStyles: DEFAULT_AGENCY_PROFILE.travelStyles.map(style => ({ ...style })),
       schemaNeedsUpdate: true,
       databaseNeedsAttention: false,
@@ -250,6 +272,17 @@ export async function getAgencyProfile(): Promise<AgencyProfileReadValues> {
     thirdMetricValue: profile.thirdMetricValue || "",
     exploreTitle: profile.exploreTitle || DEFAULT_AGENCY_PROFILE.exploreTitle,
     exploreIntro: profile.exploreIntro || DEFAULT_AGENCY_PROFILE.exploreIntro,
+    experiencesTitle: profile.experiencesTitle || DEFAULT_AGENCY_PROFILE.experiencesTitle,
+    experiencesIntro: profile.experiencesIntro || DEFAULT_AGENCY_PROFILE.experiencesIntro,
+    experiences: (() => {
+      try {
+        const parsed = profile.experiencesJson ? JSON.parse(profile.experiencesJson) : [];
+        return Array.isArray(parsed) && parsed.length ? parsed : DEFAULT_EXPERIENCES.map(item => ({ ...item }));
+      } catch { return DEFAULT_EXPERIENCES.map(item => ({ ...item })); }
+    })(),
+    aboutStoryTitle: profile.aboutStoryTitle || DEFAULT_AGENCY_PROFILE.aboutStoryTitle,
+    aboutStoryBody: profile.aboutStoryBody || DEFAULT_AGENCY_PROFILE.aboutStoryBody,
+    aboutStorySecondBody: profile.aboutStorySecondBody || DEFAULT_AGENCY_PROFILE.aboutStorySecondBody,
       travelStyles,
       schemaNeedsUpdate: false,
       databaseNeedsAttention: false,
@@ -258,8 +291,8 @@ export async function getAgencyProfile(): Promise<AgencyProfileReadValues> {
 
 export async function updateAgencyProfile(values: AgencyProfileValues): Promise<AgencyProfileValues> {
   const db = requireDb(await getDb());
-  const { travelStyles, ...profileValues } = values;
-  const persistedValues = { ...profileValues, travelStylesJson: JSON.stringify(travelStyles) };
+  const { travelStyles, experiences, ...profileValues } = values;
+  const persistedValues = { ...profileValues, travelStylesJson: JSON.stringify(travelStyles), experiencesJson: JSON.stringify(experiences) };
   const existing = (await db.select({ id: agencyProfiles.id }).from(agencyProfiles).limit(1))[0];
   if (existing) await db.update(agencyProfiles).set(persistedValues).where(eq(agencyProfiles.id, existing.id));
   else await db.insert(agencyProfiles).values(persistedValues);

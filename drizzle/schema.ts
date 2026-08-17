@@ -123,6 +123,12 @@ export const agencyProfiles = mysqlTable("agencyProfiles", {
   tourCount: varchar("tourCount", { length: 80 }),
   thirdMetricLabel: varchar("thirdMetricLabel", { length: 80 }),
   thirdMetricValue: varchar("thirdMetricValue", { length: 80 }),
+  experiencesTitle: varchar("experiencesTitle", { length: 220 }),
+  experiencesIntro: text("experiencesIntro"),
+  experiencesJson: text("experiencesJson"),
+  aboutStoryTitle: varchar("aboutStoryTitle", { length: 220 }),
+  aboutStoryBody: text("aboutStoryBody"),
+  aboutStorySecondBody: text("aboutStorySecondBody"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

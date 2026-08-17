@@ -35,6 +35,7 @@ const images = [
   "/manus-storage/dhauladhar-hut-panorama_c5effca1.jpg",
 ];
 type AgencyTravelStyle = { title: string; href: string; image: string; copy: string };
+type AgencyExperience = { title: string; copy: string; href: string };
 
 type Tour = {
   id: number;
@@ -214,6 +215,7 @@ function AgencyProfile() {
   const utils = trpc.useUtils();
   const { data, error, isLoading, refetch, isFetching } = trpc.agency.get.useQuery(undefined, { retry: false, refetchOnWindowFocus: false });
   const [travelStyles, setTravelStyles] = useState<AgencyTravelStyle[]>([]);
+  const [experiences, setExperiences] = useState<AgencyExperience[]>([]);
   const [logoUrl, setLogoUrl] = useState("");
   const update = trpc.agency.update.useMutation({
     onSuccess: () => void utils.agency.get.invalidate(),
@@ -221,11 +223,15 @@ function AgencyProfile() {
 
   useEffect(() => {
     if (data?.travelStyles) setTravelStyles(data.travelStyles);
+    if (data?.experiences) setExperiences(data.experiences);
     if (data?.logoUrl) setLogoUrl(data.logoUrl);
-  }, [data?.travelStyles, data?.logoUrl]);
+  }, [data?.travelStyles, data?.experiences, data?.logoUrl]);
 
   function updateStyle(index: number, patch: Partial<AgencyTravelStyle>) {
     setTravelStyles(current => current.map((style, styleIndex) => styleIndex === index ? { ...style, ...patch } : style));
+  }
+  function updateExperience(index: number, patch: Partial<AgencyExperience>) {
+    setExperiences(current => current.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item));
   }
 
   function save(event: FormEvent<HTMLFormElement>) {
@@ -249,6 +255,12 @@ function AgencyProfile() {
       tourCount: String(form.get("tourCount") || "").trim(),
       thirdMetricLabel: String(form.get("thirdMetricLabel") || "").trim(),
       thirdMetricValue: String(form.get("thirdMetricValue") || "").trim(),
+      experiencesTitle: String(form.get("experiencesTitle") || "").trim(),
+      experiencesIntro: String(form.get("experiencesIntro") || "").trim(),
+      experiences,
+      aboutStoryTitle: String(form.get("aboutStoryTitle") || "").trim(),
+      aboutStoryBody: String(form.get("aboutStoryBody") || "").trim(),
+      aboutStorySecondBody: String(form.get("aboutStorySecondBody") || "").trim(),
       travelStyles,
     });
   }
@@ -268,6 +280,8 @@ function AgencyProfile() {
         <div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#fff1e5] text-[#e17818]"><Mountain className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Travel styles</h2><p className="mt-1 text-sm leading-6 text-slate-500">Edit each card directly. Upload a relevant Himalayan image, then adjust its title, link, and short visitor-facing copy.</p></div></div>
         <div className="mt-6 grid gap-4"><Field label="Section heading" name="exploreTitle" defaultValue={data.exploreTitle} required /><div><Label htmlFor="agency-exploreIntro">Short introduction</Label><Textarea id="agency-exploreIntro" name="exploreIntro" defaultValue={data.exploreIntro} className="mt-2 min-h-20 bg-white" required /></div><input type="hidden" name="travelStyles" value={JSON.stringify(travelStyles)} readOnly /><div className="grid gap-4 md:grid-cols-2">{travelStyles.map((style, index) => <div key={`${style.title}-${index}`} className="rounded-2xl border border-[#d7e3de] bg-[#f8fbf9] p-4"><div className="mb-3 flex items-center justify-between"><h3 className="font-bold text-[#123d5b]">Style {index + 1}</h3><span className="text-xs text-slate-500">Shown on homepage</span></div><AgencyImageUploader label="Card image" value={style.image} onChange={value => updateStyle(index, { image: value })} help="Choose a clear, relevant Himachal photo." /><div className="mt-4 grid gap-3"><div><Label htmlFor={`style-title-${index}`}>Title</Label><Input id={`style-title-${index}`} value={style.title} onChange={event => updateStyle(index, { title: event.target.value })} className="mt-2 h-11 bg-white" required /></div><div><Label htmlFor={`style-copy-${index}`}>Short copy</Label><Input id={`style-copy-${index}`} value={style.copy} onChange={event => updateStyle(index, { copy: event.target.value })} className="mt-2 h-11 bg-white" required /></div><div><Label htmlFor={`style-href-${index}`}>Link</Label><Input id={`style-href-${index}`} value={style.href} onChange={event => updateStyle(index, { href: event.target.value })} className="mt-2 h-11 bg-white" required /></div></div></div>)}</div></div>
       </section>
+      <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#eef4f2] text-[#e17818]"><Mountain className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Experiences page</h2><p className="mt-1 text-sm leading-6 text-slate-500">Edit the public Experiences page without touching code. Keep each card short and useful.</p></div></div><div className="mt-6 grid gap-4"><Field label="Page heading" name="experiencesTitle" defaultValue={data.experiencesTitle} required /><div><Label htmlFor="agency-experiencesIntro">Short introduction</Label><Textarea id="agency-experiencesIntro" name="experiencesIntro" defaultValue={data.experiencesIntro} className="mt-2 min-h-20 bg-white" required /></div><div className="grid gap-4 md:grid-cols-2">{experiences.map((item, index) => <div key={`${item.title}-${index}`} className="rounded-2xl border border-[#d7e3de] bg-[#f8fbf9] p-4"><h3 className="font-bold text-[#123d5b]">Experience {index + 1}</h3><div className="mt-4 grid gap-3"><div><Label htmlFor={`experience-title-${index}`}>Title</Label><Input id={`experience-title-${index}`} value={item.title} onChange={event => updateExperience(index, { title: event.target.value })} className="mt-2 h-11 bg-white" required /></div><div><Label htmlFor={`experience-copy-${index}`}>Short copy</Label><Textarea id={`experience-copy-${index}`} value={item.copy} onChange={event => updateExperience(index, { copy: event.target.value })} className="mt-2 min-h-20 bg-white" required /></div><div><Label htmlFor={`experience-href-${index}`}>Link</Label><Input id={`experience-href-${index}`} value={item.href} onChange={event => updateExperience(index, { href: event.target.value })} className="mt-2 h-11 bg-white" required /></div></div></div>)}</div></div></section>
+      <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#eef4f2] text-[#e17818]"><Pencil className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">About page — Our Story</h2><p className="mt-1 text-sm leading-6 text-slate-500">Update the story shown to visitors. Keep it grounded in confirmed Trip Himalaya details.</p></div></div><div className="mt-6 grid gap-4"><Field label="Story heading" name="aboutStoryTitle" defaultValue={data.aboutStoryTitle} required /><div><Label htmlFor="agency-aboutStoryBody">First paragraph</Label><Textarea id="agency-aboutStoryBody" name="aboutStoryBody" defaultValue={data.aboutStoryBody} className="mt-2 min-h-28 bg-white" required /></div><div><Label htmlFor="agency-aboutStorySecondBody">Second paragraph</Label><Textarea id="agency-aboutStorySecondBody" name="aboutStorySecondBody" defaultValue={data.aboutStorySecondBody} className="mt-2 min-h-28 bg-white" required /></div></div></section>
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#fff1e5] text-[#e17818]"><Star className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Verified trip figures</h2><p className="mt-1 text-sm leading-6 text-slate-500">Optional homepage figures. Enter only confirmed numbers or wording; blank fields stay hidden from visitors.</p></div></div><div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Total tourists" name="touristCount" defaultValue={data.touristCount} placeholder="Example: 120+" /><Field label="Total tours" name="tourCount" defaultValue={data.tourCount} placeholder="Example: 18" /><Field label="Third metric label" name="thirdMetricLabel" defaultValue={data.thirdMetricLabel} placeholder="Example: Local routes" /><Field label="Third metric value" name="thirdMetricValue" defaultValue={data.thirdMetricValue} placeholder="Example: 12" /></div></section>
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><h2 className="font-bold text-[#123d5b]">Contact details</h2><p className="mt-1 text-sm text-slate-500">Used in the footer, call button, WhatsApp button, and public contact areas.</p><div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Phone number" name="phone" type="tel" defaultValue={data.phone} required /><Field label="WhatsApp number" name="whatsapp" type="tel" defaultValue={data.whatsapp} required /><Field label="Public email" name="email" type="email" defaultValue={data.email} required /><div className="sm:col-span-2"><Label htmlFor="agency-address">Office / service address</Label><Textarea id="agency-address" name="address" defaultValue={data.address} className="mt-2 min-h-24 bg-white" required /></div></div></section>
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><h2 className="font-bold text-[#123d5b]">Public profiles</h2><p className="mt-1 text-sm text-slate-500">Only links you enter here are shown in the public footer. Leave a field empty to hide it.</p><div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Instagram URL" name="instagramUrl" type="url" defaultValue={data.instagramUrl} /><Field label="Facebook URL" name="facebookUrl" type="url" defaultValue={data.facebookUrl} /><Field label="YouTube URL" name="youtubeUrl" type="url" defaultValue={data.youtubeUrl} /><Field label="Google Maps URL" name="googleMapsUrl" type="url" defaultValue={data.googleMapsUrl} /></div></section>

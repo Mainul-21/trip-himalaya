@@ -244,3 +244,6 @@
 - [x] Let administrators upload or replace each travel-style card image directly, while keeping title, link, and copy editable and preserving the JSON compatibility contract.
 - [x] Refine travel-style presentation toward the supplied Trip Himalaya reference using relevant Himalayan imagery without copying unverified reviews, ratings, statistics, or contact details.
 - [x] Verify protected uploads, public rendering, responsive presentation, tests, build, and publish the image-management upgrade.
+
+- [x] Inspect and reconcile the current Agency Profile schema mismatch without deleting existing tours or settings.
+- [ ] Verify all current Agency Profile fields, including Experiences and About Our Story, load and save after the non-destructive update.
