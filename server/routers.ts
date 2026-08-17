@@ -66,7 +66,7 @@ const experienceInput = z.object({
 });
 const agencyProfileInput = z.object({
   brandName: z.string().trim().min(2).max(160),
-  tagline: z.string().trim().min(2).max(220),
+  tagline: z.string().trim().max(220),
   logoUrl: z.string().trim().url().or(z.string().startsWith("/manus-storage/")),
   phone: z.string().trim().min(7).max(40),
   whatsapp: z.string().trim().regex(/^\+?[0-9\s-]{7,40}$/, "Enter a WhatsApp number with digits only, optionally with +, spaces, or hyphens."),

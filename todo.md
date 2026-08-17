@@ -247,3 +247,16 @@
 
 - [x] Inspect and reconcile the current Agency Profile schema mismatch without deleting existing tours or settings.
 - [ ] Verify all current Agency Profile fields, including Experiences and About Our Story, load and save after the non-destructive update.
+- [ ] Restore local DNS resolution for the configured TiDB hostname without changing or exposing database credentials.
+- [ ] Retry the non-destructive Agency Profile schema update and verify local editor recovery after TiDB connectivity returns.
+- [ ] Resolve local Drizzle primary-key schema drift with an idempotent Agency Profile-only migration that does not truncate or change keys.
+- [ ] Verify the missing Agency Profile fields and local editor after the safe manual TiDB migration.
+- [x] Render administrator-managed Experiences title, introduction, and cards on the public Experiences page.
+- [x] Render administrator-managed About Our Story heading and text on the public About page.
+- [x] Standardize the official Trip Himalaya logo across public, admin, loading, and branded fallback surfaces.
+- [x] Verify editable Experiences/Our Story content and logo consistency with tests, responsive QA, and a published checkpoint.
+- [x] Use the official Trip Himalaya logo consistently on public, administrator, and application-loading surfaces.
+- [x] Ensure principal administrators can add, edit, delete, and securely update other administrator name, email, and password details.
+- [x] Repair responsive tour-card price layout so the price never overlaps other metadata or actions.
+- [x] Make the optional short tagline safe to leave blank across administrator inputs and public rendering.
+- [x] Verify logo consistency, principal-admin access control, tagline validation, and tour-card layout with tests, build, responsive QA, and a published checkpoint.

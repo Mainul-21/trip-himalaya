@@ -1,4 +1,5 @@
 import { Skeleton } from './ui/skeleton';
+import { OFFICIAL_TRIP_HIMALAYA_LOGO } from '@/lib/brand';
 
 export function DashboardLayoutSkeleton() {
   return (
@@ -7,7 +8,7 @@ export function DashboardLayoutSkeleton() {
       <div className="w-[280px] border-r border-border bg-background p-4 space-y-6">
         {/* Logo area */}
         <div className="flex items-center gap-3 px-2">
-          <Skeleton className="h-8 w-8 rounded-md" />
+          <img src={OFFICIAL_TRIP_HIMALAYA_LOGO} alt="Trip Himalaya" className="h-8 w-8 rounded-md border border-border bg-white object-contain p-0.5" />
           <Skeleton className="h-4 w-24" />
         </div>
 

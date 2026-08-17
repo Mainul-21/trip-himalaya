@@ -13,7 +13,8 @@ describe("premium journey presentation", () => {
   it("keeps the homepage grounded and exposes all requested travel styles", () => {
     expect(home).toContain("Discover Himachal.");
     expect(home).toContain("Experience the Himalayas.");
-    expect(home).toContain("Thoughtfully planned Himalayan journeys");
+    expect(home).toContain("Curated journeys. Local expertise. Unforgettable memories.");
+    expect(home).toContain("Pick a style to find a journey that fits.");
     for (const label of ["Trekking", "Culture & Local", "Adventure", "Short Breaks", "Best Sellers", "Custom Plan"]) {
       expect(home).toContain(`title: \"${label}\"`);
     }

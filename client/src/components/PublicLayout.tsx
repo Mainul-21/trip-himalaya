@@ -3,13 +3,14 @@ import { Facebook, Instagram, LayoutDashboard, Mail, MapPin, Menu, MessageCircle
 import { FormEvent, useState } from "react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
+import { OFFICIAL_TRIP_HIMALAYA_LOGO } from "@/lib/brand";
 
 const navigation = [
   ["Home", "/"], ["Tours", "/tours"], ["Treks", "/treks"], ["Experiences", "/experiences"], ["About us", "/about"], ["Contact", "/contact"],
 ];
 
 const fallbackAgencyProfile = {
-  brandName: "Trip Himalaya", tagline: "Explore. Experience. Live.", logoUrl: "/manus-storage/logo_triphimalaya_598a0ec2.jpg", phone: "+918609752814", whatsapp: "918609752814", email: "hello@triphimalaya.in", address: "Dharamshala, Himachal Pradesh, India", instagramUrl: "", facebookUrl: "", youtubeUrl: "", googleMapsUrl: "",
+  brandName: "Trip Himalaya", tagline: "Explore. Experience. Live.", logoUrl: OFFICIAL_TRIP_HIMALAYA_LOGO, phone: "+918609752814", whatsapp: "918609752814", email: "hello@triphimalaya.in", address: "Dharamshala, Himachal Pradesh, India", instagramUrl: "", facebookUrl: "", youtubeUrl: "", googleMapsUrl: "",
 };
 
 type AgencyProfile = typeof fallbackAgencyProfile;
@@ -17,7 +18,7 @@ type AgencyProfile = typeof fallbackAgencyProfile;
 export function Brand({ light = false, profile = fallbackAgencyProfile }: { light?: boolean; profile?: AgencyProfile }) {
   return <Link href="/" className={`group inline-flex min-w-0 shrink-0 items-center gap-2.5 ${light ? "text-white" : "text-[#123d5b]"}`} aria-label={`${profile.brandName} home`}>
     <span className={`grid size-11 shrink-0 place-items-center overflow-hidden rounded-xl border ${light ? "border-white/35 bg-white shadow-[0_8px_20px_rgba(0,0,0,.18)]" : "border-[#d5e0df] bg-white shadow-[0_6px_16px_rgba(18,61,91,.1)]"}`}><img src={profile.logoUrl} alt="" className="size-full object-contain" /></span>
-    <span className="min-w-0 leading-none"><span className="display block whitespace-nowrap text-[1.1rem] font-bold tracking-[-.055em] sm:text-[1.32rem]">{profile.brandName}</span><span className={`mt-1 hidden whitespace-nowrap text-[.57rem] font-extrabold uppercase tracking-[.14em] sm:block ${light ? "text-white/72" : "text-[#e17818]"}`}>{profile.tagline}</span></span>
+    <span className="min-w-0 leading-none"><span className="display block whitespace-nowrap text-[1.1rem] font-bold tracking-[-.055em] sm:text-[1.32rem]">{profile.brandName}</span>{profile.tagline && <span className={`mt-1 hidden whitespace-nowrap text-[.57rem] font-extrabold uppercase tracking-[.14em] sm:block ${light ? "text-white/72" : "text-[#e17818]"}`}>{profile.tagline}</span>}</span>
   </Link>;
 }
 

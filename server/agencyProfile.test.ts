@@ -5,6 +5,12 @@ const schema = readFileSync(new URL("../drizzle/schema.ts", import.meta.url), "u
 const db = readFileSync(new URL("./db.ts", import.meta.url), "utf8");
 const router = readFileSync(new URL("./routers.ts", import.meta.url), "utf8");
 const portal = readFileSync(new URL("../client/src/pages/AdminPortal.tsx", import.meta.url), "utf8");
+const publicPage = readFileSync(new URL("../client/src/pages/PublicPage.tsx", import.meta.url), "utf8");
+const app = readFileSync(new URL("../client/src/App.tsx", import.meta.url), "utf8");
+const publicLayout = readFileSync(new URL("../client/src/components/PublicLayout.tsx", import.meta.url), "utf8");
+const dashboardLayout = readFileSync(new URL("../client/src/components/DashboardLayout.tsx", import.meta.url), "utf8");
+const dashboardSkeleton = readFileSync(new URL("../client/src/components/DashboardLayoutSkeleton.tsx", import.meta.url), "utf8");
+const adminLogin = readFileSync(new URL("../client/src/pages/AdminLogin.tsx", import.meta.url), "utf8");
 
 describe("agency profile administration contract", () => {
   it("persists one structured public profile with logo, contact, and social profile fields", () => {
@@ -26,6 +32,11 @@ describe("agency profile administration contract", () => {
     expect(schema).toContain('tourCount: varchar("tourCount"');
     expect(schema).toContain('thirdMetricLabel: varchar("thirdMetricLabel"');
     expect(schema).toContain('thirdMetricValue: varchar("thirdMetricValue"');
+    expect(schema).toContain('experiencesTitle: varchar("experiencesTitle"');
+    expect(schema).toContain('experiencesJson: text("experiencesJson")');
+    expect(schema).toContain('aboutStoryTitle: varchar("aboutStoryTitle"');
+    expect(db).toContain("DEFAULT_EXPERIENCES");
+    expect(db).toContain("JSON.stringify(experiences)");
   });
 
   it("keeps public reads open and restricts profile updates to authenticated administrators", () => {
@@ -57,5 +68,28 @@ describe("agency profile administration contract", () => {
     expect(portal).toContain("Connect the local database to edit this profile");
     expect(portal).toContain("databaseNeedsAttention");
     expect(portal).toContain("Try again");
+    expect(portal).toContain("Experiences page");
+    expect(portal).toContain("About page — Our Story");
+    expect(portal).toContain('name="experiencesTitle"');
+    expect(portal).toContain('name="aboutStoryTitle"');
+  });
+
+  it("renders administrator-managed Experiences and Our Story content publicly with official-logo loading fallback", () => {
+    expect(publicPage).toContain("agencyProfile?.aboutStoryTitle");
+    expect(publicPage).toContain("agencyProfile?.experiencesTitle");
+    expect(publicPage).toContain("agencyProfile?.experiences");
+    expect(app).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
+    expect(app).toContain('alt="Trip Himalaya"');
+  });
+
+  it("allows a blank short tagline and uses the shared official logo fallback on public and administrator surfaces", () => {
+    expect(router).toContain("tagline: z.string().trim().max(220)");
+    expect(portal).toContain('label="Short tagline (optional)"');
+    expect(portal).not.toContain('name="tagline" defaultValue={data.tagline} required');
+    expect(publicLayout).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
+    expect(publicLayout).toContain("{profile.tagline &&");
+    expect(dashboardLayout).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
+    expect(dashboardSkeleton).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
+    expect(adminLogin).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
   });
 });

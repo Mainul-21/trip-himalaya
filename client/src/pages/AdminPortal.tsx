@@ -274,7 +274,7 @@ function AgencyProfile() {
     <form onSubmit={save} className="max-w-4xl space-y-6">
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6">
         <div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#eef4f2] text-[#e17818]"><Building2 className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Brand and logo</h2><p className="mt-1 text-sm leading-6 text-slate-500">Update the public name, tagline, and logo. Uploading a logo saves it to the protected media library and uses it in the public header and footer.</p></div></div>
-        <div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Agency name" name="brandName" defaultValue={data.brandName} required /><Field label="Short tagline" name="tagline" defaultValue={data.tagline} required /><div className="sm:col-span-2"><input type="hidden" name="logoUrl" value={logoUrl} readOnly /><AgencyImageUploader label="Agency logo" value={logoUrl} onChange={setLogoUrl} help="Use a clear horizontal logo. JPG, PNG, or WebP up to 12 MB; it is resized and converted to fast WebP." /></div></div>
+        <div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Agency name" name="brandName" defaultValue={data.brandName} required /><Field label="Short tagline (optional)" name="tagline" defaultValue={data.tagline} /><div className="sm:col-span-2"><input type="hidden" name="logoUrl" value={logoUrl} readOnly /><AgencyImageUploader label="Agency logo" value={logoUrl} onChange={setLogoUrl} help="Use a clear horizontal logo. JPG, PNG, or WebP up to 12 MB; it is resized and converted to fast WebP." /></div></div>
       </section>
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6">
         <div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#fff1e5] text-[#e17818]"><Mountain className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Travel styles</h2><p className="mt-1 text-sm leading-6 text-slate-500">Edit each card directly. Upload a relevant Himalayan image, then adjust its title, link, and short visitor-facing copy.</p></div></div>
@@ -1596,6 +1596,7 @@ function Administrators() {
     onSuccess: () => void utils.admin.admins.invalidate(),
   });
   const [open, setOpen] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
   function submit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const f = new FormData(e.currentTarget);
@@ -1611,6 +1612,20 @@ function Administrators() {
           e.currentTarget.reset();
         },
       }
+    );
+  }
+  function saveAdministrator(event: FormEvent<HTMLFormElement>, id: number) {
+    event.preventDefault();
+    const form = new FormData(event.currentTarget);
+    const password = String(form.get("password") || "").trim();
+    update.mutate(
+      {
+        id,
+        name: String(form.get("name") || "").trim(),
+        email: String(form.get("email") || "").trim(),
+        ...(password ? { password } : {}),
+      },
+      { onSuccess: () => setEditingId(null) }
     );
   }
   return (
@@ -1652,13 +1667,14 @@ function Administrators() {
           </Button>
         </form>
       )}
+      {update.error && <p role="alert" className="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{update.error.message}</p>}
       <section className="overflow-hidden rounded-2xl border border-[#dfe8e8] bg-white">
         {data.map(x => (
           <article
             key={x.id}
             className="flex flex-col gap-3 border-b border-[#edf0ed] p-5 last:border-0 sm:flex-row sm:items-center sm:justify-between"
           >
-            <span>
+            <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
                 <h2 className="font-bold text-[#123d5b]">
                   {x.name || "Administrator"}
@@ -1683,9 +1699,20 @@ function Administrators() {
                 </Badge>
               </div>
               <p className="mt-1 text-sm text-slate-500">{x.email}</p>
-            </span>
+              {x.role === "admin" && editingId === x.id && (
+                <form onSubmit={event => saveAdministrator(event, x.id)} className="mt-4 grid gap-3 rounded-xl border border-[#d7e3de] bg-[#f8fbf9] p-4 sm:grid-cols-2">
+                  <div><Label htmlFor={`administrator-name-${x.id}`}>Full name</Label><Input id={`administrator-name-${x.id}`} name="name" defaultValue={x.name || ""} autoComplete="name" className="mt-2 h-10 bg-white" required /></div>
+                  <div><Label htmlFor={`administrator-email-${x.id}`}>Email address</Label><Input id={`administrator-email-${x.id}`} name="email" type="email" defaultValue={x.email || ""} autoComplete="email" className="mt-2 h-10 bg-white" required /></div>
+                  <div className="sm:col-span-2"><Label htmlFor={`administrator-password-${x.id}`}>New password <span className="font-normal text-slate-500">(optional)</span></Label><Input id={`administrator-password-${x.id}`} name="password" type="password" autoComplete="new-password" minLength={12} className="mt-2 h-10 bg-white" aria-describedby={`administrator-password-help-${x.id}`} /><p id={`administrator-password-help-${x.id}`} className="mt-1.5 text-xs leading-5 text-slate-500">Leave this blank to keep the current password. Any new password must have at least 12 characters.</p></div>
+                  <div className="flex flex-wrap gap-2 sm:col-span-2"><Button type="submit" disabled={update.isPending} size="sm" className="rounded-lg bg-[#123d5b] text-xs font-bold hover:bg-[#0b2d46]">{update.isPending ? "Saving…" : "Save changes"}</Button><Button type="button" variant="outline" size="sm" className="rounded-lg text-xs font-bold" onClick={() => setEditingId(null)} disabled={update.isPending}>Cancel</Button></div>
+                </form>
+              )}
+            </div>
             {x.role === "admin" && (
               <div className="flex flex-wrap gap-2">
+                <Button onClick={() => setEditingId(current => current === x.id ? null : x.id)} disabled={update.isPending} variant="outline" size="sm" className="rounded-lg text-xs font-bold" aria-expanded={editingId === x.id}>
+                  <Pencil className="mr-1.5 size-3.5" />{editingId === x.id ? "Close editor" : "Edit details"}
+                </Button>
                 <Button
                   onClick={() =>
                     update.mutate({ id: x.id, isActive: !x.isActive })
