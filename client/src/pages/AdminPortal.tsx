@@ -1050,19 +1050,19 @@ function TourForm({ original, close }: { original: Tour; close: () => void }) {
               />{" "}
               Publish on public website
             </label>
-            <label className="flex items-center gap-2">
+            <label className="flex items-center gap-3 rounded-xl border border-[#f4d2b5] bg-[#fff8f1] px-3 py-3 text-sm font-extrabold text-[#9b4b0b]">
               <input
                 type="checkbox"
                 checked={tour.isBestSeller}
-                onChange={e =>
-                  setTour(x => ({ ...x, isBestSeller: e.target.checked }))
-                }
-              />{" "}
-              Mark as Best Seller
+                onChange={e => setTour(x => ({ ...x, isBestSeller: e.target.checked }))}
+                aria-describedby="best-seller-help"
+                className="size-4 accent-[#e9781c]"
+              />
+              <span><span className="block">Mark as Best Seller</span><span className="mt-0.5 block text-xs font-medium text-[#9b4b0b]/75">Highlight this journey on public cards.</span></span>
             </label>
-            <p className="flex max-w-xs items-center gap-2 text-xs font-medium leading-5 text-slate-500">
+            <p id="best-seller-help" className="flex max-w-xs items-center gap-2 text-xs font-medium leading-5 text-slate-500">
               <CircleHelp className="size-4 shrink-0 text-[#e17818]" />
-              Turn this on to show the orange Best Seller ribbon on public tour cards. Save first, then choose a homepage position below.
+              Save first to show the orange Best Seller ribbon on public tour cards.
             </p>
           </div>
         </EditorSection>
