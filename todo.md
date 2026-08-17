@@ -238,3 +238,5 @@
 - [x] Add regression coverage for the Agency Profile unavailable-database and legacy-schema recovery states, then verify the UI and publish the fix.
 - [x] Simplify the Explore Himachal heading, introduction, and administrator JSON guidance while preserving all six existing card links and image paths.
 - [x] Verify the simplified travel-style section with focused tests, production build, responsive QA, and a published checkpoint.
+- [x] Reinvestigate the repeated Agency Profile loading failure and identify whether the local API, TiDB connection, schema state, or retry path is responsible.
+- [x] Apply and verify a safe Agency Profile recovery fix without changing saved public settings.
