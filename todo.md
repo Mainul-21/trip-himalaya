@@ -263,3 +263,5 @@
 - [x] Unpublish the incomplete placeholder-style featured journey found during live production QA while preserving its administrator data.
 - [x] Replace the public About-page heading “A mountain journey that started in Dharamshala.” with “Our story”.
 - [x] Replace the current public WhatsApp mark with a recognizable official-style WhatsApp logo while preserving accessible labels and enquiry links.
+- [ ] Capture reviewed authenticated desktop and mobile evidence for protected administrator routes, confirming that each displays the workspace rather than a sign-in redirect.
+- [ ] Exercise and document one signed-in administrator interaction at desktop and mobile, such as opening the journey editor or principal administrator detail editor, without exposing credentials.

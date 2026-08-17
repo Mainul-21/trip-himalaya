@@ -19,3 +19,11 @@ The incomplete journey was subsequently unpublished and removed from the feature
 The live public `tours.list` endpoint was also requested directly. It returned structured JSON for the four published journeys, rather than the single-page application HTML fallback, confirming that the public catalogue is receiving API-backed data correctly on the published domain.
 
 Desktop and mobile checks confirm that the About page now displays the concise heading “Our story” and that every shared WhatsApp call-to-action uses a recognizable speech-bubble-and-handset glyph. The floating WhatsApp action remains visibly distinct, has a screen-reader label, and retains the existing WhatsApp enquiry link.
+
+An authenticated preview session reached `/admin/tours` directly at both desktop and mobile widths, with no redirect to the sign-in page. The journey list, publication-status badges, edit and deletion controls, and responsive Homepage Top Trips selectors were visible and readable. The previously unpublished placeholder journey remains available only as a draft in the protected workspace, confirming that the public-content correction did not delete administrator data.
+
+The authenticated desktop Agency Profile view shows the now-optional Short tagline field, direct logo upload, and existing public-profile controls. The principal administrator directory shows the protected Add administrator, Edit details, Disable access, and Remove controls for a subordinate administrator, while the principal record itself exposes no destructive controls.
+
+Mobile checks preserve the same hierarchy: branding inputs and logo upload remain readable, and subordinate administrator controls wrap without clipping or overlap. The principal remains protected from those actions in the mobile presentation.
+
+The live published `/admin/tours` route correctly completed its loading state by redirecting an unauthenticated browser session to `/admin/login`. This confirms the protected-route guard; authenticated mutation testing remains intentionally pending until an approved administrator signs in to the live browser session.
