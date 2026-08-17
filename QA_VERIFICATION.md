@@ -15,3 +15,5 @@ The published Trip Himalaya domain was checked after its initial loader complete
 One existing featured journey has the title `Hdhddhbd`, a zero price, and placeholder-style summary text. It should be reviewed and unpublished or corrected by an authenticated administrator before considering the production catalogue content-ready. This is a content-quality observation; no public tour record was altered during this verification.
 
 The incomplete journey was subsequently unpublished and removed from the featured selection while retaining its database record for later administrator correction. A follow-up live catalogue check confirmed that only the four complete, priced journeys appear in public results and that the former `Hdhddhbd` entry is absent.
+
+The live public `tours.list` endpoint was also requested directly. It returned structured JSON for the four published journeys, rather than the single-page application HTML fallback, confirming that the public catalogue is receiving API-backed data correctly on the published domain.

@@ -232,8 +232,8 @@
 - [x] Verify the new homepage statement and editable statistics section with tests, responsive QA, and a published checkpoint.
 - [x] Add and verify a Vercel serverless API entrypoint and rewrite so external Vercel `/api/trpc` requests reach the Express tRPC router instead of the static HTML fallback.
 - [ ] Redeploy the updated repository on Vercel after the new `/api` rewrite/config change and verify the live URL no longer shows a blank page.
-- [ ] Verify live `/api/trpc` requests on the Vercel deployment return JSON and power the public site correctly after redeployment.
-- [ ] Capture post-redeploy browser QA on the live Vercel domain for homepage/app rendering and key API-backed pages.
+- [x] Verify live `/api/trpc` requests on the Vercel deployment return JSON and power the public site correctly after redeployment.
+- [x] Capture post-redeploy browser QA on the live Vercel domain for homepage/app rendering and key API-backed pages.
 - [x] Diagnose and fix the reported Agency Profile loading failure without changing existing public settings.
 - [x] Add regression coverage for the Agency Profile unavailable-database and legacy-schema recovery states, then verify the UI and publish the fix.
 - [x] Simplify the Explore Himachal heading, introduction, and administrator JSON guidance while preserving all six existing card links and image paths.
