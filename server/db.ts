@@ -59,7 +59,7 @@ function agencyProfileFallback(schemaNeedsUpdate = false, databaseNeedsAttention
 
 function isMissingAgencyBrandingColumn(error: unknown) {
   const message = error instanceof Error ? error.message : String(error);
-  return /(exploreTitle|exploreIntro|travelStylesJson)/i.test(message) && /(unknown column|no such column|failed query)/i.test(message);
+  return /(exploreTitle|exploreIntro|travelStylesJson|touristCount|tourCount|thirdMetricLabel|thirdMetricValue)/i.test(message) && /(unknown column|no such column|failed query)/i.test(message);
 }
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -211,10 +211,6 @@ export async function getAgencyProfile(): Promise<AgencyProfileReadValues> {
       facebookUrl: agencyProfiles.facebookUrl,
       youtubeUrl: agencyProfiles.youtubeUrl,
       googleMapsUrl: agencyProfiles.googleMapsUrl,
-      touristCount: agencyProfiles.touristCount,
-      tourCount: agencyProfiles.tourCount,
-      thirdMetricLabel: agencyProfiles.thirdMetricLabel,
-      thirdMetricValue: agencyProfiles.thirdMetricValue,
     }).from(agencyProfiles).limit(1))[0];
     if (!legacyProfile) return agencyProfileFallback(true);
     return {

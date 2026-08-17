@@ -20,6 +20,8 @@ describe("agency profile administration contract", () => {
     expect(db).toContain("databaseNeedsAttention");
     expect(db).toContain("using safe fallback");
     expect(db).toContain("isMissingAgencyBrandingColumn");
+    expect(db).toContain("touristCount|tourCount|thirdMetricLabel|thirdMetricValue");
+    expect(db).toContain("googleMapsUrl: agencyProfiles.googleMapsUrl");
     expect(schema).toContain('touristCount: varchar("touristCount"');
     expect(schema).toContain('tourCount: varchar("tourCount"');
     expect(schema).toContain('thirdMetricLabel: varchar("thirdMetricLabel"');
