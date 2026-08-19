@@ -65,8 +65,8 @@
 - [x] Diagnose why the Vercel deployment serves repository text or code instead of the built Trip Himalaya site.
 - [x] Add and validate Vercel-compatible build, routing, and server entry configuration so the deployed domain renders the website and API correctly.
 - [x] Push the Vercel deployment repair to the private GitHub repository with clear setup guidance.
-- [ ] Redeploy the updated repository on Vercel and verify the live URL serves the Trip Himalaya interface instead of raw source or text.
-- [ ] Verify the live Vercel API function receives public tRPC requests after redeployment.
+- [x] Redeploy the updated repository on Vercel and verify the live URL serves the Trip Himalaya interface instead of raw source or text.
+- [x] Verify the live Vercel API function receives public tRPC requests after redeployment.
 - [x] Repair and visually verify the mobile navigation menu so all public links remain visible, reachable, and tappable on phone screens.
 - [x] Replace technical labels such as image URL and slug with simple professional agency language in the administrator journey editor.
 - [x] Add a clear gallery section for selecting, reordering, and editing tour photos from the administrator media library.
@@ -74,8 +74,8 @@
 - [x] Remove technical image/slug presentation from public cards and refine the public and administrator UI to look like a professional agency product.
 - [x] Add regression coverage for multi-photo tour galleries and the corrected mobile-navigation breakpoint.
 - [ ] Open and exercise the phone navigation menu to verify every public link and contact action is visible and tappable.
-- [ ] Diagnose the Vercel blank page using deployment logs, live browser inspection, and production asset routing checks.
-- [ ] Repair the Vercel production configuration so the live domain renders the public app and API routes without blank-screen failures.
+- [x] Diagnose the Vercel blank page using deployment logs, live browser inspection, and production asset routing checks.
+- [x] Repair the Vercel production configuration so the live domain renders the public app and API routes without blank-screen failures.
 - [x] Redesign the homepage as a restrained, professional travel-agency experience with less decorative text, clearer hierarchy, and authentic service-focused content.
 - [x] Validate the updated homepage at desktop and phone breakpoints; Vercel live-domain confirmation remains pending redeployment.
 - [x] Add protected administrator media-library removal controls so unused uploaded photos can be managed directly.
@@ -88,7 +88,7 @@
 - [x] Remove unnecessary administrator word-count restrictions from tour, blog, and other admin-managed content while retaining essential security protections.
 - [x] Replace remaining administrator-facing technical or unclear labels with simple task-focused guidance.
 - [x] Audit setup, profile, administrator-management, journey, blog, and review screens for plain-language guidance and verify the revised wording.
-- [ ] Inspect the live Vercel deployment and repair the configuration or runtime issue causing the user-reported blank white page.
+- [x] Inspect the live Vercel deployment and repair the configuration or runtime issue causing the user-reported blank white page.
 - [x] Include the selected tour name and a concise tour summary in every tour-specific WhatsApp enquiry message sent to the administrator.
 - [x] Upgrade the homepage WhatsApp control with a recognisable, accessible WhatsApp-style icon treatment.
 - [x] Rework the About page into clear professional sections covering the company, mission, services, and operating values.
