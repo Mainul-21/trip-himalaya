@@ -13,10 +13,12 @@ describe("premium journey presentation", () => {
   it("keeps the homepage grounded and exposes all requested travel styles", () => {
     expect(home).toContain("Discover Himachal.");
     expect(home).toContain("Experience the Himalayas.");
-    expect(home).toContain("Curated journeys. Local expertise. Unforgettable memories.");
+    expect(home).toContain("Thoughtful journeys, local knowledge and a clear plan for the mountains.");
     expect(home).toContain("Pick a style to find a journey that fits.");
+    expect(home).toContain("Only feedback verified and published by Trip Himalaya appears here.");
+    expect(home).not.toContain("500+ Google Reviews");
     for (const label of ["Trekking", "Culture & Local", "Adventure", "Short Breaks", "Best Sellers", "Custom Plan"]) {
-      expect(home).toContain(`title: \"${label}\"`);
+      expect(home).toContain(`title: "${label}"`);
     }
   });
 

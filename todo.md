@@ -268,4 +268,7 @@
 - [ ] Help resolve the user’s local PublicPage.tsx merge conflict and confirm the Vite server compiles again.
 - [ ] Diagnose and resolve the Vercel deployment where tour data and images are not loading.
 - [ ] Restore existing tour-image rendering on Vercel after confirming the public tour API is loading correctly.
+- [x] Restyle the existing homepage to closely follow the supplied reference hierarchy, navigation treatment, hero, trust bar, travel-style tiles, journey cards, value proposition, enquiry strip, and footer.
+- [x] Preserve only verified Trip Himalaya tours, statistics, and customer reviews during the reference-led homepage update; do not introduce fictional ratings, testimonials, Google-review counts, or sample journeys.
+- [x] Keep the redesigned Traveller Stories area bound only to existing administrator-managed reviews, with an honest empty state when none are published.
 - [x] Fix the Vercel serverless bundle so `api/index.js` can resolve the shared server entrypoint at runtime.
