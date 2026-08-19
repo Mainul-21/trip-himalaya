@@ -271,4 +271,5 @@
 - [x] Restyle the existing homepage to closely follow the supplied reference hierarchy, navigation treatment, hero, trust bar, travel-style tiles, journey cards, value proposition, enquiry strip, and footer.
 - [x] Preserve only verified Trip Himalaya tours, statistics, and customer reviews during the reference-led homepage update; do not introduce fictional ratings, testimonials, Google-review counts, or sample journeys.
 - [x] Keep the redesigned Traveller Stories area bound only to existing administrator-managed reviews, with an honest empty state when none are published.
+- [x] Verify development-preview media loading after the Vercel fallback update and repair only if request evidence confirms a local source defect.
 - [x] Fix the Vercel serverless bundle so `api/index.js` can resolve the shared server entrypoint at runtime.
