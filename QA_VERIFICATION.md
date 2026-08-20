@@ -123,3 +123,7 @@ The public navigation trigger now uses an explicit vertical three-dots control, 
 ## Mobile drawer layering and enquiry Date guidance — 20 August 2026
 
 The shared header now creates an isolated `z-50` layer and the expanded mobile drawer uses its own `z-50` stacking layer with a safe viewport height and scroll fallback. Navigation links and the planning action use a minimum 44 px height and explicit line-height, preventing labels from colliding when the three-dots control is opened. The 390 px homepage capture confirms the final enquiry field visibly starts as **Date**, while the 980 px desktop-mode capture confirms the three-dots trigger and Plan Your Trip control remain visible together. Source-level regression checks protect the layer, link-height, and Date-field contracts; TypeScript and all 76 tests pass.
+
+## Professional mobile menu control and header spacing — 20 August 2026
+
+The vertical three-dots glyph has been replaced with a conventional, high-contrast hamburger menu control. At the 390 px phone viewport, the brand and hamburger remain clearly separated and readable; at the 980 px phone desktop-mode viewport, **Plan Your Trip** and the hamburger are aligned in one compact right-side group, eliminating the earlier large empty space between them. The focused navigation regression and TypeScript validation pass.

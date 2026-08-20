@@ -13,10 +13,11 @@ describe("supplied reference header and footer contract", () => {
     expect(source).toContain('aria-controls="mobile-menu"');
     expect(source).toContain('aria-expanded={mobileOpen}');
     expect(source).toContain("lg:hidden");
-    expect(source).toContain("MoreVertical");
     expect(source).toContain("top-full z-50");
-    expect(source).toContain("min-h-11");
+    expect(source).toContain("Menu");
+    expect(source).not.toContain("MoreVertical");
     expect(styles).toContain('@import "tailwindcss";');
+    expect(source).toContain("flex items-center gap-2 sm:gap-3 lg:contents");
   });
 
   it("keeps every supplied navigation item, the functional plan action, and role-aware dashboard access", () => {
