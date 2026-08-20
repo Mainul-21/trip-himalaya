@@ -9,12 +9,12 @@ import { FormEvent, useEffect, useState } from "react";
 import { Link } from "wouter";
 
 const fallbackTripStyles = [
-  { title: "Trekking", href: "/tours?style=trekking", image: "/manus-storage/cat-trekking_9566f5de.jpg", copy: "Guided walks with a pace that makes sense." },
-  { title: "Culture & Local", href: "/tours?style=experiences", image: "/manus-storage/cat-spiritual_d10e207e.jpg", copy: "Dharamshala, food and local context." },
-  { title: "Adventure", href: "/tours?style=adventure", image: "/manus-storage/cat-camping_e33b2e8c.jpg", copy: "Active Himachal escapes with practical planning." },
-  { title: "Short Breaks", href: "/tours?style=short-breaks", image: "/manus-storage/cat-village_a2ed0b7f.jpg", copy: "One- and two-day plans for a quick reset." },
-  { title: "Best Sellers", href: "/tours?style=best-sellers", image: "/manus-storage/cat-tours_2d6d5a59.jpg", copy: "Journeys the Trip Himalaya team has marked." },
-  { title: "Custom Plan", href: "/contact", image: "/manus-storage/cat-custom_d064e047.jpg", copy: "Share your dates and build your own route." },
+  { title: "Trekking", href: "/tours?style=trekking", image: "/manus-storage/cat-trekking_0c532a80.jpg", copy: "Guided walks with a pace that makes sense." },
+  { title: "Culture & Local", href: "/tours?style=experiences", image: "/manus-storage/cat-spiritual_e35128a7.jpg", copy: "Dharamshala, food and local context." },
+  { title: "Adventure", href: "/tours?style=adventure", image: "/manus-storage/cat-camping_f8918883.jpg", copy: "Active Himachal escapes with practical planning." },
+  { title: "Short Breaks", href: "/tours?style=short-breaks", image: "/manus-storage/cat-village_2bd304a0.jpg", copy: "One- and two-day plans for a quick reset." },
+  { title: "Best Sellers", href: "/tours?style=best-sellers", image: "/manus-storage/cat-tours_d33aa080.jpg", copy: "Journeys the Trip Himalaya team has marked." },
+  { title: "Custom Plan", href: "/contact", image: "/manus-storage/cat-custom_207315af.jpg", copy: "Share your dates and build your own route." },
 ];
 
 const trustPoints = [
@@ -35,12 +35,12 @@ const whyChoosePoints = [
 const travelStyleIcons = [Mountain, Landmark, TentTree, Compass, Star, CalendarDays] as const;
 
 const suppliedStyleImages = [
-  "/manus-storage/cat-trekking_9566f5de.jpg",
-  "/manus-storage/cat-spiritual_d10e207e.jpg",
-  "/manus-storage/cat-camping_e33b2e8c.jpg",
-  "/manus-storage/cat-village_a2ed0b7f.jpg",
-  "/manus-storage/cat-tours_2d6d5a59.jpg",
-  "/manus-storage/cat-custom_d064e047.jpg",
+  "/manus-storage/cat-trekking_0c532a80.jpg",
+  "/manus-storage/cat-spiritual_e35128a7.jpg",
+  "/manus-storage/cat-camping_f8918883.jpg",
+  "/manus-storage/cat-village_2bd304a0.jpg",
+  "/manus-storage/cat-tours_d33aa080.jpg",
+  "/manus-storage/cat-custom_207315af.jpg",
 ] as const;
 
 const legacyStyleImagePaths = new Set([
@@ -52,6 +52,12 @@ const legacyStyleImagePaths = new Set([
   "/manus-storage/dhauladhar-hut-panorama_c5effca1.jpg",
   "/manus-storage/triund-lake-unsplash_d755f9cf.jpg",
   "/manus-storage/dhauladhar-dharamshala_8ddd37f7.jpg",
+  "/manus-storage/cat-trekking_9566f5de.jpg",
+  "/manus-storage/cat-spiritual_d10e207e.jpg",
+  "/manus-storage/cat-camping_e33b2e8c.jpg",
+  "/manus-storage/cat-village_a2ed0b7f.jpg",
+  "/manus-storage/cat-tours_2d6d5a59.jpg",
+  "/manus-storage/cat-custom_d064e047.jpg",
 ]);
 
 function getTravelStyleImage(image: string, index: number) {
