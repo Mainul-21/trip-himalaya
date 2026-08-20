@@ -46,7 +46,7 @@ export default function TourPhotoCarousel({
 
   const activePhoto = photos[activeIndex] ?? heroImage;
   const deliveredPhoto = getImageVariant(activePhoto, compact ? "card" : "hero");
-  const height = compact ? "h-40" : "h-[22rem] sm:h-[28rem]";
+  const height = compact ? "h-48 sm:h-52" : "h-[24rem] sm:h-[30rem]";
 
   return (
     <div
@@ -75,7 +75,7 @@ export default function TourPhotoCarousel({
           <button
             type="button"
             onClick={() => move(-1)}
-            className="focus-ring absolute left-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-md border border-white/45 bg-[#092e49]/82 text-white opacity-100 transition-colors hover:bg-[#092e49] sm:opacity-0 sm:group-hover:opacity-100"
+            className="focus-ring absolute left-3 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-md border border-white/45 bg-[#092e49]/82 text-white opacity-100 transition-colors hover:bg-[#092e49] sm:opacity-0 sm:group-hover:opacity-100"
             aria-label={`Previous photo for ${title}`}
           >
             <ChevronLeft className="size-5" />
@@ -83,13 +83,13 @@ export default function TourPhotoCarousel({
           <button
             type="button"
             onClick={() => move(1)}
-            className="focus-ring absolute right-3 top-1/2 grid size-9 -translate-y-1/2 place-items-center rounded-md border border-white/45 bg-[#092e49]/82 text-white opacity-100 transition-colors hover:bg-[#092e49] sm:opacity-0 sm:group-hover:opacity-100"
+            className="focus-ring absolute right-3 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-md border border-white/45 bg-[#092e49]/82 text-white opacity-100 transition-colors hover:bg-[#092e49] sm:opacity-0 sm:group-hover:opacity-100"
             aria-label={`Next photo for ${title}`}
           >
             <ChevronRight className="size-5" />
           </button>
-          <div className="absolute bottom-4 right-4 flex items-center gap-1.5 border border-white/25 bg-[#092e49]/82 px-2.5 py-1.5 text-[.65rem] font-bold text-white">
-            <Images className="size-3.5" aria-hidden="true" />
+          <div className="absolute bottom-4 right-4 flex items-center gap-1.5 border border-white/25 bg-[#092e49]/82 px-3 py-2 text-[.75rem] font-bold text-white">
+            <Images className="size-4" aria-hidden="true" />
             <span>{activeIndex + 1}/{photos.length}</span>
           </div>
           <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 gap-1.5" aria-label="Choose photo">
@@ -106,7 +106,7 @@ export default function TourPhotoCarousel({
           </div>
         </>
       )}
-      <span className="absolute bottom-4 left-4 text-[.68rem] font-bold uppercase tracking-[.1em] text-white/90">{location}</span>
+      <span className="absolute bottom-4 left-4 text-[.78rem] font-bold uppercase tracking-[.1em] text-white/90">{location}</span>
     </div>
   );
 }

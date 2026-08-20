@@ -26,9 +26,9 @@ describe("principal admin account management and tour-card presentation", () => 
     expect(portal).toContain("Remove");
   });
 
-  it("uses the compact reference package layout while keeping the real price and both journey actions visible", () => {
-    expect(tourCard).toContain('className="mt-2 flex items-end justify-between"');
-    expect(tourCard).toContain('className="block text-[.95rem] font-extrabold leading-none text-[#e9781c]"');
+  it("uses the readable reference package layout while keeping the real price and both journey actions visible", () => {
+    expect(tourCard).toContain('className="mt-3 flex items-end justify-between"');
+    expect(tourCard).toContain('className="block text-[1.15rem] font-extrabold leading-none text-[#e9781c]"');
     expect(tourCard).toContain("View details");
     expect(tourCard).toContain("Enquire now");
   });

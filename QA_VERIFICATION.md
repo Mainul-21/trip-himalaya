@@ -91,3 +91,17 @@ The same reference system now carries through every visitor-facing route: public
 ## Live Vercel confirmation — 20 August 2026
 
 The cache-busted production URL `https://triphimalaya.vercel.app/?v=821ec6a0` completed its initial branded loader and mounted the public application rather than serving a blank page or source text. The live document exposes the reference-aligned header, hero controls, category links, real tour cards with details and WhatsApp actions, enquiry form, telephone, social links, and footer search. This confirms the connected Vercel deployment is currently serving the public site successfully.
+
+## Enlarged replica interface and action review — 20 August 2026
+
+Desktop and phone checks confirm the revised public text, Plan Trip button, mobile navigation trigger, carousel controls, package-card price/actions, enquiry controls, and footer links are now visibly larger and readable. On the live catalogue, the Best Sellers filter was exercised and reduced the listing to the published Kareri Lake Explorer record. The displayed tour card exposes its live detail route, prefilled WhatsApp enquiry URL, direct telephone action, carousel controls, and accessible photo selectors. The source assertions and regression suite now protect the approved larger readable control sizing.
+
+## Final public action and readability verification — 20 August 2026
+
+After the final scale correction, desktop and phone checks confirm larger readable public typography, expanded navigation and contact controls, larger carousel arrows, clearer journey-card metadata, pricing, and actions, and legible footer links. The public catalogue was exercised with the Best Sellers filter; it correctly reduced the live catalogue to the published best-selling journey. The visible public experience retains its tour-detail links, WhatsApp enquiry URLs with tour context, telephone action, enquiry form, footer search, navigation links, and responsive mobile controls. The final regression suite passes after these readability corrections, as do TypeScript validation and the production build.
+
+The Kareri Lake Explorer detail route was opened from the live catalogue and completed its loader successfully. Its real gallery, previous/next photo controls, itinerary, FAQ summaries, booking route, direct telephone action, and tour-context WhatsApp message are visible and available after the final public scale correction.
+
+The visible WhatsApp control was followed to the official WhatsApp destination for Trip Himalaya’s configured contact number, confirming that the public contact action resolves rather than failing. No message was sent and no user information was entered.
+
+After a fresh route load, the live Kareri Lake Explorer detail page completed its journey loader and exposed the real photo controls, route return, booking, tour-specific WhatsApp, telephone, and footer actions. This establishes the responsive detail-page action set before exercising its gallery navigation.
