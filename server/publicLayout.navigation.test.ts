@@ -24,6 +24,11 @@ describe("PublicLayout mobile navigation contract", () => {
     expect(source).toContain("Admin dashboard");
   });
 
+  it("keeps the supplied homepage header treatment for cache-busted homepage URLs", () => {
+    expect(source).toContain('const isHomepage = location.split("?")[0] === "/"');
+    expect(source).toContain('isHomepage ? "border-white/15 bg-[#082f4b]/68 backdrop-blur-md"');
+  });
+
   it("uses the supplied logo and exposes saved public contact and social profile details in the footer", () => {
     expect(source).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
     expect(source).toContain("resolveImageUrl(profile.logoUrl)");

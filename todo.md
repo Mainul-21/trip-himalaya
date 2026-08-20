@@ -277,3 +277,4 @@
 - [x] Restyle only the public homepage to closely follow the supplied 19 August reference composition, preserving real Trip Himalaya content, visitor flows, editable agency data, and no fabricated review or statistic content.
 - [x] Safely adapt the supplied homepage source archive into the existing responsive Trip Himalaya homepage while retaining live administrator-managed data and working visitor actions.
 - [x] Replace the homepage presentation with the newly supplied exact-replica-builder source structure while retaining responsive behavior, real administrator-managed Trip Himalaya data, and functional public actions.
+- [x] Convert the homepage markup and styling to follow the supplied exact-replica-builder code literally wherever compatible, rather than an adapted approximation, while preserving Trip Himalaya live data and actions.
