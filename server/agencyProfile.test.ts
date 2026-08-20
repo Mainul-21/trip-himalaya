@@ -92,4 +92,15 @@ describe("agency profile administration contract", () => {
     expect(dashboardSkeleton).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
     expect(adminLogin).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
   });
+
+  it("keeps every administrator navigation option visible by default and reachable from the phone navigation trigger", () => {
+    expect(dashboardLayout).toContain("<SidebarProvider defaultOpen>");
+    expect(dashboardLayout).toContain('collapsible="offcanvas"');
+    expect(dashboardLayout).toContain('aria-label="Open administration navigation"');
+    expect(dashboardLayout).toContain('label: "Tours & placement"');
+    expect(dashboardLayout).toContain('label: "Photo library"');
+    expect(dashboardLayout).toContain('label: "Booking requests"');
+    expect(dashboardLayout).toContain('label: "Enquiries"');
+    expect(dashboardLayout).toContain('label: "Public agency profile"');
+  });
 });
