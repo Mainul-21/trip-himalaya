@@ -263,7 +263,7 @@
 - [x] Unpublish the incomplete placeholder-style featured journey found during live production QA while preserving its administrator data.
 - [x] Replace the public About-page heading “A mountain journey that started in Dharamshala.” with “Our story”.
 - [x] Replace the current public WhatsApp mark with a recognizable official-style WhatsApp logo while preserving accessible labels and enquiry links.
-- [ ] Capture reviewed authenticated desktop and mobile evidence for protected administrator routes, confirming that each displays the workspace rather than a sign-in redirect.
+- [x] Capture reviewed authenticated desktop and mobile evidence for protected administrator routes, confirming that each displays the workspace rather than a sign-in redirect.
 - [ ] Exercise and document one signed-in administrator interaction at desktop and mobile, such as opening the journey editor or principal administrator detail editor, without exposing credentials.
 - [ ] Help resolve the user’s local PublicPage.tsx merge conflict and confirm the Vite server compiles again.
 - [x] Diagnose and resolve the Vercel deployment where tour data and images are not loading.
@@ -280,3 +280,4 @@
 - [x] Convert the homepage markup and styling to follow the supplied exact-replica-builder code literally wherever compatible, rather than an adapted approximation, while preserving Trip Himalaya live data and actions.
 - [x] Rebuild the homepage to match the supplied Lovable reference URL as closely as possible, with no independent visual direction and with existing Trip Himalaya data, administrator editing, responsive layouts, and visitor actions retained.
 - [x] Inspect and reproduce the replacement Lovable preview URL as the definitive homepage reference while retaining all existing Trip Himalaya live data and actions.
+- [x] Rebuild every public Trip Himalaya page and shared public component to match the supplied reference design end-to-end, while retaining administrator-managed data, responsive behavior, and working visitor actions.

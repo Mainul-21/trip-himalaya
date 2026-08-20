@@ -1,51 +1,20 @@
 import PublicLayout from "@/components/PublicLayout";
 import TourCard from "@/components/TourCard";
 import { trpc } from "@/lib/trpc";
-import { ArrowRight, Filter, Loader2 } from "lucide-react";
+import { Filter, Loader2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
-import { Link, useSearch } from "wouter";
+import { useSearch } from "wouter";
 
-const coreFilters = [
-  { id: "all", label: "All journeys" },
-  { id: "best-sellers", label: "Best Sellers" },
-  { id: "trekking", label: "Trekking" },
-  { id: "experiences", label: "Culture & Local" },
-  { id: "adventure", label: "Adventure" },
-  { id: "short-breaks", label: "Short Breaks" },
-];
-
-function filterMatches(tour: { category: string; duration: string; isBestSeller?: boolean }, filterId: string) {
-  if (filterId === "all") return true;
-  if (filterId === "best-sellers") return Boolean(tour.isBestSeller);
-  if (filterId === "short-breaks") return /^\s*[12]\s*Days?\b/i.test(tour.duration);
-  if (filterId.startsWith("category:")) return tour.category === filterId.slice("category:".length);
-  if (filterId === "experiences") return tour.category.toLowerCase() === "experiences";
-  return tour.category.toLowerCase() === filterId;
-}
+const coreFilters = [{ id: "all", label: "All journeys" }, { id: "best-sellers", label: "Best Sellers" }, { id: "trekking", label: "Trekking" }, { id: "experiences", label: "Culture & Local" }, { id: "adventure", label: "Adventure" }, { id: "short-breaks", label: "Short Breaks" }];
+function filterMatches(tour: { category: string; duration: string; isBestSeller?: boolean }, filterId: string) { if (filterId === "all") return true; if (filterId === "best-sellers") return Boolean(tour.isBestSeller); if (filterId === "short-breaks") return /^\s*[12]\s*Days?\b/i.test(tour.duration); if (filterId.startsWith("category:")) return tour.category === filterId.slice("category:".length); if (filterId === "experiences") return tour.category.toLowerCase() === "experiences"; return tour.category.toLowerCase() === filterId; }
 
 export default function Tours() {
   const { data: tours = [], isLoading, isError, refetch } = trpc.tours.list.useQuery(undefined, { retry: false });
   const search = useSearch();
-  const requestedFilter = useMemo(() => {
-    const params = new URLSearchParams(search);
-    return (params.get("style") || params.get("category") || "").trim().toLowerCase();
-  }, [search]);
+  const requestedFilter = useMemo(() => { const params = new URLSearchParams(search); return (params.get("style") || params.get("category") || "").trim().toLowerCase(); }, [search]);
   const [activeFilter, setActiveFilter] = useState("all");
-  const filters = useMemo(() => {
-    const representedCategories = new Set(["trekking", "experiences", "adventure"]);
-    const extraCategories = Array.from(new Set(tours.map(tour => tour.category)))
-      .filter(category => !representedCategories.has(category.toLowerCase()))
-      .map(category => ({ id: `category:${category}`, label: category }));
-    return [...coreFilters, ...extraCategories];
-  }, [tours]);
-
-  useEffect(() => {
-    if (!requestedFilter) return;
-    const requestedCategory = filters.find(filter => filter.id === `category:${requestedFilter}` || filter.id === requestedFilter || filter.label.toLowerCase() === requestedFilter);
-    setActiveFilter(requestedCategory?.id ?? "all");
-  }, [filters, requestedFilter]);
-
+  const filters = useMemo(() => { const represented = new Set(["trekking", "experiences", "adventure"]); const extra = Array.from(new Set(tours.map(tour => tour.category))).filter(category => !represented.has(category.toLowerCase())).map(category => ({ id: `category:${category}`, label: category })); return [...coreFilters, ...extra]; }, [tours]);
+  useEffect(() => { if (!requestedFilter) return; const match = filters.find(filter => filter.id === `category:${requestedFilter}` || filter.id === requestedFilter || filter.label.toLowerCase() === requestedFilter); setActiveFilter(match?.id ?? "all"); }, [filters, requestedFilter]);
   const visible = useMemo(() => tours.filter(tour => filterMatches(tour, activeFilter)), [activeFilter, tours]);
-
-  return <PublicLayout><section className="container py-12 sm:py-5"><div className="mb-8 border-y border-[#dfe8e8] py-4"><div className="flex flex-wrap items-center gap-x-5 gap-y-3"><span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[.1em] text-[#123d5b]"><Filter className="size-4 text-[#e17818]" /> Filter trips</span>{filters.map(filter => <button key={filter.id} onClick={() => setActiveFilter(filter.id)} className={`focus-ring border-b-2 px-1 py-1 text-sm font-bold transition ${activeFilter === filter.id ? "border-[#e17818] text-[#123d5b]" : "border-transparent text-[#647a87] hover:border-[#b8cbc5] hover:text-[#123d5b]"}`}>{filter.label}</button>)}</div></div>{isLoading ? <div className="grid min-h-64 place-items-center" aria-live="polite"><Loader2 className="animate-spin text-[#e17818]" /><span className="sr-only">Loading tours</span></div> : isError ? <div className="border border-[#dfe8e8] bg-[#eef4f2] p-8 text-center"><p className="font-semibold text-[#123d5b]">We could not load journeys right now.</p><p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-600">Please try again in a moment, or get in touch and we will help you plan.</p><button className="focus-ring mt-4 bg-[#123d5b] px-5 py-2 text-xs font-bold text-white" onClick={() => void refetch()}>Try again</button></div> : visible.length ? <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{visible.map(tour => <TourCard key={tour.id} tour={tour} />)}</div> : <div className="border border-dashed border-[#ccd9d7] bg-[#fbfcfa] p-10 text-center"><p className="font-semibold text-[#123d5b]">No journeys match this filter yet.</p><p className="mt-2 text-sm text-slate-500">Browse all journeys or tell us what you are planning and we will help you choose.</p><button onClick={() => setActiveFilter("all")} className="focus-ring mt-4 bg-[#123d5b] px-5 py-2 text-xs font-bold text-white">Show all journeys</button></div>}</section></PublicLayout>;
+  return <PublicLayout><section className="border-b border-[#254f68] bg-[#123d5b] py-14 text-center text-white sm:py-18"><div className="container"><p className="text-[.7rem] font-extrabold uppercase tracking-[.16em] text-[#f39a48]">Trip Himalaya</p><h1 className="display mt-3 text-[clamp(2.5rem,5vw,4rem)] font-bold leading-none">Popular Treks & Tours</h1><p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-white/76">Choose a journey, then ask Trip Himalaya about your dates and group.</p></div></section><section className="container py-10 sm:py-14"><div className="mb-9 border-y border-[#dfe8e8] py-4"><div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-3"><span className="inline-flex items-center gap-2 text-xs font-extrabold uppercase tracking-[.1em] text-[#123d5b]"><Filter className="size-4 text-[#e17818]" /> Filter trips</span>{filters.map(filter => <button key={filter.id} onClick={() => setActiveFilter(filter.id)} className={`focus-ring border-b-2 px-1 py-1 text-sm font-bold transition ${activeFilter === filter.id ? "border-[#e9781c] text-[#123d5b]" : "border-transparent text-[#647a87] hover:border-[#b8cbc5] hover:text-[#123d5b]"}`}>{filter.label}</button>)}</div></div>{isLoading ? <div className="grid min-h-64 place-items-center" aria-live="polite"><Loader2 className="animate-spin text-[#e17818]" /><span className="sr-only">Loading tours</span></div> : isError ? <div className="border border-[#dfe8e8] bg-[#eef4f2] p-8 text-center"><p className="font-semibold text-[#123d5b]">We could not load journeys right now.</p><button className="focus-ring mt-4 bg-[#123d5b] px-5 py-2 text-xs font-bold text-white" onClick={() => void refetch()}>Try again</button></div> : visible.length ? <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">{visible.map(tour => <TourCard key={tour.id} tour={tour} />)}</div> : <div className="border border-dashed border-[#ccd9d7] bg-[#fbfcfa] p-10 text-center"><p className="font-semibold text-[#123d5b]">No journeys match this filter yet.</p><button onClick={() => setActiveFilter("all")} className="focus-ring mt-4 bg-[#123d5b] px-5 py-2 text-xs font-bold text-white">Show all journeys</button></div>}</section></PublicLayout>;
 }
