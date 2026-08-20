@@ -18,6 +18,8 @@ describe("premium journey presentation", () => {
     expect(home).toContain("Based on published Trip Himalaya reviews");
     expect(home).toContain("PLAN YOUR HIMACHAL TRIP");
     expect(home).toContain("WhatsApp Number");
+    expect(home).toContain('placeholder="Date"');
+    expect(home).toContain('type={dateFieldFocused ? "date" : "text"}');
     expect(home).toContain("Destination / Places");
     expect(home).toContain("cat-trekking_0c532a80.jpg");
     expect(home).toContain("trpc.tours.list.useQuery");

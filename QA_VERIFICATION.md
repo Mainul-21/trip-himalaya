@@ -119,3 +119,7 @@ The 390 px mobile full-page verification confirms that the source hierarchy coll
 ## Three-dots mobile navigation repair — 20 August 2026
 
 The public navigation trigger now uses an explicit vertical three-dots control, with a larger 44 px touch target. It remains visible until the full `lg` desktop-navigation breakpoint instead of disappearing at the earlier `md` breakpoint. A 390 px phone viewport verifies the visible three-dots control beside the Trip Himalaya brand, and a 980 px viewport—representative of a phone browser’s desktop-mode CSS width—also retains the visible three-dots trigger alongside the Plan Your Trip action. The drawer uses the same breakpoint, so it stays available whenever the trigger is visible. TypeScript and the complete 76-test suite pass, including the updated navigation regression.
+
+## Mobile drawer layering and enquiry Date guidance — 20 August 2026
+
+The shared header now creates an isolated `z-50` layer and the expanded mobile drawer uses its own `z-50` stacking layer with a safe viewport height and scroll fallback. Navigation links and the planning action use a minimum 44 px height and explicit line-height, preventing labels from colliding when the three-dots control is opened. The 390 px homepage capture confirms the final enquiry field visibly starts as **Date**, while the 980 px desktop-mode capture confirms the three-dots trigger and Plan Your Trip control remain visible together. Source-level regression checks protect the layer, link-height, and Date-field contracts; TypeScript and all 76 tests pass.

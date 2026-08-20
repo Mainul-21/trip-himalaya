@@ -9,11 +9,13 @@ describe("supplied reference header and footer contract", () => {
   it("places the literal transparent reference header inside the homepage hero while retaining an accessible phone menu", () => {
     expect(home).toContain("<PublicHeader profile={agency} />");
     expect(home).toContain("<PublicLayout showHeader={false}>");
-    expect(source).toContain('className={`relative z-10 ${isHomepage ? "" : "bg-primary"}`}');
+    expect(source).toContain('className={`relative z-50 isolate ${isHomepage ? "" : "bg-primary"}`}');
     expect(source).toContain('aria-controls="mobile-menu"');
     expect(source).toContain('aria-expanded={mobileOpen}');
     expect(source).toContain("lg:hidden");
     expect(source).toContain("MoreVertical");
+    expect(source).toContain("top-full z-50");
+    expect(source).toContain("min-h-11");
     expect(styles).toContain('@import "tailwindcss";');
   });
 
