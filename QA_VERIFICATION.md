@@ -77,3 +77,5 @@ A fresh cache-busted check of the managed published origin now completes success
 ## Literal replica header verification — 20 August 2026
 
 The supplied replica header treatment was checked on cache-busted desktop and 390 px mobile URLs. Query-string homepage URLs now retain the transparent hero header, omit the non-home search field, preserve the image-led hero, trust bar, responsive Plan Trip control, and mobile navigation trigger. The correction is covered by the public-layout regression test; all 79 automated tests and TypeScript validation pass.
+
+A fresh managed-preview browser check for checkpoint `ee881e8c` completed after the brief branded loader. The public document exposes the exact-replica hero, top navigation, travel-style filters, hero controls, published journey actions, enquiry fields, WhatsApp, telephone, social links, and footer search. This confirms the current published preview serves the revised homepage rather than a stale bundle.
