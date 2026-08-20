@@ -9,6 +9,7 @@ const publicPage = readFileSync(new URL("../client/src/pages/PublicPage.tsx", im
 const app = readFileSync(new URL("../client/src/App.tsx", import.meta.url), "utf8");
 const publicLayout = readFileSync(new URL("../client/src/components/PublicLayout.tsx", import.meta.url), "utf8");
 const dashboardLayout = readFileSync(new URL("../client/src/components/DashboardLayout.tsx", import.meta.url), "utf8");
+const sidebarPrimitive = readFileSync(new URL("../client/src/components/ui/sidebar.tsx", import.meta.url), "utf8");
 const dashboardSkeleton = readFileSync(new URL("../client/src/components/DashboardLayoutSkeleton.tsx", import.meta.url), "utf8");
 const adminLogin = readFileSync(new URL("../client/src/pages/AdminLogin.tsx", import.meta.url), "utf8");
 
@@ -94,9 +95,12 @@ describe("agency profile administration contract", () => {
   });
 
   it("keeps every administrator navigation option visible by default and reachable from the phone navigation trigger", () => {
-    expect(dashboardLayout).toContain("<SidebarProvider defaultOpen>");
+    expect(dashboardLayout).toContain("<SidebarProvider defaultOpen className=");
     expect(dashboardLayout).toContain('collapsible="offcanvas"');
     expect(dashboardLayout).toContain('aria-label="Open administration navigation"');
+    expect(dashboardLayout).toContain('[--sidebar:#123d5b] [--sidebar-foreground:#fff]');
+    expect(sidebarPrimitive).toContain('className={cn("bg-sidebar text-sidebar-foreground w-(--sidebar-width) p-0 [&>button]:hidden", className)}');
+    expect(sidebarPrimitive).toContain('className={cn("bg-sidebar text-sidebar-foreground group-data-[variant=floating]');
     expect(dashboardLayout).toContain('label: "Tours & placement"');
     expect(dashboardLayout).toContain('label: "Photo library"');
     expect(dashboardLayout).toContain('label: "Booking requests"');

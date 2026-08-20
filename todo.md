@@ -168,6 +168,7 @@
 - [x] Diagnose and repair the reported missing public and uploaded images when the project is run locally on the owner’s PC.
 - [x] Diagnose and repair the local administrator sign-in API request returning an HTML page instead of a tRPC JSON response.
 - [x] Restore the two empty homepage source-reference experience-card images using existing relevant managed Trip Himalaya media.
+- [ ] Ensure all six first-viewport homepage experience-card images load reliably without altering the supplied reference layout.
 - [x] Provide a complete, owner-friendly Vercel deployment procedure with required environment variables and production checks.
 - [x] Add administrator-controlled Best Seller status to tours and display an accessible Best Seller badge on applicable public cards.
 - [x] Expand homepage trip-style filters with clear visual categories and working links to filtered tour results.
@@ -289,3 +290,4 @@
 - [x] Replace the mobile vertical three-dots trigger with a professional hamburger icon and keep it closely grouped with Plan Your Trip in desktop-mode phone layouts.
 - [x] Add a clear View Website action to the administrator portal so signed-in administrators can open the public Trip Himalaya site directly.
 - [x] Restore clearly visible left-side administrator navigation options for all portal sections on desktop and mobile.
+- [x] Repair the blank administrator sidebar shown in phone desktop mode so every left-side navigation option visibly renders and remains usable.

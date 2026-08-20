@@ -2,9 +2,37 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarInset, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { BriefcaseBusiness, Building2, ClipboardList, ImagePlus, LayoutDashboard, LogOut, Mail, MessageSquare, Mountain, Settings, ShieldCheck, Users } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarFooter,
+  SidebarHeader,
+  SidebarInset,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
+import {
+  BriefcaseBusiness,
+  Building2,
+  ClipboardList,
+  ImagePlus,
+  LayoutDashboard,
+  LogOut,
+  Mail,
+  MessageSquare,
+  Mountain,
+  Settings,
+  Users,
+} from "lucide-react";
 import { useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { trpc } from "@/lib/trpc";
@@ -13,17 +41,136 @@ import { resolveImageUrl } from "@/lib/imageDelivery";
 import { DashboardLayoutSkeleton } from "./DashboardLayoutSkeleton";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Overview", path: "/admin" }, { icon: Mountain, label: "Tours & placement", path: "/admin/tours" }, { icon: ImagePlus, label: "Photo library", path: "/admin/media" }, { icon: ClipboardList, label: "Booking requests", path: "/admin/bookings" }, { icon: MessageSquare, label: "Enquiries", path: "/admin/enquiries" }, { icon: Mail, label: "Newsletter", path: "/admin/newsletter" }, { icon: BriefcaseBusiness, label: "Reviews", path: "/admin/reviews" }, { icon: Building2, label: "Public agency profile", path: "/admin/agency" }, { icon: Settings, label: "My profile", path: "/admin/profile" },
+  { icon: LayoutDashboard, label: "Overview", path: "/admin" },
+  { icon: Mountain, label: "Tours & placement", path: "/admin/tours" },
+  { icon: ImagePlus, label: "Photo library", path: "/admin/media" },
+  { icon: ClipboardList, label: "Booking requests", path: "/admin/bookings" },
+  { icon: MessageSquare, label: "Enquiries", path: "/admin/enquiries" },
+  { icon: Mail, label: "Newsletter", path: "/admin/newsletter" },
+  { icon: BriefcaseBusiness, label: "Reviews", path: "/admin/reviews" },
+  { icon: Building2, label: "Public agency profile", path: "/admin/agency" },
+  { icon: Settings, label: "My profile", path: "/admin/profile" },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const { data: agencyProfile } = trpc.agency.get.useQuery(undefined, { retry: false, refetchOnWindowFocus: false });
+  const { data: agencyProfile } = trpc.agency.get.useQuery(undefined, {
+    retry: false,
+    refetchOnWindowFocus: false,
+  });
   const { loading, user, logout } = useAuth();
   const [, setLocation] = useLocation();
   const logoUrl = resolveImageUrl(agencyProfile?.logoUrl || OFFICIAL_TRIP_HIMALAYA_LOGO);
-  useEffect(() => { if (!loading && !user) setLocation("/admin/login"); }, [loading, user, setLocation]);
+
+  useEffect(() => {
+    if (!loading && !user) setLocation("/admin/login");
+  }, [loading, user, setLocation]);
+
   if (loading) return <DashboardLayoutSkeleton />;
-  if (!user) return <div className="grid min-h-screen place-items-center bg-[#eef4f2]"><div className="flex flex-col items-center gap-3"><img src={logoUrl} alt="Trip Himalaya" className="size-14 rounded-xl border border-[#d5e0df] bg-white object-contain p-1.5 shadow-sm" /><p className="text-sm text-slate-500">Taking you to the secure portal…</p></div></div>;
-  const entries = user.role === "principal" ? [...menuItems, { icon: Users, label: "Administrators", path: "/admin/administrators" }] : menuItems;
-  return <SidebarProvider defaultOpen><Sidebar collapsible="offcanvas" className="border-r-0 bg-[#123d5b] text-white"><SidebarHeader className="h-20 justify-center px-3"><Link href="/admin" className="flex items-center gap-3 text-white"><span className="grid size-10 place-items-center overflow-hidden rounded-xl border border-white/30 bg-white p-1 shadow-sm"><img src={logoUrl} alt="Trip Himalaya" className="size-full object-contain" /></span><span><span className="display block text-xl font-bold">Trip Himalaya</span><span className="text-[.6rem] font-bold uppercase tracking-[.13em] text-white/55">Operations portal</span></span></Link></SidebarHeader><SidebarContent className="px-2 pt-4"><SidebarMenu>{entries.map(item => <SidebarMenuItem key={item.path}><SidebarMenuButton asChild tooltip={item.label} className="h-11 rounded-xl text-white/72 hover:bg-white/12 hover:text-white data-[active=true]:bg-[#f19a49] data-[active=true]:text-[#123d5b]"><Link href={item.path}><item.icon className="size-4" /><span>{item.label}</span></Link></SidebarMenuButton></SidebarMenuItem>)}</SidebarMenu></SidebarContent><SidebarFooter className="p-3"><DropdownMenu><DropdownMenuTrigger asChild><button className="flex w-full items-center gap-3 rounded-xl p-2 text-left hover:bg-white/10"><Avatar className="size-9"><AvatarFallback className="bg-[#f19a49] text-xs font-bold text-[#123d5b]">{user.name?.slice(0, 1).toUpperCase() || "A"}</AvatarFallback></Avatar><div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold">{user.name || "Administrator"}</p><Badge className="mt-1 bg-white/12 px-1.5 py-0 text-[.56rem] uppercase tracking-wider text-white/70 hover:bg-white/12">{user.role}</Badge></div></button></DropdownMenuTrigger><DropdownMenuContent side="top" align="start" className="w-52"><DropdownMenuItem asChild><Link href="/admin/profile">My profile</Link></DropdownMenuItem><DropdownMenuItem className="text-destructive focus:text-destructive" onClick={() => { void logout().finally(() => setLocation("/admin/login")); }}><LogOut className="mr-2 size-4" />Sign out</DropdownMenuItem></DropdownMenuContent></DropdownMenu></SidebarFooter></Sidebar><SidebarInset className="bg-[#f6f8f5]"><div className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[#e1e7e4] bg-[#f6f8f5]/90 px-4 backdrop-blur-lg md:px-7"><div className="flex items-center gap-3"><SidebarTrigger aria-label="Open administration navigation" className="rounded-lg md:hidden" /><div><p className="text-[.64rem] font-extrabold uppercase tracking-[.16em] text-[#e17818]">Secure workspace</p><p className="text-sm font-bold text-[#123d5b]">Dharamshala operations</p></div></div><Button asChild size="sm" className="rounded-lg bg-[#123d5b] text-xs font-bold hover:bg-[#0b2d46]"><Link href="/">View public website</Link></Button></div><main className="p-4 md:p-7">{children}</main></SidebarInset></SidebarProvider>;
+
+  if (!user) {
+    return (
+      <div className="grid min-h-screen place-items-center bg-[#eef4f2]">
+        <div className="flex flex-col items-center gap-3">
+          <img
+            src={logoUrl}
+            alt="Trip Himalaya"
+            className="size-14 rounded-xl border border-[#d5e0df] bg-white object-contain p-1.5 shadow-sm"
+          />
+          <p className="text-sm text-slate-500">Taking you to the secure portal…</p>
+        </div>
+      </div>
+    );
+  }
+
+  const entries = user.role === "principal"
+    ? [...menuItems, { icon: Users, label: "Administrators", path: "/admin/administrators" }]
+    : menuItems;
+  const sidebarTheme = "border-r-0 bg-[#123d5b] text-white [--sidebar:#123d5b] [--sidebar-foreground:#fff]";
+
+  return (
+    <SidebarProvider defaultOpen className="[--sidebar:#123d5b] [--sidebar-foreground:#fff]">
+      <Sidebar collapsible="offcanvas" className={sidebarTheme}>
+        <SidebarHeader className="h-20 justify-center px-3">
+          <Link href="/admin" className="flex items-center gap-3 text-white">
+            <span className="grid size-10 place-items-center overflow-hidden rounded-xl border border-white/30 bg-white p-1 shadow-sm">
+              <img src={logoUrl} alt="Trip Himalaya" className="size-full object-contain" />
+            </span>
+            <span>
+              <span className="display block text-xl font-bold">Trip Himalaya</span>
+              <span className="text-[.6rem] font-bold uppercase tracking-[.13em] text-white/55">Operations portal</span>
+            </span>
+          </Link>
+        </SidebarHeader>
+
+        <SidebarContent className="px-2 pt-4">
+          <SidebarMenu>
+            {entries.map(item => (
+              <SidebarMenuItem key={item.path}>
+                <SidebarMenuButton
+                  asChild
+                  tooltip={item.label}
+                  className="h-11 rounded-xl text-white/72 hover:bg-white/12 hover:text-white data-[active=true]:bg-[#f19a49] data-[active=true]:text-[#123d5b]"
+                >
+                  <Link href={item.path}>
+                    <item.icon className="size-4" />
+                    <span>{item.label}</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            ))}
+          </SidebarMenu>
+        </SidebarContent>
+
+        <SidebarFooter className="p-3">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex w-full items-center gap-3 rounded-xl p-2 text-left hover:bg-white/10">
+                <Avatar className="size-9">
+                  <AvatarFallback className="bg-[#f19a49] text-xs font-bold text-[#123d5b]">
+                    {user.name?.slice(0, 1).toUpperCase() || "A"}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold">{user.name || "Administrator"}</p>
+                  <Badge className="mt-1 bg-white/12 px-1.5 py-0 text-[.56rem] uppercase tracking-wider text-white/70 hover:bg-white/12">
+                    {user.role}
+                  </Badge>
+                </div>
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent side="top" align="start" className="w-52">
+              <DropdownMenuItem asChild>
+                <Link href="/admin/profile">My profile</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="text-destructive focus:text-destructive"
+                onClick={() => {
+                  void logout().finally(() => setLocation("/admin/login"));
+                }}
+              >
+                <LogOut className="mr-2 size-4" />
+                Sign out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </SidebarFooter>
+      </Sidebar>
+
+      <SidebarInset className="bg-[#f6f8f5]">
+        <div className="sticky top-0 z-30 flex h-16 items-center justify-between border-b border-[#e1e7e4] bg-[#f6f8f5]/90 px-4 backdrop-blur-lg md:px-7">
+          <div className="flex items-center gap-3">
+            <SidebarTrigger aria-label="Open administration navigation" className="rounded-lg lg:hidden" />
+            <div>
+              <p className="text-[.64rem] font-extrabold uppercase tracking-[.16em] text-[#e17818]">Secure workspace</p>
+              <p className="text-sm font-bold text-[#123d5b]">Dharamshala operations</p>
+            </div>
+          </div>
+          <Button asChild size="sm" className="rounded-lg bg-[#123d5b] text-xs font-bold hover:bg-[#0b2d46]">
+            <Link href="/">View public website</Link>
+          </Button>
+        </div>
+        <main className="p-4 md:p-7">{children}</main>
+      </SidebarInset>
+    </SidebarProvider>
+  );
 }

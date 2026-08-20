@@ -24,6 +24,8 @@ describe("premium journey presentation", () => {
     expect(home).toContain("cat-trekking_0c532a80.jpg");
     expect(home).toContain("cat-village_5ad6568c.jpg");
     expect(home).toContain("cat-tours_c826efd9.jpg");
+    expect(home).toContain('loading="eager" decoding="async" className="h-28 w-full rounded-sm object-cover"');
+    expect(home).not.toContain('getImageVariant(item.image, "card")} alt={item.title.toLowerCase()} width={640} height={512} loading="lazy"');
     expect(home).toContain("trpc.tours.list.useQuery");
     expect(home).toContain("const categories = fallbackTripStyles");
     expect(home).not.toContain("500+ Google Reviews");
