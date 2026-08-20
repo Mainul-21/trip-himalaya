@@ -12,7 +12,8 @@ describe("supplied reference header and footer contract", () => {
     expect(source).toContain('className={`relative z-10 ${isHomepage ? "" : "bg-primary"}`}');
     expect(source).toContain('aria-controls="mobile-menu"');
     expect(source).toContain('aria-expanded={mobileOpen}');
-    expect(source).toContain("md:hidden");
+    expect(source).toContain("lg:hidden");
+    expect(source).toContain("MoreVertical");
     expect(styles).toContain('@import "tailwindcss";');
   });
 
