@@ -1,8 +1,8 @@
-import { Clock3, Mountain } from "lucide-react";
+import { Clock, Flame, MessageCircle, MountainSnow, Tent } from "lucide-react";
 import { Link } from "wouter";
 import { buildTourWhatsAppMessage } from "@/lib/tourWhatsApp";
+import { resolveImageUrl } from "@/lib/imageDelivery";
 import { WhatsAppIcon } from "./PublicLayout";
-import TourPhotoCarousel from "./TourPhotoCarousel";
 
 export type TourCardData = {
   id: number;
@@ -19,33 +19,30 @@ export type TourCardData = {
   isBestSeller?: boolean;
 };
 
-export default function TourCard({ tour, compact = true }: { tour: TourCardData; compact?: boolean }) {
+export default function TourCard({ tour, whatsappNumber = "918609752814" }: { tour: TourCardData; compact?: boolean; whatsappNumber?: string }) {
   const whatsappMessage = buildTourWhatsAppMessage(tour);
+  const image = resolveImageUrl(tour.heroImage);
 
   return (
-    <article className="tour-card overflow-hidden rounded-md border border-[#dce5e2] bg-white shadow-[0_3px_12px_rgba(18,61,91,.08)]">
+    <article className="overflow-hidden rounded-md border border-border bg-card shadow-[var(--shadow-card)]">
       <div className="relative">
-        <TourPhotoCarousel title={tour.title} location={tour.location} heroImage={tour.heroImage} gallery={tour.gallery} compact={compact} />
-        {tour.isBestSeller && (
-          <span className="absolute left-0 top-3 z-10 flex items-center gap-1 rounded-r-sm bg-[#e9781c] px-2.5 py-1.5 text-[.65rem] font-extrabold uppercase tracking-[.075em] text-white">
-            Best Seller
-          </span>
-        )}
+        <img src={image} alt={tour.title} width={800} height={560} loading="lazy" className="h-40 w-full object-cover" />
+        {tour.isBestSeller ? <span className="absolute left-0 top-3 flex items-center gap-1 rounded-r bg-accent px-2 py-1 text-[10px] font-bold text-accent-foreground"><Flame size={11} /> BESTSELLER</span> : null}
       </div>
-
-      <div className="p-4">
-        <h3 className="text-[.98rem] font-extrabold tracking-[.015em] text-[#123d5b] sm:text-[1.05rem]">{tour.title}</h3>
-        <p className="mt-1.5 flex items-center gap-1.5 text-[.76rem] text-slate-500"><Clock3 className="size-3.5" /> {tour.duration}</p>
-        <div className="mt-3 flex items-end justify-between">
-          <span className="text-[.65rem] font-bold uppercase tracking-[.08em] text-slate-400">From</span>
-          <span className="text-right"><span className="block text-[1.15rem] font-extrabold leading-none text-[#e9781c]">₹{tour.priceFrom.toLocaleString("en-IN")}</span><span className="mt-1 block text-[.65rem] text-slate-400">per person</span></span>
+      <div className="p-3">
+        <h3 className="text-[13px] font-bold tracking-wide text-primary">{tour.title.toUpperCase()}</h3>
+        <p className="mt-1 flex items-center gap-1 text-[11px] text-muted-foreground"><Clock size={12} /> {tour.duration}</p>
+        <div className="mt-2 flex items-end justify-between">
+          <span className="text-[10px] uppercase text-muted-foreground">From</span>
+          <span className="text-right"><span className="block text-base font-bold text-accent">₹{tour.priceFrom.toLocaleString("en-IN")}</span><span className="block text-[10px] text-muted-foreground">/person</span></span>
         </div>
-        <div className="mt-3 flex flex-wrap gap-3 text-[.72rem] text-slate-500"><span className="flex items-center gap-1"><Mountain className="size-3.5 text-[#e9781c]" />{tour.difficulty}</span><span className="flex items-center gap-1"><Mountain className="size-3.5 text-[#e9781c]" />{tour.category}</span></div>
-        <div className="mt-4 grid grid-cols-2 gap-2.5">
-          <Link href={`/tours/${tour.slug}`} className="focus-ring inline-flex h-10 items-center justify-center rounded-sm border border-[#c9d8d7] px-2 text-[.68rem] font-extrabold uppercase tracking-[.04em] text-[#123d5b] transition hover:bg-[#eef4f2] active:scale-[.98]">View details</Link>
-          <a href={`https://wa.me/918609752814?text=${whatsappMessage}`} target="_blank" rel="noreferrer" className="focus-ring inline-flex h-10 items-center justify-center gap-1 rounded-sm bg-[#e9781c] px-2 text-[.68rem] font-extrabold uppercase tracking-[.04em] text-white transition hover:bg-[#ce6514] active:scale-[.98]">
-            <WhatsAppIcon className="size-4" /> Enquire now
-          </a>
+        <div className="mt-2 flex flex-wrap gap-3">
+          <span className="flex items-center gap-1 text-[11px] text-muted-foreground"><MountainSnow size={12} className="text-accent" />{tour.difficulty}</span>
+          <span className="flex items-center gap-1 text-[11px] text-muted-foreground"><Tent size={12} className="text-accent" />{tour.category}</span>
+        </div>
+        <div className="mt-3 grid grid-cols-2 gap-2">
+          <Link href={`/tours/${tour.slug}`} className="focus-ring rounded-md border border-border px-2 py-2 text-center text-[11px] font-semibold text-primary transition-colors hover:bg-secondary">VIEW DETAILS</Link>
+          <a href={`https://wa.me/${whatsappNumber.replace(/\D/g, "")}?text=${whatsappMessage}`} target="_blank" rel="noreferrer" className="focus-ring flex items-center justify-center gap-1 rounded-md bg-accent px-2 py-2 text-[11px] font-semibold text-accent-foreground transition-transform hover:scale-[1.03]"><WhatsAppIcon className="size-3" /> ENQUIRE NOW</a>
         </div>
       </div>
     </article>

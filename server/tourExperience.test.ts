@@ -11,11 +11,11 @@ describe("tour Best Seller and trip-style experience", () => {
     expect(adminSource).toContain("Mark as Best Seller");
     expect(adminSource).toContain("isBestSeller: false");
     expect(cardSource).toContain("tour.isBestSeller");
-    expect(cardSource).toContain("Best Seller");
+    expect(cardSource).toContain("BESTSELLER");
   });
 
   it("offers clear home-page trip styles and matching working catalogue filters", () => {
-    expect(homeSource).toContain("Why choose Trip Himalaya");
+    expect(homeSource).toContain("WHY TRIP HIMALAYA?");
     expect(homeSource).toContain("/tours?style=short-breaks");
     expect(homeSource).toContain("/tours?style=best-sellers");
     expect(toursSource).toContain("Short Breaks");

@@ -11,19 +11,19 @@ const card = readFileSync(resolve(projectRoot, "client/src/components/TourCard.t
 
 describe("premium journey presentation", () => {
   it("keeps the homepage grounded and exposes all requested travel styles", () => {
-    expect(home).toContain("Discover Himachal.");
-    expect(home).toContain("Experience the Himalayas.");
-    expect(home).toContain("Thoughtful journeys, local knowledge and a clear plan for the mountains.");
-    expect(home).toContain("Pick a style to find a journey that fits.");
-    expect(home).toContain("Only feedback verified and published by Trip Himalaya appears here.");
-    expect(home).toContain("Plan your Himachal trip");
-    expect(home).toContain("Travel date");
-    expect(home).toContain("Destination / place");
-    expect(home).toContain("suppliedStyleImages");
-    expect(home).toContain("getTravelStyleImage");
-    expect(home).toContain("cat-trekking_9566f5de.jpg");
+    expect(home).toContain("DISCOVER HIMACHAL.");
+    expect(home).toContain("EXPERIENCE THE HIMALAYAS.");
+    expect(home).toContain("Curated journeys. Local expertise. Unforgettable memories.");
+    expect(home).toContain("Choose your perfect experience");
+    expect(home).toContain("Based on published Trip Himalaya reviews");
+    expect(home).toContain("PLAN YOUR HIMACHAL TRIP");
+    expect(home).toContain("WhatsApp Number");
+    expect(home).toContain("Destination / Places");
+    expect(home).toContain("cat-trekking_0c532a80.jpg");
+    expect(home).toContain("trpc.tours.list.useQuery");
+    expect(home).toContain("const categories = fallbackTripStyles");
     expect(home).not.toContain("500+ Google Reviews");
-    for (const label of ["Trekking", "Culture & Local", "Adventure", "Short Breaks", "Best Sellers", "Custom Plan"]) {
+    for (const label of ["TREKKING", "SPIRITUAL TOURS", "CAMPING", "VILLAGE EXPERIENCES", "HIMACHAL TOURS", "CUSTOM TOURS"]) {
       expect(home).toContain(`title: "${label}"`);
     }
   });
@@ -40,7 +40,7 @@ describe("premium journey presentation", () => {
     for (const phrase of ["Overview", "What’s included", "What’s not included", "Important information", "Frequently asked questions.", "Ready to experience Himachal?", "WhatsApp us"]) {
       expect(detail).toContain(phrase);
     }
-    for (const phrase of ["tour.location", "tour.duration", "tour.difficulty", "per person", "View details", "WhatsApp"]) {
+    for (const phrase of ["tour.duration", "tour.difficulty", "/person", "VIEW DETAILS", "ENQUIRE NOW"]) {
       expect(card).toContain(phrase);
     }
   });

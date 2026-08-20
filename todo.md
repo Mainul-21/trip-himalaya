@@ -282,3 +282,4 @@
 - [x] Inspect and reproduce the replacement Lovable preview URL as the definitive homepage reference while retaining all existing Trip Himalaya live data and actions.
 - [x] Rebuild every public Trip Himalaya page and shared public component to match the supplied reference design end-to-end, while retaining administrator-managed data, responsive behavior, and working visitor actions.
 - [x] Correct every remaining public-page visual difference against the supplied reference, enlarge undersized visible text and controls, and complete responsive/action-level verification for the full A–Z replica.
+- [x] Replace the public website presentation with the supplied website/code literally—without independent extra or missing design elements—while keeping only the necessary Trip Himalaya live data and functional action bindings.
