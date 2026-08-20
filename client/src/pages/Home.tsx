@@ -9,12 +9,12 @@ import { FormEvent, useEffect, useState } from "react";
 import { Link } from "wouter";
 
 const fallbackTripStyles = [
-  { title: "TREKKING", href: "/tours?style=trekking", image: "/manus-storage/cat-trekking_0c532a80.jpg", copy: "" },
-  { title: "SPIRITUAL TOURS", href: "/tours?style=experiences", image: "/manus-storage/cat-spiritual_e35128a7.jpg", copy: "" },
-  { title: "CAMPING", href: "/tours?style=adventure", image: "/manus-storage/cat-camping_f8918883.jpg", copy: "" },
-  { title: "VILLAGE EXPERIENCES", href: "/tours?style=short-breaks", image: "/manus-storage/cat-village_5ad6568c.jpg", copy: "" },
-  { title: "HIMACHAL TOURS", href: "/tours?style=best-sellers", image: "/manus-storage/cat-tours_c826efd9.jpg", copy: "" },
-  { title: "CUSTOM TOURS", href: "/contact", image: "/manus-storage/cat-custom_207315af.jpg", copy: "" },
+  { title: "TREKKING", href: "/tours?style=trekking", image: "/manus-storage/cat-trekking_07d114b2.jpg", copy: "" },
+  { title: "SPIRITUAL TOURS", href: "/tours?style=experiences", image: "/manus-storage/cat-spiritual_743c5681.jpg", copy: "" },
+  { title: "CAMPING", href: "/tours?style=adventure", image: "/manus-storage/cat-camping_c447f997.jpg", copy: "" },
+  { title: "VILLAGE EXPERIENCES", href: "/tours?style=short-breaks", image: "/manus-storage/cat-village_f7870b29.jpg", copy: "" },
+  { title: "HIMACHAL TOURS", href: "/tours?style=best-sellers", image: "/manus-storage/cat-tours_8d0fd3d0.jpg", copy: "" },
+  { title: "CUSTOM TOURS", href: "/contact", image: "/manus-storage/cat-custom_9ca90b70.jpg", copy: "" },
 ];
 
 const heroBadges = [[Compass, "Local Experts", "Born in the Himalayas"], [BadgeIndianRupee, "Best Price Guarantee", "No hidden charges"], [ShieldCheck, "Safe & Comfortable", "Your safety, our priority"], [Headphones, "24x7 Support", "We are always with you"]] as const;

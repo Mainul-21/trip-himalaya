@@ -131,3 +131,7 @@ The vertical three-dots glyph has been replaced with a conventional, high-contra
 ## Source-reference category media repair — 20 August 2026
 
 The two previously empty experience tiles—**Village Experiences** and **Himachal Tours**—now reference newly uploaded stable managed image paths from the supplied category-media set. The six-card mapping remains unchanged in title, order, route, dimensions, and source-reference layout; only the two failed image paths were replaced. Desktop and 390 px phone captures confirm the reference homepage remains responsive after the repair, while TypeScript and the focused homepage presentation regression pass.
+
+## Complete category-image loading verification — 20 August 2026
+
+The initial path refresh exposed that four legacy category assets could still display blank on a first page render despite returning network responses. All six supplied category photographs were therefore re-uploaded as fresh managed web assets and their source-reference mappings were updated without altering labels, links, card dimensions, or layout. Full-page 1280 px desktop and 390 px phone captures now visibly show **Trekking**, **Spiritual Tours**, **Camping**, **Village Experiences**, **Himachal Tours**, and **Custom Tours** with their correct mountain-travel imagery. TypeScript and the focused homepage media regression pass; no generated imagery or substitute card design was used.

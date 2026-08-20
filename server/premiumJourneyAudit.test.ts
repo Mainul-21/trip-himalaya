@@ -21,9 +21,12 @@ describe("premium journey presentation", () => {
     expect(home).toContain('placeholder="Date"');
     expect(home).toContain('type={dateFieldFocused ? "date" : "text"}');
     expect(home).toContain("Destination / Places");
-    expect(home).toContain("cat-trekking_0c532a80.jpg");
-    expect(home).toContain("cat-village_5ad6568c.jpg");
-    expect(home).toContain("cat-tours_c826efd9.jpg");
+    expect(home).toContain("cat-trekking_07d114b2.jpg");
+    expect(home).toContain("cat-spiritual_743c5681.jpg");
+    expect(home).toContain("cat-camping_c447f997.jpg");
+    expect(home).toContain("cat-village_f7870b29.jpg");
+    expect(home).toContain("cat-tours_8d0fd3d0.jpg");
+    expect(home).toContain("cat-custom_9ca90b70.jpg");
     expect(home).toContain('loading="eager" decoding="async" className="h-28 w-full rounded-sm object-cover"');
     expect(home).not.toContain('getImageVariant(item.image, "card")} alt={item.title.toLowerCase()} width={640} height={512} loading="lazy"');
     expect(home).toContain("trpc.tours.list.useQuery");

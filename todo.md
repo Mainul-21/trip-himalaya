@@ -291,3 +291,4 @@
 - [x] Add a clear View Website action to the administrator portal so signed-in administrators can open the public Trip Himalaya site directly.
 - [x] Restore clearly visible left-side administrator navigation options for all portal sections on desktop and mobile.
 - [x] Repair the blank administrator sidebar shown in phone desktop mode so every left-side navigation option visibly renders and remains usable.
+- [x] Ensure all six first-viewport homepage experience-card images load reliably without altering the supplied reference layout.
