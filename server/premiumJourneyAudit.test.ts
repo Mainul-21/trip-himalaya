@@ -16,6 +16,9 @@ describe("premium journey presentation", () => {
     expect(home).toContain("Thoughtful journeys, local knowledge and a clear plan for the mountains.");
     expect(home).toContain("Pick a style to find a journey that fits.");
     expect(home).toContain("Only feedback verified and published by Trip Himalaya appears here.");
+    expect(home).toContain("Plan your Himachal trip");
+    expect(home).toContain("Travel date");
+    expect(home).toContain("Destination / place");
     expect(home).not.toContain("500+ Google Reviews");
     for (const label of ["Trekking", "Culture & Local", "Adventure", "Short Breaks", "Best Sellers", "Custom Plan"]) {
       expect(home).toContain(`title: "${label}"`);
