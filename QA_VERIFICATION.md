@@ -87,3 +87,7 @@ The shared Lovable preview’s protected document could not be opened directly w
 ## Full public-site reference system — 20 August 2026
 
 The same reference system now carries through every visitor-facing route: public catalogue, treks, tour detail, booking, About, Experiences, contact, and the interactive not-found page. Desktop and 390 px mobile checks confirm the shared header, compact navy page banners, package-grid framing, orange conversion actions, square form panels, mobile Plan Trip control, information footer, and responsive detail-page pricing/WhatsApp actions. The public tour-detail page maintains the live itinerary and gallery controls, while booking and contact preserve their existing submission contracts. The visible public site uses real published journeys and administrator-managed profile content; it does not seed or display fabricated customer content.
+
+## Live Vercel confirmation — 20 August 2026
+
+The cache-busted production URL `https://triphimalaya.vercel.app/?v=821ec6a0` completed its initial branded loader and mounted the public application rather than serving a blank page or source text. The live document exposes the reference-aligned header, hero controls, category links, real tour cards with details and WhatsApp actions, enquiry form, telephone, social links, and footer search. This confirms the connected Vercel deployment is currently serving the public site successfully.
