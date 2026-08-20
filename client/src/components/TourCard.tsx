@@ -19,7 +19,7 @@ export type TourCardData = {
   isBestSeller?: boolean;
 };
 
-export default function TourCard({ tour, whatsappNumber = "918609752814" }: { tour: TourCardData; compact?: boolean; whatsappNumber?: string }) {
+export default function TourCard({ tour, whatsappNumber = "918219628359" }: { tour: TourCardData; compact?: boolean; whatsappNumber?: string }) {
   const whatsappMessage = buildTourWhatsAppMessage(tour);
   const image = resolveImageUrl(tour.heroImage);
 

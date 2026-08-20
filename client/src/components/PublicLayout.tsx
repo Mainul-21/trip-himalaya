@@ -16,7 +16,7 @@ const navigation = [
 ];
 
 const fallbackAgencyProfile = {
-  brandName: "Trip Himalaya", tagline: "Discover Himachal. Experience Himalayas.", logoUrl: OFFICIAL_TRIP_HIMALAYA_LOGO, phone: "+918609752814", whatsapp: "918609752814", email: "hello@triphimalaya.in", address: "Dharamshala, Himachal Pradesh, India", instagramUrl: "", facebookUrl: "", youtubeUrl: "", googleMapsUrl: "",
+  brandName: "Trip Himalaya", tagline: "Discover Himachal. Experience Himalayas.", logoUrl: OFFICIAL_TRIP_HIMALAYA_LOGO, phone: "+918219628359", whatsapp: "918219628359", email: "hello@triphimalaya.in", address: "Dharamshala, Himachal Pradesh, India", instagramUrl: "", facebookUrl: "", youtubeUrl: "", googleMapsUrl: "",
 };
 
 type AgencyProfile = typeof fallbackAgencyProfile;

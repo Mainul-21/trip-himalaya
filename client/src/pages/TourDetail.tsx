@@ -193,7 +193,7 @@ export default function TourDetail() {
             <CalendarDays className="size-4" /> Plan your trip
           </Link>
           <a
-            href={`https://wa.me/918609752814?text=${whatsAppMessage}`}
+            href={`https://wa.me/918219628359?text=${whatsAppMessage}`}
             target="_blank"
             rel="noreferrer"
             className="focus-ring mt-3 flex h-12 items-center justify-center gap-2 rounded-lg border border-[#1fac55] bg-[#25d366] px-4 text-xs font-extrabold uppercase tracking-[.08em] text-white shadow-[0_8px_18px_rgba(37,211,102,.22)] transition hover:bg-[#1fae54] active:scale-[.98]"
@@ -210,7 +210,7 @@ export default function TourDetail() {
           </div>
           <div className="flex flex-wrap gap-3">
             <Link href="/contact" className="focus-ring inline-flex h-12 items-center gap-2 bg-[#e9781c] px-5 text-sm font-bold text-white transition hover:bg-[#d86b12] active:scale-[.98]">Plan your trip <CalendarDays className="size-4" /></Link>
-            <a href={`https://wa.me/918609752814?text=${whatsAppMessage}`} target="_blank" rel="noreferrer" className="focus-ring inline-flex h-12 items-center gap-2 border border-white/35 bg-white/10 px-5 text-sm font-bold text-white transition hover:bg-white/18 active:scale-[.98]"><WhatsAppIcon className="size-4" /> WhatsApp us</a>
+            <a href={`https://wa.me/918219628359?text=${whatsAppMessage}`} target="_blank" rel="noreferrer" className="focus-ring inline-flex h-12 items-center gap-2 border border-white/35 bg-white/10 px-5 text-sm font-bold text-white transition hover:bg-white/18 active:scale-[.98]"><WhatsAppIcon className="size-4" /> WhatsApp us</a>
           </div>
         </div>
       </section>
