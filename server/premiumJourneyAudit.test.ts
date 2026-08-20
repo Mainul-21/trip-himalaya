@@ -22,6 +22,8 @@ describe("premium journey presentation", () => {
     expect(home).toContain('type={dateFieldFocused ? "date" : "text"}');
     expect(home).toContain("Destination / Places");
     expect(home).toContain("cat-trekking_0c532a80.jpg");
+    expect(home).toContain("cat-village_5ad6568c.jpg");
+    expect(home).toContain("cat-tours_c826efd9.jpg");
     expect(home).toContain("trpc.tours.list.useQuery");
     expect(home).toContain("const categories = fallbackTripStyles");
     expect(home).not.toContain("500+ Google Reviews");

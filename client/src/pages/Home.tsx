@@ -12,8 +12,8 @@ const fallbackTripStyles = [
   { title: "TREKKING", href: "/tours?style=trekking", image: "/manus-storage/cat-trekking_0c532a80.jpg", copy: "" },
   { title: "SPIRITUAL TOURS", href: "/tours?style=experiences", image: "/manus-storage/cat-spiritual_e35128a7.jpg", copy: "" },
   { title: "CAMPING", href: "/tours?style=adventure", image: "/manus-storage/cat-camping_f8918883.jpg", copy: "" },
-  { title: "VILLAGE EXPERIENCES", href: "/tours?style=short-breaks", image: "/manus-storage/cat-village_2bd304a0.jpg", copy: "" },
-  { title: "HIMACHAL TOURS", href: "/tours?style=best-sellers", image: "/manus-storage/cat-tours_d33aa080.jpg", copy: "" },
+  { title: "VILLAGE EXPERIENCES", href: "/tours?style=short-breaks", image: "/manus-storage/cat-village_5ad6568c.jpg", copy: "" },
+  { title: "HIMACHAL TOURS", href: "/tours?style=best-sellers", image: "/manus-storage/cat-tours_c826efd9.jpg", copy: "" },
   { title: "CUSTOM TOURS", href: "/contact", image: "/manus-storage/cat-custom_207315af.jpg", copy: "" },
 ];
 

@@ -127,3 +127,7 @@ The shared header now creates an isolated `z-50` layer and the expanded mobile d
 ## Professional mobile menu control and header spacing — 20 August 2026
 
 The vertical three-dots glyph has been replaced with a conventional, high-contrast hamburger menu control. At the 390 px phone viewport, the brand and hamburger remain clearly separated and readable; at the 980 px phone desktop-mode viewport, **Plan Your Trip** and the hamburger are aligned in one compact right-side group, eliminating the earlier large empty space between them. The focused navigation regression and TypeScript validation pass.
+
+## Source-reference category media repair — 20 August 2026
+
+The two previously empty experience tiles—**Village Experiences** and **Himachal Tours**—now reference newly uploaded stable managed image paths from the supplied category-media set. The six-card mapping remains unchanged in title, order, route, dimensions, and source-reference layout; only the two failed image paths were replaced. Desktop and 390 px phone captures confirm the reference homepage remains responsive after the repair, while TypeScript and the focused homepage presentation regression pass.

@@ -167,6 +167,7 @@
 - [x] Reassess and resolve the persistent local administrator sign-in loop after the HTTP session-cookie repair is pulled and restarted on the owner’s PC.
 - [x] Diagnose and repair the reported missing public and uploaded images when the project is run locally on the owner’s PC.
 - [x] Diagnose and repair the local administrator sign-in API request returning an HTML page instead of a tRPC JSON response.
+- [x] Restore the two empty homepage source-reference experience-card images using existing relevant managed Trip Himalaya media.
 - [x] Provide a complete, owner-friendly Vercel deployment procedure with required environment variables and production checks.
 - [x] Add administrator-controlled Best Seller status to tours and display an accessible Best Seller badge on applicable public cards.
 - [x] Expand homepage trip-style filters with clear visual categories and working links to filtered tour results.
