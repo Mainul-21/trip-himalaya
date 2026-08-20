@@ -17,6 +17,11 @@ describe("premium journey presentation", () => {
     expect(home).toContain("Choose your perfect experience");
     expect(home).toContain("Based on published Trip Himalaya reviews");
     expect(home).toContain("PLAN YOUR HIMACHAL TRIP");
+    expect(home).toContain('function scrollToSection(sectionId: "packages" | "plan")');
+    expect(home).toContain('scrollToSection("packages")');
+    expect(home).toContain('scrollToSection("plan")');
+    expect(home).toContain('id="packages" className="scroll-mt-20');
+    expect(home).toContain('id="plan" className="scroll-mt-20');
     expect(home).toContain("WhatsApp Number");
     expect(home).toContain('placeholder="Date"');
     expect(home).toContain('type={dateFieldFocused ? "date" : "text"}');
