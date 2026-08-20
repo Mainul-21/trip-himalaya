@@ -94,6 +94,29 @@ $r.Content
 
 The result must report `application/json` and contain a tRPC result. If you instead receive website HTML, the browser is reaching an old process, a different folder, or a server on a different port. Stop all Node processes associated with this project, restart `pnpm dev` from the repository root, and use the exact `http://localhost:<port>` address printed by the terminal. Do not change credentials, database rows, or browser cookies to solve an HTML response.
 
+## Resolve a `PublicPage.tsx` merge conflict safely
+
+The current approved source has no conflict markers and contains this line in `client/src/pages/PublicPage.tsx`:
+
+```tsx
+const storyTitle = agencyProfile?.aboutStoryTitle || "Our story";
+```
+
+If Git reports a conflict in this file on a Windows computer, first make a backup of the local file outside the source tree. Then restore the current approved version from the remote main branch and restart the development server:
+
+```powershell
+git status
+Copy-Item client/src/pages/PublicPage.tsx ..\PublicPage.local-backup.txt
+git fetch origin
+git checkout origin/main -- client/src/pages/PublicPage.tsx
+git add client/src/pages/PublicPage.tsx
+git commit -m "Resolve PublicPage merge conflict"
+git pull origin main
+pnpm dev
+```
+
+The backup preserves any local wording that you may later want to compare manually. Do not copy conflict-marker lines such as `<<<<<<<`, `=======`, or `>>>>>>>` into the source file. If `git status` reports conflicts in any other file, stop before committing and resolve those files separately; do not use a force reset.
+
 ## Safe recovery order
 
 Verify `.env`, test the TiDB host and port, restart `pnpm dev`, query the API, inspect exact table definitions, and then apply only reviewed additive schema changes. Never seed or truncate production or user-owned tour records as a troubleshooting step.
