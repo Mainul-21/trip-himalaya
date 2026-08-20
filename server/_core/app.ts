@@ -30,6 +30,15 @@ export function createApp() {
       createContext,
     })
   );
+  // API-shaped requests must never fall through to the Vite/SPA HTML shell.
+  // A stale local process or an incorrect API path should surface as JSON instead
+  // of causing the browser's tRPC client to report an HTML parsing error.
+  app.use("/api", (req, res) => {
+    res.status(404).type("application/json").json({
+      error: "API endpoint not found",
+      path: req.originalUrl,
+    });
+  });
   return app;
 }
 

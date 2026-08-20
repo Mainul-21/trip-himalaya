@@ -74,6 +74,26 @@ try {
 
 A successful response containing an empty array means the API responded but no published tours are available to that query. HTTP 500 means the server could not complete the database operation; inspect the terminal running `pnpm dev` and `.manus-logs` for the database error. A browser spinner or error panel alone does not prove that the database is empty.
 
+## Administrator sign-in says “not valid JSON” or starts with “The page …”
+
+The administrator sign-in page uses the same local tRPC endpoint. With the current code, a correct request returns `application/json`; an incorrect `/api/...` route also returns a JSON 404 instead of the website HTML. First stop every open local server window with `Ctrl + C`, pull the latest project files, and start exactly one server from the project root:
+
+```powershell
+git pull origin main
+pnpm dev
+```
+
+In another PowerShell window, verify the administrator setup endpoint without entering an email or password:
+
+```powershell
+$q = [uri]::EscapeDataString('{"0":{"json":null}}')
+$r = Invoke-WebRequest -UseBasicParsing "http://localhost:3000/api/trpc/adminAuth.setupStatus?batch=1&input=$q"
+"STATUS=$($r.StatusCode) TYPE=$($r.Headers['Content-Type'])"
+$r.Content
+```
+
+The result must report `application/json` and contain a tRPC result. If you instead receive website HTML, the browser is reaching an old process, a different folder, or a server on a different port. Stop all Node processes associated with this project, restart `pnpm dev` from the repository root, and use the exact `http://localhost:<port>` address printed by the terminal. Do not change credentials, database rows, or browser cookies to solve an HTML response.
+
 ## Safe recovery order
 
 Verify `.env`, test the TiDB host and port, restart `pnpm dev`, query the API, inspect exact table definitions, and then apply only reviewed additive schema changes. Never seed or truncate production or user-owned tour records as a troubleshooting step.

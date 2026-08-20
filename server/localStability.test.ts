@@ -23,4 +23,11 @@ describe("local stability guidance", () => {
     expect(guide).toContain("Do not select a truncate option");
     expect(guide).toContain("empty array means the API responded");
   });
+
+  it("keeps unmatched local API requests JSON-only instead of serving the SPA HTML fallback", () => {
+    const app = readProjectFile("server/_core/app.ts");
+    expect(app).toContain('app.use("/api", (req, res) =>');
+    expect(app).toContain('type("application/json")');
+    expect(app).toContain('"API endpoint not found"');
+  });
 });
