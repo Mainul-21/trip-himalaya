@@ -26,7 +26,8 @@ describe("PublicLayout mobile navigation contract", () => {
 
   it("keeps the supplied homepage header treatment for cache-busted homepage URLs", () => {
     expect(source).toContain('const isHomepage = location.split("?")[0] === "/"');
-    expect(source).toContain('isHomepage ? "border-white/15 bg-[#082f4b]/68 backdrop-blur-md"');
+    expect(source).toContain('isHomepage ? "border-transparent bg-transparent"');
+    expect(source).toContain('reference={isHomepage}');
   });
 
   it("uses the supplied logo and exposes saved public contact and social profile details in the footer", () => {

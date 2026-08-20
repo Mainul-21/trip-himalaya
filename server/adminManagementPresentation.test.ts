@@ -26,10 +26,10 @@ describe("principal admin account management and tour-card presentation", () => 
     expect(portal).toContain("Remove");
   });
 
-  it("stacks pricing below metadata on narrow screens while preserving a non-shrinking price block on larger screens", () => {
-    expect(tourCard).toContain("flex flex-col gap-3 border-t");
-    expect(tourCard).toContain("sm:flex-row sm:items-center sm:justify-between");
-    expect(tourCard).toContain("min-w-0 flex-1 flex-wrap");
-    expect(tourCard).toContain("shrink-0 self-start");
+  it("uses the compact reference package layout while keeping the real price and both journey actions visible", () => {
+    expect(tourCard).toContain('className="mt-2 flex items-end justify-between"');
+    expect(tourCard).toContain('className="block text-[.95rem] font-extrabold leading-none text-[#e9781c]"');
+    expect(tourCard).toContain("View details");
+    expect(tourCard).toContain("Enquire now");
   });
 });

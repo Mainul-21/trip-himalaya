@@ -46,7 +46,7 @@ export default function TourPhotoCarousel({
 
   const activePhoto = photos[activeIndex] ?? heroImage;
   const deliveredPhoto = getImageVariant(activePhoto, compact ? "card" : "hero");
-  const height = compact ? "h-44" : "h-[22rem] sm:h-[28rem]";
+  const height = compact ? "h-40" : "h-[22rem] sm:h-[28rem]";
 
   return (
     <div

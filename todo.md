@@ -278,3 +278,5 @@
 - [x] Safely adapt the supplied homepage source archive into the existing responsive Trip Himalaya homepage while retaining live administrator-managed data and working visitor actions.
 - [x] Replace the homepage presentation with the newly supplied exact-replica-builder source structure while retaining responsive behavior, real administrator-managed Trip Himalaya data, and functional public actions.
 - [x] Convert the homepage markup and styling to follow the supplied exact-replica-builder code literally wherever compatible, rather than an adapted approximation, while preserving Trip Himalaya live data and actions.
+- [x] Rebuild the homepage to match the supplied Lovable reference URL as closely as possible, with no independent visual direction and with existing Trip Himalaya data, administrator editing, responsive layouts, and visitor actions retained.
+- [x] Inspect and reproduce the replacement Lovable preview URL as the definitive homepage reference while retaining all existing Trip Himalaya live data and actions.
