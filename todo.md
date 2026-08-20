@@ -275,3 +275,4 @@
 - [x] Restore visible homepage hero and brand imagery in the development preview when remote managed-media delivery is delayed or unavailable.
 - [x] Fix the Vercel serverless bundle so `api/index.js` can resolve the shared server entrypoint at runtime.
 - [x] Restyle only the public homepage to closely follow the supplied 19 August reference composition, preserving real Trip Himalaya content, visitor flows, editable agency data, and no fabricated review or statistic content.
+- [x] Safely adapt the supplied homepage source archive into the existing responsive Trip Himalaya homepage while retaining live administrator-managed data and working visitor actions.

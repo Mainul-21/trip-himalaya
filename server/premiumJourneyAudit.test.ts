@@ -19,6 +19,9 @@ describe("premium journey presentation", () => {
     expect(home).toContain("Plan your Himachal trip");
     expect(home).toContain("Travel date");
     expect(home).toContain("Destination / place");
+    expect(home).toContain("suppliedStyleImages");
+    expect(home).toContain("getTravelStyleImage");
+    expect(home).toContain("cat-trekking_9566f5de.jpg");
     expect(home).not.toContain("500+ Google Reviews");
     for (const label of ["Trekking", "Culture & Local", "Adventure", "Short Breaks", "Best Sellers", "Custom Plan"]) {
       expect(home).toContain(`title: "${label}"`);

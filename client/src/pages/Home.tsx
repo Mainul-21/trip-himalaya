@@ -9,12 +9,12 @@ import { FormEvent, useEffect, useState } from "react";
 import { Link } from "wouter";
 
 const fallbackTripStyles = [
-  { title: "Trekking", href: "/tours?style=trekking", image: "/manus-storage/triund-hikers_7653a06a.jpg", copy: "Guided walks with a pace that makes sense." },
-  { title: "Culture & Local", href: "/tours?style=experiences", image: "/manus-storage/dharamshala-prayer-flags_26329188.jpg", copy: "Dharamshala, food and local context." },
-  { title: "Adventure", href: "/tours?style=adventure", image: "/manus-storage/triund-camp_ded436f5.jpg", copy: "Active Himachal escapes with practical planning." },
-  { title: "Short Breaks", href: "/tours?style=short-breaks", image: "/manus-storage/dharamshala-valley_971eee0a.jpg", copy: "One- and two-day plans for a quick reset." },
-  { title: "Best Sellers", href: "/tours?style=best-sellers", image: "/manus-storage/triund-hikers_7653a06a.jpg", copy: "Journeys the Trip Himalaya team has marked." },
-  { title: "Custom Plan", href: "/contact", image: "/manus-storage/dharamshala-prayer-flags_26329188.jpg", copy: "Share your dates and build your own route." },
+  { title: "Trekking", href: "/tours?style=trekking", image: "/manus-storage/cat-trekking_9566f5de.jpg", copy: "Guided walks with a pace that makes sense." },
+  { title: "Culture & Local", href: "/tours?style=experiences", image: "/manus-storage/cat-spiritual_d10e207e.jpg", copy: "Dharamshala, food and local context." },
+  { title: "Adventure", href: "/tours?style=adventure", image: "/manus-storage/cat-camping_e33b2e8c.jpg", copy: "Active Himachal escapes with practical planning." },
+  { title: "Short Breaks", href: "/tours?style=short-breaks", image: "/manus-storage/cat-village_a2ed0b7f.jpg", copy: "One- and two-day plans for a quick reset." },
+  { title: "Best Sellers", href: "/tours?style=best-sellers", image: "/manus-storage/cat-tours_2d6d5a59.jpg", copy: "Journeys the Trip Himalaya team has marked." },
+  { title: "Custom Plan", href: "/contact", image: "/manus-storage/cat-custom_d064e047.jpg", copy: "Share your dates and build your own route." },
 ];
 
 const trustPoints = [
@@ -33,6 +33,30 @@ const whyChoosePoints = [
 ] as const;
 
 const travelStyleIcons = [Mountain, Landmark, TentTree, Compass, Star, CalendarDays] as const;
+
+const suppliedStyleImages = [
+  "/manus-storage/cat-trekking_9566f5de.jpg",
+  "/manus-storage/cat-spiritual_d10e207e.jpg",
+  "/manus-storage/cat-camping_e33b2e8c.jpg",
+  "/manus-storage/cat-village_a2ed0b7f.jpg",
+  "/manus-storage/cat-tours_2d6d5a59.jpg",
+  "/manus-storage/cat-custom_d064e047.jpg",
+] as const;
+
+const legacyStyleImagePaths = new Set([
+  "/manus-storage/triund-hikers_7653a06a.jpg",
+  "/manus-storage/dharamshala-prayer-flags_26329188.jpg",
+  "/manus-storage/triund-camp_ded436f5.jpg",
+  "/manus-storage/dharamshala-valley_971eee0a.jpg",
+  "/manus-storage/triund-trek-unsplash_2dd49872.jpg",
+  "/manus-storage/dhauladhar-hut-panorama_c5effca1.jpg",
+  "/manus-storage/triund-lake-unsplash_d755f9cf.jpg",
+  "/manus-storage/dhauladhar-dharamshala_8ddd37f7.jpg",
+]);
+
+function getTravelStyleImage(image: string, index: number) {
+  return legacyStyleImagePaths.has(image) ? suppliedStyleImages[index % suppliedStyleImages.length] : image;
+}
 
 function SectionRule() { return <span aria-hidden="true" className="mx-auto mt-3 block h-0.5 w-9 bg-[#e9781c]" />; }
 
@@ -78,7 +102,7 @@ export default function Home() {
       <div className="relative border-y border-white/20 bg-[#082f4b]/94"><div className="container grid divide-y divide-white/15 sm:grid-cols-2 lg:grid-cols-4 lg:divide-x lg:divide-y-0">{trustPoints.map(([Icon, title, copy]) => <div key={title} className="flex items-center gap-3 px-4 py-3.5 sm:px-5"><span aria-hidden="true" className="grid size-9 shrink-0 place-items-center rounded-full border border-[#ffd09b]/35 bg-white/8 text-[#ffd09b]"><Icon className="size-[1.05rem]" /></span><span><strong className="block text-[.64rem] font-extrabold uppercase tracking-[.08em] text-white">{title}</strong><span className="mt-0.5 block text-[.7rem] leading-4 text-white/70">{copy}</span></span></div>)}</div></div>
     </section>
 
-    <section className="border-b border-[#e3e8e3] bg-[#fbfcfa] py-11 sm:py-14"><div className="container"><div className="text-center"><h2 className="font-display text-[clamp(2rem,3.6vw,2.9rem)] font-bold uppercase tracking-[-.04em] text-[#123d5b]">Explore Himachal</h2><p className="mx-auto mt-1 max-w-lg text-sm leading-6 text-slate-500">{agency?.exploreTitle ?? "Pick a style to find a journey that fits."}</p><SectionRule /></div><div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">{visibleTripStyles.map((item, index) => { const Icon = travelStyleIcons[index % travelStyleIcons.length]; return <Link key={item.title} href={item.href} className="group overflow-hidden rounded-md border border-[#dbe4e1] bg-white p-2.5 shadow-[0_4px_12px_rgba(18,61,91,.055)] transition hover:-translate-y-0.5 hover:border-[#e9a45a] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e9781c] focus-visible:ring-offset-4"><div className="flex min-h-9 items-center justify-center"><Icon className="size-5 text-[#123d5b]" aria-hidden="true" /></div><h3 className="mt-1.5 text-center text-[.6rem] font-extrabold uppercase tracking-[.055em] text-[#123d5b] sm:text-[.66rem]">{item.title}</h3><div className="mt-2.5 h-24 overflow-hidden rounded-sm bg-[#e8efec] sm:h-28"><img src={getImageVariant(item.image, "card")} alt="" className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]" loading="lazy" fetchPriority="low" decoding="async" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw" /></div><span className="sr-only">: {item.copy}</span></Link>; })}</div></div></section>
+    <section className="border-b border-[#e3e8e3] bg-[#fbfcfa] py-11 sm:py-14"><div className="container"><div className="text-center"><h2 className="font-display text-[clamp(2rem,3.6vw,2.9rem)] font-bold uppercase tracking-[-.04em] text-[#123d5b]">Explore Himachal</h2><p className="mx-auto mt-1 max-w-lg text-sm leading-6 text-slate-500">{agency?.exploreTitle ?? "Pick a style to find a journey that fits."}</p><SectionRule /></div><div className="mt-7 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">{visibleTripStyles.map((item, index) => { const Icon = travelStyleIcons[index % travelStyleIcons.length]; const image = getTravelStyleImage(item.image, index); return <Link key={item.title} href={item.href} className="group overflow-hidden rounded-md border border-[#dbe4e1] bg-white p-2.5 shadow-[0_4px_12px_rgba(18,61,91,.055)] transition hover:-translate-y-0.5 hover:border-[#e9a45a] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e9781c] focus-visible:ring-offset-4"><div className="flex min-h-9 items-center justify-center"><Icon className="size-5 text-[#123d5b]" aria-hidden="true" /></div><h3 className="mt-1.5 text-center text-[.6rem] font-extrabold uppercase tracking-[.055em] text-[#123d5b] sm:text-[.66rem]">{item.title}</h3><div className="mt-2.5 h-24 overflow-hidden rounded-sm bg-[#e8efec] sm:h-28"><img src={getImageVariant(image, "card")} alt="" className="h-full w-full object-cover transition duration-500 group-hover:scale-[1.06]" loading="lazy" fetchPriority="low" decoding="async" sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 16vw" /></div><span className="sr-only">: {item.copy}</span></Link>; })}</div></div></section>
 
     <section className="bg-white py-12 sm:py-16"><div className="container"><div className="text-center"><h2 className="font-display text-[clamp(2rem,3.6vw,2.9rem)] font-bold uppercase tracking-[-.04em] text-[#123d5b]">Popular treks & tours</h2><SectionRule /></div><div className="mt-8 grid gap-4 md:grid-cols-2 xl:grid-cols-4">{topTours.length ? topTours.map(tour => <TourCard key={tour.id} tour={tour} />) : <div className="col-span-full border border-dashed border-[#ccd9d7] bg-[#fbfcfa] p-10 text-center text-sm text-slate-500">New journeys are being prepared. Please check back shortly.</div>}</div><div className="mt-7 text-center"><Link href="/tours" className="focus-ring inline-flex h-10 items-center gap-2 rounded-sm bg-[#123d5b] px-5 text-[.66rem] font-extrabold uppercase tracking-[.09em] text-white transition hover:bg-[#0c2e47]">View all packages <ArrowRight className="size-4" /></Link></div></div></section>
 

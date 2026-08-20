@@ -15,12 +15,12 @@ import {
 import { ENV } from "./_core/env";
 
 export const DEFAULT_TRAVEL_STYLES = [
-  { title: "Trekking", href: "/tours?style=trekking", image: "/manus-storage/triund-trek-unsplash_2dd49872.jpg", copy: "Guided walks with a pace that makes sense." },
-  { title: "Culture & local", href: "/tours?style=experiences", image: "/manus-storage/dhauladhar-hut-panorama_c5effca1.jpg", copy: "Dharamshala, food and local context." },
-  { title: "Adventure", href: "/tours?style=adventure", image: "/manus-storage/triund-lake-unsplash_d755f9cf.jpg", copy: "Active Himachal escapes with practical planning." },
-  { title: "Short breaks", href: "/tours?style=short-breaks", image: "/manus-storage/dhauladhar-dharamshala_8ddd37f7.jpg", copy: "One- and two-day plans for a quick reset." },
-  { title: "Best sellers", href: "/tours?style=best-sellers", image: "/manus-storage/triund-trek-unsplash_2dd49872.jpg", copy: "Journeys the Trip Himalaya team has marked." },
-  { title: "Custom plan", href: "/contact", image: "/manus-storage/dhauladhar-hut-panorama_c5effca1.jpg", copy: "Share your dates and build your own route." },
+  { title: "Trekking", href: "/tours?style=trekking", image: "/manus-storage/cat-trekking_9566f5de.jpg", copy: "Guided walks with a pace that makes sense." },
+  { title: "Culture & local", href: "/tours?style=experiences", image: "/manus-storage/cat-spiritual_d10e207e.jpg", copy: "Dharamshala, food and local context." },
+  { title: "Adventure", href: "/tours?style=adventure", image: "/manus-storage/cat-camping_e33b2e8c.jpg", copy: "Active Himachal escapes with practical planning." },
+  { title: "Short breaks", href: "/tours?style=short-breaks", image: "/manus-storage/cat-village_a2ed0b7f.jpg", copy: "One- and two-day plans for a quick reset." },
+  { title: "Best sellers", href: "/tours?style=best-sellers", image: "/manus-storage/cat-tours_2d6d5a59.jpg", copy: "Journeys the Trip Himalaya team has marked." },
+  { title: "Custom plan", href: "/contact", image: "/manus-storage/cat-custom_d064e047.jpg", copy: "Share your dates and build your own route." },
 ] as const;
 
 export type TravelStyle = { title: string; href: string; image: string; copy: string };
