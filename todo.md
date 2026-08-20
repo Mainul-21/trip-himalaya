@@ -293,3 +293,4 @@
 - [x] Repair the blank administrator sidebar shown in phone desktop mode so every left-side navigation option visibly renders and remains usable.
 - [x] Ensure all six first-viewport homepage experience-card images load reliably without altering the supplied reference layout.
 - [x] Repair homepage Tour Packages and Plan Your Trip CTAs so each reliably navigates to its intended section or route.
+- [x] Set +91 8219628359 as the official public Trip Himalaya number across all telephone, WhatsApp, enquiry, booking, header, and footer contact actions.

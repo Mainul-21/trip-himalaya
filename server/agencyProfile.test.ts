@@ -38,6 +38,8 @@ describe("agency profile administration contract", () => {
     expect(schema).toContain('aboutStoryTitle: varchar("aboutStoryTitle"');
     expect(db).toContain("DEFAULT_EXPERIENCES");
     expect(db).toContain("JSON.stringify(experiences)");
+    expect(db).toContain('phone: "+918219628359"');
+    expect(db).toContain('whatsapp: "918219628359"');
   });
 
   it("keeps public reads open and restricts profile updates to authenticated administrators", () => {
