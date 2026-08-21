@@ -317,3 +317,5 @@
 - [x] Add a narrowly scoped pnpm build-dependency allowlist for Hostinger and validate the production installation and build.
 - [x] Replace the obsolete pnpm 11 `.npmrc` build setting with the supported workspace allowlist and validate managed CI deployment.
 - [x] Update Hostinger deployment guidance to explain the committed pnpm 11 workspace allowlist and avoid obsolete approval commands.
+- [x] Diagnose and resolve the Hostinger esbuild postinstall EACCES deployment failure with a validated pnpm copy-import policy that preserves scoped native build scripts.
+- [ ] Redeploy the current main branch on Hostinger and verify the provider no longer reports an esbuild EACCES error.

@@ -45,6 +45,19 @@ The repository includes `pnpm-workspace.yaml`, which permits only the two native
 
 Do **not** run `pnpm approve-builds` in Hostinger, add a broad `allow-scripts=true` setting, or use the obsolete `.npmrc` key `build-dependencies-for`. Those alternatives either do not apply to pnpm 11 or weaken the project’s dependency-script controls. With the committed workspace policy present, use the normal **Install command** and **Build command** in the settings table above.
 
+### If Hostinger’s pnpm install reports `spawnSync .../esbuild/bin/esbuild EACCES`
+
+This error occurs during dependency installation, before the application `build` script starts. It means the deployment environment has not preserved esbuild’s executable permission when packages were hard-linked from pnpm’s store.
+
+The repository now sets `packageImportMethod: copy` in the root `pnpm-workspace.yaml`. This makes pnpm copy package files into its virtual store instead of hard-linking them, while retaining the existing scoped approvals for only `@tailwindcss/oxide` and `esbuild`.
+
+1. Keep **Package manager** as `pnpm`, Node as **22.x**, and Entry file as **`dist/index.js`**.
+2. Confirm the GitHub deployment uses the latest `main` branch, which includes the updated `pnpm-workspace.yaml` and regenerated `pnpm-lock.yaml`.
+3. Click **Save and redeploy** so Hostinger performs a clean installation with the copy-import policy.
+4. Do **not** add `ignore-scripts=true`, `allow-scripts=true`, `chmod` commands, `sudo` commands, or an npm fallback. These do not address the hard-link permission cause and can introduce new native-dependency installation issues.
+
+The copy-import policy was validated from a clean pnpm 11.22.0 installation: esbuild retained mode `755`, executed successfully, and the production build, TypeScript check, and full test suite passed.
+
 ## Static-only fallback (visual route repair only)
 
 Use this only if the Node/API server is already hosted separately under the same domain. Run:
@@ -77,5 +90,6 @@ This corrects the direct `/admin` invalid-page route. It does **not** create the
 4. Confirm all required environment variable names and values are set in hPanel, then redeploy or restart the Node application.
 5. If using static-only upload, confirm the hidden `.htaccess` is in `public_html` and no conflicting older rewrite file replaced it.
 6. If the log still reports `ERR_PNPM_IGNORED_BUILDS`, confirm the deployed source includes the root-level `pnpm-workspace.yaml` file and that the app is using pnpm 11.22.0; then start a fresh deployment from the `main` branch.
+7. If the log reports `spawnSync .../esbuild/bin/esbuild EACCES`, confirm the deployed branch contains the current root `pnpm-workspace.yaml` with `packageImportMethod: copy`, then trigger a fresh deployment. Do not disable scripts or add a runtime `chmod` workaround.
 
 The public page files and React route definitions are unchanged by this configuration.

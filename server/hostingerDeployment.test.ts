@@ -26,4 +26,15 @@ describe("Hostinger deployment contract", () => {
     expect(environment).toContain("JWT_SECRET=");
     expect(environment).toContain("CLOUDINARY_URL=");
   });
+
+  it("uses a copy-based pnpm import policy so native build binaries retain executable permissions", () => {
+    const workspace = fs.readFileSync(path.join(root, "pnpm-workspace.yaml"), "utf8");
+    const guide = fs.readFileSync(path.join(root, "HOSTINGER_DEPLOYMENT.md"), "utf8");
+
+    expect(workspace).toContain("packageImportMethod: copy");
+    expect(workspace).toContain("'@tailwindcss/oxide': true");
+    expect(workspace).toContain("esbuild: true");
+    expect(guide).toContain("packageImportMethod: copy");
+    expect(guide).toContain("dist/index.js");
+  });
 });
