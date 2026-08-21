@@ -1,0 +1,18 @@
+# Copy these names into Hostinger hPanel → Website → Environment Variables.
+# Do not commit or upload actual values in this file.
+
+NODE_ENV=production
+PORT=3000
+
+# Required for the Trip Himalaya server and approved administrator sign-in.
+DATABASE_URL=mysql://USER:PASSWORD@HOST:4000/DATABASE?ssl={"rejectUnauthorized":true}
+JWT_SECRET=generate-a-long-random-secret-at-least-32-characters
+INITIAL_ADMIN_SETUP_KEY=use-a-separate-long-random-once-only-setup-key
+
+# Required for administrator image uploads outside the managed development host.
+CLOUDINARY_URL=cloudinary://API_KEY:API_SECRET@CLOUD_NAME
+
+# Optional only when using a configured OAuth provider instead of credential-only admin sign-in.
+# VITE_APP_ID=
+# OAUTH_SERVER_URL=
+# OWNER_OPEN_ID=

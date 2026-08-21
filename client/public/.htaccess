@@ -1,0 +1,17 @@
+# Trip Himalaya single-page application fallback for Apache/Hostinger static hosting.
+# This lets direct visits such as /admin, /admin/login, /tours, and /about load
+# the React application instead of returning Hostinger's invalid-page response.
+Options -MultiViews
+RewriteEngine On
+
+# Serve actual files and directories normally (JavaScript, CSS, images, favicon, etc.).
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Never rewrite API requests to index.html. A functioning administrator portal
+# requires the Node/Express API runtime described in HOSTINGER_DEPLOYMENT.md.
+RewriteRule ^api(?:/|$) - [L]
+
+# Send all other non-file routes to the React entry point.
+RewriteRule ^ index.html [L]

@@ -305,3 +305,6 @@
 - [x] Verify administrator content controls and principal-only restrictions through protected-session QA without changing real business data.
 - [x] Review current agencyProfiles migrations and prepare a safe manual TiDB recovery sequence for older local schemas.
 - [x] Provide exact non-destructive local verification and restart instructions for the agency-profile editor recovery.
+- [x] Inspect the existing production build and routing configuration for the Hostinger `/admin` invalid-page deployment failure.
+- [x] Add safe Hostinger routing configuration and deployment documentation without changing existing public frontend pages.
+- [x] Build and validate a Hostinger deployment package that preserves public routes and restores direct administrator-route access.
