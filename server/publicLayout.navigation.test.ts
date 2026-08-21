@@ -23,7 +23,7 @@ describe("supplied reference header and footer contract", () => {
   it("keeps every supplied navigation item, the functional plan action, and role-aware dashboard access", () => {
     expect(source).toContain('label: "HOME"');
     expect(source).toContain('label: "EXPERIENCES"');
-    expect(source).toContain('href={isHomepage ? "#plan" : "/contact"}');
+    expect(source).toContain('href={isHomepage ? "/contact"}');
     expect(source).toContain('user ? <Link href="/admin"');
     expect(source).toContain("ADMIN DASHBOARD");
   });
