@@ -141,3 +141,7 @@ The two previously empty experience tiles—**Village Experiences** and **Himach
 ## Complete category-image loading verification — 20 August 2026
 
 The initial path refresh exposed that four legacy category assets could still display blank on a first page render despite returning network responses. All six supplied category photographs were therefore re-uploaded as fresh managed web assets and their source-reference mappings were updated without altering labels, links, card dimensions, or layout. Full-page 1280 px desktop and 390 px phone captures now visibly show **Trekking**, **Spiritual Tours**, **Camping**, **Village Experiences**, **Himachal Tours**, and **Custom Tours** with their correct mountain-travel imagery. TypeScript and the focused homepage media regression pass; no generated imagery or substitute card design was used.
+
+## Live managed-domain verification — 21 August 2026
+
+After the pnpm 11 workspace allowlist publication, the managed Trip Himalaya domain was checked through its initial branded loading state and then completed normally. The live homepage rendered the approved reference-aligned hero, fixed public navigation, planning and Explore Tours controls, three-slide hero navigation, six category links, public tour actions, enquiry form, telephone and WhatsApp actions, review panel, and footer. This confirms the managed deployment is serving the application after the native dependency-build policy correction rather than remaining on a failed build or permanent loader.

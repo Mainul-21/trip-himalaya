@@ -39,6 +39,12 @@ Create the variables listed in [`HOSTINGER_ENV.example`](./HOSTINGER_ENV.example
 5. Deploy. For server-side Node apps, Hostinger creates the public routing bridge automatically; do not replace its generated `public_html/.htaccess` with unrelated rules.
 6. Test `/`, `/admin`, `/admin/login`, `/tours`, and `/api/trpc` from the deployed domain.
 
+### pnpm 11 native-build policy
+
+The repository includes `pnpm-workspace.yaml`, which permits only the two native dependencies required by this production build: `@tailwindcss/oxide` and `esbuild`. Keep this file at the repository root when deploying from GitHub or a full-project ZIP.
+
+Do **not** run `pnpm approve-builds` in Hostinger, add a broad `allow-scripts=true` setting, or use the obsolete `.npmrc` key `build-dependencies-for`. Those alternatives either do not apply to pnpm 11 or weaken the project’s dependency-script controls. With the committed workspace policy present, use the normal **Install command** and **Build command** in the settings table above.
+
 ## Static-only fallback (visual route repair only)
 
 Use this only if the Node/API server is already hosted separately under the same domain. Run:
@@ -70,5 +76,6 @@ This corrects the direct `/admin` invalid-page route. It does **not** create the
 3. Confirm `dist/index.js` exists in the Node build output and `NODE_ENV=production` is set.
 4. Confirm all required environment variable names and values are set in hPanel, then redeploy or restart the Node application.
 5. If using static-only upload, confirm the hidden `.htaccess` is in `public_html` and no conflicting older rewrite file replaced it.
+6. If the log still reports `ERR_PNPM_IGNORED_BUILDS`, confirm the deployed source includes the root-level `pnpm-workspace.yaml` file and that the app is using pnpm 11.22.0; then start a fresh deployment from the `main` branch.
 
 The public page files and React route definitions are unchanged by this configuration.

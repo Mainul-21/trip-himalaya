@@ -316,3 +316,4 @@
 - [x] Add regression coverage and verify the corrected homepage no longer logs the invalid DOM-nesting warning.
 - [x] Add a narrowly scoped pnpm build-dependency allowlist for Hostinger and validate the production installation and build.
 - [x] Replace the obsolete pnpm 11 `.npmrc` build setting with the supported workspace allowlist and validate managed CI deployment.
+- [x] Update Hostinger deployment guidance to explain the committed pnpm 11 workspace allowlist and avoid obsolete approval commands.
