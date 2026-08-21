@@ -308,3 +308,5 @@
 - [x] Inspect the existing production build and routing configuration for the Hostinger `/admin` invalid-page deployment failure.
 - [x] Add safe Hostinger routing configuration and deployment documentation without changing existing public frontend pages.
 - [x] Build and validate a Hostinger deployment package that preserves public routes and restores direct administrator-route access.
+- [x] Deliver a complete owner-facing Hostinger upload checklist covering the Node app, static routing, environment variables, database, and administrator verification.
+- [x] Deliver a complete owner-facing guide that separates Hostinger full-stack deployment from Google Search Console verification and indexing.
