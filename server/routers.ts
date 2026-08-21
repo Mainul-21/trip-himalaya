@@ -65,6 +65,9 @@ const experienceInput = z.object({
   href: z.string().trim().url().regex(/^https?:\/\//i, "Enter a full http:// or https:// hotel link.").max(2048),
   image: z.string().trim().url().or(z.string().startsWith("/manus-storage/")),
 });
+const homepageBadgeInput = z.object({ title: z.string().trim().min(2).max(80), copy: z.string().trim().min(2).max(160) });
+const whyTripItemInput = z.object({ title: z.string().trim().min(2).max(100), copy: z.string().trim().min(2).max(240) });
+const managedImageUrl = z.string().trim().url().or(z.string().startsWith("/manus-storage/"));
 const agencyProfileInput = z.object({
   brandName: z.string().trim().min(2).max(160),
   tagline: z.string().trim().max(220),
@@ -89,6 +92,13 @@ const agencyProfileInput = z.object({
   aboutStoryTitle: z.string().trim().min(2).max(220),
   aboutStoryBody: z.string().trim().min(2).max(4000),
   aboutStorySecondBody: z.string().trim().min(2).max(4000),
+  heroTitle: z.string().trim().min(2).max(160),
+  heroAccentTitle: z.string().trim().min(2).max(160),
+  heroSubtitle: z.string().trim().min(2).max(280),
+  heroImages: z.array(managedImageUrl).max(5),
+  heroBadges: z.array(homepageBadgeInput).min(1).max(4),
+  whyTripTitle: z.string().trim().min(2).max(160),
+  whyTripItems: z.array(whyTripItemInput).min(1).max(5),
   travelStyles: z.array(travelStyleInput).min(1).max(8),
 });
 

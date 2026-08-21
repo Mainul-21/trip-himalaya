@@ -129,6 +129,13 @@ export const agencyProfiles = mysqlTable("agencyProfiles", {
   aboutStoryTitle: varchar("aboutStoryTitle", { length: 220 }),
   aboutStoryBody: text("aboutStoryBody"),
   aboutStorySecondBody: text("aboutStorySecondBody"),
+  heroTitle: varchar("heroTitle", { length: 160 }),
+  heroAccentTitle: varchar("heroAccentTitle", { length: 160 }),
+  heroSubtitle: varchar("heroSubtitle", { length: 280 }),
+  heroImagesJson: text("heroImagesJson"),
+  heroBadgesJson: text("heroBadgesJson"),
+  whyTripTitle: varchar("whyTripTitle", { length: 160 }),
+  whyTripItemsJson: text("whyTripItemsJson"),
   createdAt: timestamp("createdAt").defaultNow().notNull(),
   updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
 });

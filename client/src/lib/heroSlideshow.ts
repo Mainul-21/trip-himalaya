@@ -4,7 +4,7 @@ export const heroSlides = [
   { src: "/manus-storage/triund-hikers_7653a06a.jpg" },
 ] as const;
 
-export function getNextHeroSlideIndex(currentIndex: number, totalSlides = heroSlides.length) {
+export function getNextHeroSlideIndex(currentIndex: number, totalSlides: number = heroSlides.length) {
   if (totalSlides <= 1) return 0;
   return (Math.max(0, currentIndex) + 1) % totalSlides;
 }

@@ -25,6 +25,8 @@ export const DEFAULT_TRAVEL_STYLES = [
 
 export type TravelStyle = { title: string; href: string; image: string; copy: string };
 export type ExperienceItem = { title: string; copy: string; href: string; image: string };
+export type HomepageBadge = { title: string; copy: string };
+export type WhyTripItem = { title: string; copy: string };
 
 function createDefaultExperiences(): ExperienceItem[] {
   return [];
@@ -57,15 +59,36 @@ export const DEFAULT_AGENCY_PROFILE = {
   aboutStoryTitle: "A mountain journey that started in Dharamshala.",
   aboutStoryBody: "Trip Himalaya was founded in 2020 by Ravi Kant with a simple belief: travelling in the Himalayas should feel personal, clear, and connected to the place.",
   aboutStorySecondBody: "We create journeys across Himachal for people who want more than a hurried list of stops. Our work brings together trekking, spiritual journeys, camping, village experiences, Himachal tours, and custom plans.",
+  heroTitle: "DISCOVER HIMACHAL.",
+  heroAccentTitle: "EXPERIENCE THE HIMALAYAS.",
+  heroSubtitle: "Curated journeys. Local expertise. Unforgettable memories.",
+  heroImages: [] as string[],
+  heroBadges: [
+    { title: "Local Experts", copy: "Born in the Himalayas" },
+    { title: "Best Price Guarantee", copy: "No hidden charges" },
+    { title: "Safe & Comfortable", copy: "Your safety, our priority" },
+    { title: "24x7 Support", copy: "We are always with you" },
+  ] as HomepageBadge[],
+  whyTripTitle: "WHY TRIP HIMALAYA?",
+  whyTripItems: [
+    { title: "LOCAL EXPERTS", copy: "We are locals, we know the Himalayas best." },
+    { title: "SAFE & RELIABLE", copy: "Your safety and comfort is our top priority." },
+    { title: "BEST PRICE GUARANTEE", copy: "Transparent pricing with no hidden charges." },
+    { title: "PERSONALISED SUPPORT", copy: "From planning to journey, we are with you." },
+    { title: "RESPONSIBLE TOURISM", copy: "We respect nature & support local communities." },
+  ] as WhyTripItem[],
 };
 
-export type AgencyProfileValues = Omit<typeof DEFAULT_AGENCY_PROFILE, "travelStyles"> & { travelStyles: TravelStyle[] };
+export type AgencyProfileValues = Omit<typeof DEFAULT_AGENCY_PROFILE, "travelStyles" | "heroImages" | "heroBadges" | "whyTripItems"> & { travelStyles: TravelStyle[]; heroImages: string[]; heroBadges: HomepageBadge[]; whyTripItems: WhyTripItem[] };
 export type AgencyProfileReadValues = AgencyProfileValues & { schemaNeedsUpdate: boolean; databaseNeedsAttention: boolean };
 
 function agencyProfileFallback(schemaNeedsUpdate = false, databaseNeedsAttention = false): AgencyProfileReadValues {
   return {
     ...DEFAULT_AGENCY_PROFILE,
     travelStyles: DEFAULT_AGENCY_PROFILE.travelStyles.map(style => ({ ...style })),
+    heroImages: [...DEFAULT_AGENCY_PROFILE.heroImages],
+    heroBadges: DEFAULT_AGENCY_PROFILE.heroBadges.map(item => ({ ...item })),
+    whyTripItems: DEFAULT_AGENCY_PROFILE.whyTripItems.map(item => ({ ...item })),
     schemaNeedsUpdate,
     databaseNeedsAttention,
   };
@@ -73,7 +96,7 @@ function agencyProfileFallback(schemaNeedsUpdate = false, databaseNeedsAttention
 
 function isMissingAgencyBrandingColumn(error: unknown) {
   const message = error instanceof Error ? error.message : String(error);
-  return /(exploreTitle|exploreIntro|travelStylesJson|touristCount|tourCount|thirdMetricLabel|thirdMetricValue|experiencesTitle|experiencesIntro|experiencesJson|aboutStoryTitle|aboutStoryBody|aboutStorySecondBody)/i.test(message) && /(unknown column|no such column|failed query)/i.test(message);
+  return /(exploreTitle|exploreIntro|travelStylesJson|touristCount|tourCount|thirdMetricLabel|thirdMetricValue|experiencesTitle|experiencesIntro|experiencesJson|aboutStoryTitle|aboutStoryBody|aboutStorySecondBody|heroTitle|heroAccentTitle|heroSubtitle|heroImagesJson|heroBadgesJson|whyTripTitle|whyTripItemsJson)/i.test(message) && /(unknown column|no such column|failed query)/i.test(message);
 }
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -241,6 +264,13 @@ export async function getAgencyProfile(): Promise<AgencyProfileReadValues> {
       aboutStoryTitle: DEFAULT_AGENCY_PROFILE.aboutStoryTitle,
       aboutStoryBody: DEFAULT_AGENCY_PROFILE.aboutStoryBody,
       aboutStorySecondBody: DEFAULT_AGENCY_PROFILE.aboutStorySecondBody,
+      heroTitle: DEFAULT_AGENCY_PROFILE.heroTitle,
+      heroAccentTitle: DEFAULT_AGENCY_PROFILE.heroAccentTitle,
+      heroSubtitle: DEFAULT_AGENCY_PROFILE.heroSubtitle,
+      heroImages: [...DEFAULT_AGENCY_PROFILE.heroImages],
+      heroBadges: DEFAULT_AGENCY_PROFILE.heroBadges.map(item => ({ ...item })),
+      whyTripTitle: DEFAULT_AGENCY_PROFILE.whyTripTitle,
+      whyTripItems: DEFAULT_AGENCY_PROFILE.whyTripItems.map(item => ({ ...item })),
       travelStyles: DEFAULT_AGENCY_PROFILE.travelStyles.map(style => ({ ...style })),
       schemaNeedsUpdate: true,
       databaseNeedsAttention: false,
@@ -286,16 +316,29 @@ export async function getAgencyProfile(): Promise<AgencyProfileReadValues> {
     aboutStoryTitle: profile.aboutStoryTitle || DEFAULT_AGENCY_PROFILE.aboutStoryTitle,
     aboutStoryBody: profile.aboutStoryBody || DEFAULT_AGENCY_PROFILE.aboutStoryBody,
     aboutStorySecondBody: profile.aboutStorySecondBody || DEFAULT_AGENCY_PROFILE.aboutStorySecondBody,
-      travelStyles,
-      schemaNeedsUpdate: false,
-      databaseNeedsAttention: false,
-    };
+    heroTitle: profile.heroTitle || DEFAULT_AGENCY_PROFILE.heroTitle,
+    heroAccentTitle: profile.heroAccentTitle || DEFAULT_AGENCY_PROFILE.heroAccentTitle,
+    heroSubtitle: profile.heroSubtitle || DEFAULT_AGENCY_PROFILE.heroSubtitle,
+    heroImages: (() => {
+      try { const parsed = profile.heroImagesJson ? JSON.parse(profile.heroImagesJson) : []; return Array.isArray(parsed) ? parsed.filter((item): item is string => typeof item === "string").slice(0, 5) : []; } catch { return []; }
+    })(),
+    heroBadges: (() => {
+      try { const parsed = profile.heroBadgesJson ? JSON.parse(profile.heroBadgesJson) : []; return Array.isArray(parsed) && parsed.length ? parsed.slice(0, 4).map((item): HomepageBadge => ({ title: typeof item?.title === "string" ? item.title : "", copy: typeof item?.copy === "string" ? item.copy : "" })).filter(item => item.title && item.copy) : DEFAULT_AGENCY_PROFILE.heroBadges.map(item => ({ ...item })); } catch { return DEFAULT_AGENCY_PROFILE.heroBadges.map(item => ({ ...item })); }
+    })(),
+    whyTripTitle: profile.whyTripTitle || DEFAULT_AGENCY_PROFILE.whyTripTitle,
+    whyTripItems: (() => {
+      try { const parsed = profile.whyTripItemsJson ? JSON.parse(profile.whyTripItemsJson) : []; return Array.isArray(parsed) && parsed.length ? parsed.slice(0, 5).map((item): WhyTripItem => ({ title: typeof item?.title === "string" ? item.title : "", copy: typeof item?.copy === "string" ? item.copy : "" })).filter(item => item.title && item.copy) : DEFAULT_AGENCY_PROFILE.whyTripItems.map(item => ({ ...item })); } catch { return DEFAULT_AGENCY_PROFILE.whyTripItems.map(item => ({ ...item })); }
+    })(),
+    travelStyles,
+    schemaNeedsUpdate: false,
+    databaseNeedsAttention: false,
+  };
 }
 
 export async function updateAgencyProfile(values: AgencyProfileValues): Promise<AgencyProfileValues> {
   const db = requireDb(await getDb());
-  const { travelStyles, experiences, ...profileValues } = values;
-  const persistedValues = { ...profileValues, travelStylesJson: JSON.stringify(travelStyles), experiencesJson: JSON.stringify(experiences) };
+  const { travelStyles, experiences, heroImages, heroBadges, whyTripItems, ...profileValues } = values;
+  const persistedValues = { ...profileValues, travelStylesJson: JSON.stringify(travelStyles), experiencesJson: JSON.stringify(experiences), heroImagesJson: JSON.stringify(heroImages), heroBadgesJson: JSON.stringify(heroBadges), whyTripItemsJson: JSON.stringify(whyTripItems) };
   const existing = (await db.select({ id: agencyProfiles.id }).from(agencyProfiles).limit(1))[0];
   if (existing) await db.update(agencyProfiles).set(persistedValues).where(eq(agencyProfiles.id, existing.id));
   else await db.insert(agencyProfiles).values(persistedValues);

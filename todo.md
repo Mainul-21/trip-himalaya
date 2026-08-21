@@ -298,3 +298,8 @@
 - [x] Let administrators manage Our Stay hotel cards with hotel name, image, short details, and a safe external booking or website link.
 - [x] Replace public Experiences navigation labels with Our Stay while preserving responsive reference-aligned navigation.
 - [x] Add regression coverage and responsive public QA for administrator-managed Our Stay hotel cards and outbound links.
+- [x] Audit every public Trip Himalaya content surface against its administrator editing control and document protected system boundaries.
+- [x] Add any missing safe administrator controls needed for editable public content without exposing authentication, role rules, integrations, or core site code.
+- [x] Add safe agency-profile fields and admin controls for homepage hero copy, trust-strip messages, and the Why Trip Himalaya cards.
+- [x] Preserve the approved homepage reference layout while displaying administrator-managed homepage copy with safe fallbacks.
+- [x] Verify administrator content controls and principal-only restrictions through protected-session QA without changing real business data.

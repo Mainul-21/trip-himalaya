@@ -19,6 +19,7 @@ import {
   Mountain,
   Pencil,
   Plus,
+  ShieldCheck,
   Star,
   Trash2,
   Upload,
@@ -36,6 +37,8 @@ const images = [
 ];
 type AgencyTravelStyle = { title: string; href: string; image: string; copy: string };
 type AgencyExperience = { title: string; copy: string; href: string; image: string };
+type HomepageBadge = { title: string; copy: string };
+type WhyTripItem = { title: string; copy: string };
 
 type Tour = {
   id: number;
@@ -216,6 +219,9 @@ function AgencyProfile() {
   const { data, error, isLoading, refetch, isFetching } = trpc.agency.get.useQuery(undefined, { retry: false, refetchOnWindowFocus: false });
   const [travelStyles, setTravelStyles] = useState<AgencyTravelStyle[]>([]);
   const [experiences, setExperiences] = useState<AgencyExperience[]>([]);
+  const [heroImages, setHeroImages] = useState<string[]>([]);
+  const [heroBadges, setHeroBadges] = useState<HomepageBadge[]>([]);
+  const [whyTripItems, setWhyTripItems] = useState<WhyTripItem[]>([]);
   const [logoUrl, setLogoUrl] = useState("");
   const update = trpc.agency.update.useMutation({
     onSuccess: () => void utils.agency.get.invalidate(),
@@ -224,8 +230,11 @@ function AgencyProfile() {
   useEffect(() => {
     if (data?.travelStyles) setTravelStyles(data.travelStyles);
     if (data?.experiences) setExperiences(data.experiences);
+    if (data?.heroImages) setHeroImages(data.heroImages);
+    if (data?.heroBadges) setHeroBadges(data.heroBadges);
+    if (data?.whyTripItems) setWhyTripItems(data.whyTripItems);
     if (data?.logoUrl) setLogoUrl(data.logoUrl);
-  }, [data?.travelStyles, data?.experiences, data?.logoUrl]);
+  }, [data?.travelStyles, data?.experiences, data?.heroImages, data?.heroBadges, data?.whyTripItems, data?.logoUrl]);
 
   function updateStyle(index: number, patch: Partial<AgencyTravelStyle>) {
     setTravelStyles(current => current.map((style, styleIndex) => styleIndex === index ? { ...style, ...patch } : style));
@@ -238,6 +247,12 @@ function AgencyProfile() {
   }
   function removeHotel(index: number) {
     setExperiences(current => current.filter((_, itemIndex) => itemIndex !== index));
+  }
+  function updateHeroBadge(index: number, patch: Partial<HomepageBadge>) {
+    setHeroBadges(current => current.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item));
+  }
+  function updateWhyTripItem(index: number, patch: Partial<WhyTripItem>) {
+    setWhyTripItems(current => current.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item));
   }
 
   function save(event: FormEvent<HTMLFormElement>) {
@@ -264,6 +279,13 @@ function AgencyProfile() {
       experiencesTitle: String(form.get("experiencesTitle") || "").trim(),
       experiencesIntro: String(form.get("experiencesIntro") || "").trim(),
       experiences,
+      heroTitle: String(form.get("heroTitle") || "").trim(),
+      heroAccentTitle: String(form.get("heroAccentTitle") || "").trim(),
+      heroSubtitle: String(form.get("heroSubtitle") || "").trim(),
+      heroImages,
+      heroBadges,
+      whyTripTitle: String(form.get("whyTripTitle") || "").trim(),
+      whyTripItems,
       aboutStoryTitle: String(form.get("aboutStoryTitle") || "").trim(),
       aboutStoryBody: String(form.get("aboutStoryBody") || "").trim(),
       aboutStorySecondBody: String(form.get("aboutStorySecondBody") || "").trim(),
@@ -282,6 +304,7 @@ function AgencyProfile() {
         <div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#eef4f2] text-[#e17818]"><Building2 className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Brand and logo</h2><p className="mt-1 text-sm leading-6 text-slate-500">Update the public name, tagline, and logo. Uploading a logo saves it to the protected media library and uses it in the public header and footer.</p></div></div>
         <div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Agency name" name="brandName" defaultValue={data.brandName} required /><Field label="Short tagline (optional)" name="tagline" defaultValue={data.tagline} /><div className="sm:col-span-2"><input type="hidden" name="logoUrl" value={logoUrl} readOnly /><AgencyImageUploader label="Agency logo" value={logoUrl} onChange={setLogoUrl} help="Use a clear horizontal logo. JPG, PNG, or WebP up to 12 MB; it is resized and converted to fast WebP." /></div></div>
       </section>
+      <HomepageContentEditor data={data} heroImages={heroImages} setHeroImages={setHeroImages} heroBadges={heroBadges} setHeroBadges={setHeroBadges} whyTripItems={whyTripItems} setWhyTripItems={setWhyTripItems} updateHeroBadge={updateHeroBadge} updateWhyTripItem={updateWhyTripItem} />
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6">
         <div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#fff1e5] text-[#e17818]"><Mountain className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Travel styles</h2><p className="mt-1 text-sm leading-6 text-slate-500">Edit each card directly. Upload a relevant Himalayan image, then adjust its title, link, and short visitor-facing copy.</p></div></div>
         <div className="mt-6 grid gap-4"><Field label="Section heading" name="exploreTitle" defaultValue={data.exploreTitle} required /><div><Label htmlFor="agency-exploreIntro">Short introduction</Label><Textarea id="agency-exploreIntro" name="exploreIntro" defaultValue={data.exploreIntro} className="mt-2 min-h-20 bg-white" required /></div><input type="hidden" name="travelStyles" value={JSON.stringify(travelStyles)} readOnly /><div className="grid gap-4 md:grid-cols-2">{travelStyles.map((style, index) => <div key={`${style.title}-${index}`} className="rounded-2xl border border-[#d7e3de] bg-[#f8fbf9] p-4"><div className="mb-3 flex items-center justify-between"><h3 className="font-bold text-[#123d5b]">Style {index + 1}</h3><span className="text-xs text-slate-500">Shown on homepage</span></div><AgencyImageUploader label="Card image" value={style.image} onChange={value => updateStyle(index, { image: value })} help="Choose a clear, relevant Himachal photo." /><div className="mt-4 grid gap-3"><div><Label htmlFor={`style-title-${index}`}>Title</Label><Input id={`style-title-${index}`} value={style.title} onChange={event => updateStyle(index, { title: event.target.value })} className="mt-2 h-11 bg-white" required /></div><div><Label htmlFor={`style-copy-${index}`}>Short copy</Label><Input id={`style-copy-${index}`} value={style.copy} onChange={event => updateStyle(index, { copy: event.target.value })} className="mt-2 h-11 bg-white" required /></div><div><Label htmlFor={`style-href-${index}`}>Link</Label><Input id={`style-href-${index}`} value={style.href} onChange={event => updateStyle(index, { href: event.target.value })} className="mt-2 h-11 bg-white" required /></div></div></div>)}</div></div>
@@ -296,6 +319,22 @@ function AgencyProfile() {
       <Button type="submit" disabled={update.isPending} className="h-12 rounded-xl bg-[#123d5b] px-6 font-bold hover:bg-[#0b2d46]">{update.isPending ? "Saving public profile…" : "Save public agency profile"}</Button>
     </form>
   </div>;
+}
+
+type HomepageContentEditorProps = {
+  data: { heroTitle: string; heroAccentTitle: string; heroSubtitle: string; whyTripTitle: string };
+  heroImages: string[];
+  setHeroImages: React.Dispatch<React.SetStateAction<string[]>>;
+  heroBadges: HomepageBadge[];
+  setHeroBadges: React.Dispatch<React.SetStateAction<HomepageBadge[]>>;
+  whyTripItems: WhyTripItem[];
+  setWhyTripItems: React.Dispatch<React.SetStateAction<WhyTripItem[]>>;
+  updateHeroBadge: (index: number, patch: Partial<HomepageBadge>) => void;
+  updateWhyTripItem: (index: number, patch: Partial<WhyTripItem>) => void;
+};
+
+function HomepageContentEditor({ data, heroImages, setHeroImages, heroBadges, setHeroBadges, whyTripItems, setWhyTripItems, updateHeroBadge, updateWhyTripItem }: HomepageContentEditorProps) {
+  return <><section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#fff1e5] text-[#e17818]"><Mountain className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Homepage hero</h2><p className="mt-1 text-sm leading-6 text-slate-500">Edit the homepage heading, supporting line, and mountain slideshow. Leave slideshow photos empty to keep the approved Trip Himalaya images.</p></div></div><div className="mt-6 grid gap-4"><Field label="Main heading" name="heroTitle" defaultValue={data.heroTitle} required /><Field label="Accent heading" name="heroAccentTitle" defaultValue={data.heroAccentTitle} required /><div><Label htmlFor="agency-heroSubtitle">Short introduction</Label><Textarea id="agency-heroSubtitle" name="heroSubtitle" defaultValue={data.heroSubtitle} className="mt-2 min-h-20 bg-white" required /></div><div className="rounded-xl border border-[#d7e3de] bg-[#f8fbf9] p-4"><h3 className="font-bold text-[#123d5b]">Hero slideshow photos</h3><div className="mt-4 grid gap-4 md:grid-cols-2">{heroImages.map((image, index) => <div key={`${image}-${index}`}><div className="mb-2 flex items-center justify-between"><Label>Slide {index + 1}</Label><Button type="button" variant="outline" size="sm" onClick={() => setHeroImages(current => current.filter((_, itemIndex) => itemIndex !== index))} className="border-red-200 text-red-700 hover:bg-red-50 hover:text-red-800"><Trash2 className="size-4" />Remove</Button></div><AgencyImageUploader label="Slide image" value={image} onChange={value => setHeroImages(current => current.map((item, itemIndex) => itemIndex === index ? value : item))} help="Upload a wide Himalayan image you have permission to use." /></div>)}</div><Button type="button" variant="outline" onClick={() => setHeroImages(current => current.length >= 5 ? current : [...current, ""])} disabled={heroImages.length >= 5} className="mt-4 w-full border-dashed border-[#b9cbc4] py-6 font-bold text-[#123d5b] hover:bg-[#eef4f2]"><Plus className="size-4" />Add hero photo</Button></div></div></section><section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#eef4f2] text-[#e17818]"><ShieldCheck className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Homepage trust messages</h2><p className="mt-1 text-sm leading-6 text-slate-500">Edit up to four short messages below the hero. Icons remain consistent with the approved visual layout.</p></div></div><div className="mt-6 grid gap-4 md:grid-cols-2">{heroBadges.map((item, index) => <div key={`${item.title}-${index}`} className="rounded-xl border border-[#d7e3de] bg-[#f8fbf9] p-4"><div className="flex items-center justify-between"><h3 className="font-bold text-[#123d5b]">Message {index + 1}</h3>{heroBadges.length > 1 ? <Button type="button" variant="outline" size="sm" onClick={() => setHeroBadges(current => current.filter((_, itemIndex) => itemIndex !== index))} className="border-red-200 text-red-700 hover:bg-red-50 hover:text-red-800"><Trash2 className="size-4" />Remove</Button> : null}</div><div className="mt-4 grid gap-3"><Input value={item.title} aria-label={`Trust message ${index + 1} heading`} onChange={event => updateHeroBadge(index, { title: event.target.value })} required /><Input value={item.copy} aria-label={`Trust message ${index + 1} description`} onChange={event => updateHeroBadge(index, { copy: event.target.value })} required /></div></div>)}</div><Button type="button" variant="outline" onClick={() => setHeroBadges(current => current.length >= 4 ? current : [...current, { title: "", copy: "" }])} disabled={heroBadges.length >= 4} className="mt-4 w-full border-dashed border-[#b9cbc4] py-6 font-bold text-[#123d5b] hover:bg-[#eef4f2]"><Plus className="size-4" />Add trust message</Button></section><section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#eef4f2] text-[#e17818]"><Star className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Why Trip Himalaya</h2><p className="mt-1 text-sm leading-6 text-slate-500">Update the homepage reasons. The existing visual icons remain in place for a clean, consistent design.</p></div></div><div className="mt-6 grid gap-4"><Field label="Section heading" name="whyTripTitle" defaultValue={data.whyTripTitle} required /><div className="grid gap-4 md:grid-cols-2">{whyTripItems.map((item, index) => <div key={`${item.title}-${index}`} className="rounded-xl border border-[#d7e3de] bg-[#f8fbf9] p-4"><div className="flex items-center justify-between"><h3 className="font-bold text-[#123d5b]">Reason {index + 1}</h3>{whyTripItems.length > 1 ? <Button type="button" variant="outline" size="sm" onClick={() => setWhyTripItems(current => current.filter((_, itemIndex) => itemIndex !== index))} className="border-red-200 text-red-700 hover:bg-red-50 hover:text-red-800"><Trash2 className="size-4" />Remove</Button> : null}</div><div className="mt-4 grid gap-3"><Input value={item.title} aria-label={`Reason ${index + 1} heading`} onChange={event => updateWhyTripItem(index, { title: event.target.value })} required /><Textarea value={item.copy} aria-label={`Reason ${index + 1} description`} onChange={event => updateWhyTripItem(index, { copy: event.target.value })} className="min-h-20 bg-white" required /></div></div>)}</div><Button type="button" variant="outline" onClick={() => setWhyTripItems(current => current.length >= 5 ? current : [...current, { title: "", copy: "" }])} disabled={whyTripItems.length >= 5} className="w-full border-dashed border-[#b9cbc4] py-6 font-bold text-[#123d5b] hover:bg-[#eef4f2]"><Plus className="size-4" />Add reason</Button></div></section></>;
 }
 
 function AgencyImageUploader({ label, value, onChange, help }: { label: string; value: string; onChange: (value: string) => void; help: string }) {

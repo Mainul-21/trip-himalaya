@@ -30,7 +30,8 @@ describe("image delivery", () => {
   });
 
   it("loads only the active homepage slideshow image at first paint", () => {
-    expect(home).toContain("const activeHero = heroSlides[activeHeroSlide]");
+    expect(home).toContain('const activeHeroSlides = useMemo(() => agency?.heroImages?.length ? agency.heroImages.map(src => ({ src })) : heroSlides');
+    expect(home).toContain("const activeHero = activeHeroSlides[activeHeroSlide] || activeHeroSlides[0]");
     expect(home).toContain('src={getImageVariant(activeHero.src, "hero")}');
     expect(home).not.toContain("{heroSlides.map((slide, index) => <img");
   });

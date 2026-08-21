@@ -8,6 +8,7 @@ const portal = readFileSync(new URL("../client/src/pages/AdminPortal.tsx", impor
 const publicPage = readFileSync(new URL("../client/src/pages/PublicPage.tsx", import.meta.url), "utf8");
 const app = readFileSync(new URL("../client/src/App.tsx", import.meta.url), "utf8");
 const publicLayout = readFileSync(new URL("../client/src/components/PublicLayout.tsx", import.meta.url), "utf8");
+const home = readFileSync(new URL("../client/src/pages/Home.tsx", import.meta.url), "utf8");
 const dashboardLayout = readFileSync(new URL("../client/src/components/DashboardLayout.tsx", import.meta.url), "utf8");
 const sidebarPrimitive = readFileSync(new URL("../client/src/components/ui/sidebar.tsx", import.meta.url), "utf8");
 const dashboardSkeleton = readFileSync(new URL("../client/src/components/DashboardLayoutSkeleton.tsx", import.meta.url), "utf8");
@@ -36,12 +37,21 @@ describe("agency profile administration contract", () => {
     expect(schema).toContain('experiencesTitle: varchar("experiencesTitle"');
     expect(schema).toContain('experiencesJson: text("experiencesJson")');
     expect(schema).toContain('aboutStoryTitle: varchar("aboutStoryTitle"');
+    expect(schema).toContain('heroTitle: varchar("heroTitle"');
+    expect(schema).toContain('heroImagesJson: text("heroImagesJson")');
+    expect(schema).toContain('heroBadgesJson: text("heroBadgesJson")');
+    expect(schema).toContain('whyTripItemsJson: text("whyTripItemsJson")');
     expect(db).toContain("DEFAULT_EXPERIENCES");
     expect(db).toContain("JSON.stringify(experiences)");
     expect(db).toContain('export type ExperienceItem = { title: string; copy: string; href: string; image: string }');
     expect(db).toContain('experiencesTitle: "Stay close to the mountains."');
     expect(db).toContain('phone: "+918219628359"');
     expect(db).toContain('whatsapp: "918219628359"');
+    expect(db).toContain('heroTitle: "DISCOVER HIMACHAL."');
+    expect(db).toContain('whyTripTitle: "WHY TRIP HIMALAYA?"');
+    expect(db).toContain('JSON.stringify(heroImages)');
+    expect(db).toContain('JSON.stringify(heroBadges)');
+    expect(db).toContain('JSON.stringify(whyTripItems)');
   });
 
   it("keeps public reads open and restricts profile updates to authenticated administrators", () => {
@@ -82,6 +92,14 @@ describe("agency profile administration contract", () => {
     expect(portal).toContain("About page — Our Story");
     expect(portal).toContain('name="experiencesTitle"');
     expect(portal).toContain('name="aboutStoryTitle"');
+    expect(portal).toContain('>Homepage hero</h2>');
+    expect(portal).toContain('name="heroTitle"');
+    expect(portal).toContain('name="heroAccentTitle"');
+    expect(portal).toContain('name="heroSubtitle"');
+    expect(portal).toContain('>Add hero photo</Button>');
+    expect(portal).toContain('>Homepage trust messages</h2>');
+    expect(portal).toContain('>Why Trip Himalaya</h2>');
+    expect(portal).toContain('name="whyTripTitle"');
   });
 
   it("renders administrator-managed Our Stay hotel cards and Our Story content publicly with official-logo loading fallback", () => {
@@ -97,6 +115,16 @@ describe("agency profile administration contract", () => {
     expect(publicLayout).toContain('{ label: "OUR STAY", href: "/experiences", dropdown: true }');
     expect(app).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
     expect(app).toContain('alt="Trip Himalaya"');
+  });
+
+  it("renders administrator-managed homepage hero, slideshow, trust messages, and Why Trip Himalaya cards with safe fallbacks", () => {
+    expect(home).toContain('agency?.heroTitle || "DISCOVER HIMACHAL."');
+    expect(home).toContain('agency?.heroAccentTitle || "EXPERIENCE THE HIMALAYAS."');
+    expect(home).toContain('agency?.heroSubtitle || "Curated journeys. Local expertise. Unforgettable memories."');
+    expect(home).toContain('agency?.heroImages?.length ? agency.heroImages.map(src => ({ src })) : heroSlides');
+    expect(home).toContain('agency?.heroBadges?.length ? agency.heroBadges : fallbackHeroBadges');
+    expect(home).toContain('agency?.whyTripItems?.length ? agency.whyTripItems : fallbackWhyTripItems');
+    expect(home).toContain('agency?.whyTripTitle || "WHY TRIP HIMALAYA?"');
   });
 
   it("allows a blank short tagline and uses the shared official logo fallback on public and administrator surfaces", () => {
