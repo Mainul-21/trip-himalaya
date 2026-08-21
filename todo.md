@@ -303,3 +303,5 @@
 - [x] Add safe agency-profile fields and admin controls for homepage hero copy, trust-strip messages, and the Why Trip Himalaya cards.
 - [x] Preserve the approved homepage reference layout while displaying administrator-managed homepage copy with safe fallbacks.
 - [x] Verify administrator content controls and principal-only restrictions through protected-session QA without changing real business data.
+- [x] Review current agencyProfiles migrations and prepare a safe manual TiDB recovery sequence for older local schemas.
+- [x] Provide exact non-destructive local verification and restart instructions for the agency-profile editor recovery.
