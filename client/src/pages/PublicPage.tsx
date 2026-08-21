@@ -2,7 +2,7 @@ import PublicLayout from "@/components/PublicLayout";
 import { aboutReasons, aboutServices } from "@/lib/aboutContent";
 import { getImageVariant } from "@/lib/imageDelivery";
 import { trpc } from "@/lib/trpc";
-import { ArrowRight, Check, Compass, HeartHandshake, Landmark, Mountain, UsersRound } from "lucide-react";
+import { ArrowRight, HeartHandshake, Mountain } from "lucide-react";
 import { Link } from "wouter";
 
 export default function PublicPage({ kind }: { kind: "about" | "experiences" }) {
@@ -30,17 +30,8 @@ function AboutPage() {
 
 function ExperiencesPage() {
   const { data: agencyProfile } = trpc.agency.get.useQuery();
-  const iconSet = [Landmark, UsersRound, Mountain, Compass, HeartHandshake, Check];
-  const fallbackExperiences = [
-    { title: "A day around McLeod Ganj", copy: "Culture, food and a clear feel for upper Dharamshala.", href: "/contact" },
-    { title: "A private family escape", copy: "Flexible timing and smaller distances for more shared time.", href: "/contact" },
-    { title: "A trail with a guide", copy: "Walk a route that matches your confidence and time.", href: "/contact" },
-    { title: "A slow Kangra Valley day", copy: "Views, local stops and space to take it in.", href: "/contact" },
-    { title: "A celebration in the hills", copy: "A useful plan for a birthday, reunion or meaningful pause.", href: "/contact" },
-    { title: "A made-to-fit week", copy: "Join treks, local stays and free days in one simple plan.", href: "/contact" },
-  ];
-  const experiences = agencyProfile?.experiences?.length ? agencyProfile.experiences : fallbackExperiences;
-  const pageTitle = agencyProfile?.experiencesTitle || "Experiences for your kind of mountain time.";
-  const pageIntro = agencyProfile?.experiencesIntro || "Choose a slower day, a local plan or a route made around you.";
-  return <><PageHero eyebrow="Experiences" title={pageTitle} copy={pageIntro} /><section className="container py-16 sm:py-20"><div className="max-w-xl"><p className="eyebrow">Make it your own</p><h2 className="section-title mt-3">Start with an idea.</h2></div><div className="mt-8 divide-y divide-[#dfe8e8] border-y border-[#dfe8e8]">{experiences.map(({ title, copy, href }, index) => { const Icon = iconSet[index % iconSet.length]; return <article key={`${title}-${index}`} className="grid gap-3 py-5 sm:grid-cols-[3rem_15rem_1fr_auto] sm:items-center"><span className="font-display text-3xl font-bold text-[#e17818]">{String(index + 1).padStart(2, "0")}</span><div className="flex gap-3"><Icon className="mt-0.5 size-5 shrink-0 text-[#123d5b]" /><h2 className="text-base font-bold text-[#123d5b]">{title}</h2></div><p className="text-sm leading-6 text-slate-600">{copy}</p><Link href={href || "/contact"} className="focus-ring inline-flex items-center gap-2 text-sm font-bold text-[#123d5b] hover:text-[#e17818]">Plan this <ArrowRight className="size-4" /></Link></article>; })}</div></section></>;
+  const stays = (agencyProfile?.experiences || []).filter(stay => stay.title && stay.copy && stay.href && stay.image);
+  const pageTitle = agencyProfile?.experiencesTitle || "Stay close to the mountains.";
+  const pageIntro = agencyProfile?.experiencesIntro || "Explore hotels and stays selected by Trip Himalaya. Open a stay to view its booking or website link.";
+  return <><PageHero eyebrow="Our Stay" title={pageTitle} copy={pageIntro} /><section className="container py-16 sm:py-20"><div className="max-w-xl"><p className="eyebrow">Choose your base</p><h2 className="section-title mt-3">Hotels and stays.</h2><p className="mt-4 text-base leading-7 text-slate-600">Each stay opens its own official booking or website link in a new tab.</p></div>{stays.length ? <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">{stays.map(({ title, copy, href, image }) => <article key={href} className="group overflow-hidden border border-[#dfe8e8] bg-white shadow-[0_12px_30px_rgba(18,61,91,.07)]"><img src={getImageVariant(image, "card")} alt={title} className="h-56 w-full object-cover" loading="lazy" decoding="async" sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw" /><div className="p-5"><h2 className="text-xl font-bold text-[#123d5b]">{title}</h2><p className="mt-3 text-sm leading-6 text-slate-600">{copy}</p><a href={href} target="_blank" rel="noreferrer" className="focus-ring mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#123d5b] transition-colors hover:text-[#e17818]">View hotel <ArrowRight className="size-4" /></a></div></article>)}</div> : <div className="mt-8 border-y border-[#dfe8e8] py-10"><h2 className="text-xl font-bold text-[#123d5b]">Stay options are being added.</h2><p className="mt-2 max-w-xl text-sm leading-6 text-slate-600">For help planning a stay in Dharamshala or Himachal, contact the Trip Himalaya team.</p><Link href="/contact" className="focus-ring mt-5 inline-flex items-center gap-2 text-sm font-bold text-[#123d5b] hover:text-[#e17818]">Contact Trip Himalaya <ArrowRight className="size-4" /></Link></div>}</section></>;
 }

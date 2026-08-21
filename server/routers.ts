@@ -62,7 +62,8 @@ const travelStyleInput = z.object({
 const experienceInput = z.object({
   title: z.string().trim().min(2).max(220),
   copy: z.string().trim().min(2).max(500),
-  href: z.string().trim().min(1).max(2048),
+  href: z.string().trim().url().regex(/^https?:\/\//i, "Enter a full http:// or https:// hotel link.").max(2048),
+  image: z.string().trim().url().or(z.string().startsWith("/manus-storage/")),
 });
 const agencyProfileInput = z.object({
   brandName: z.string().trim().min(2).max(160),
@@ -84,7 +85,7 @@ const agencyProfileInput = z.object({
   thirdMetricValue: z.string().trim().max(80),
   experiencesTitle: z.string().trim().min(2).max(220),
   experiencesIntro: z.string().trim().min(2).max(1000),
-  experiences: z.array(experienceInput).min(1).max(12),
+  experiences: z.array(experienceInput).max(12),
   aboutStoryTitle: z.string().trim().min(2).max(220),
   aboutStoryBody: z.string().trim().min(2).max(4000),
   aboutStorySecondBody: z.string().trim().min(2).max(4000),

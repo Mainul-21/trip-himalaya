@@ -10,13 +10,13 @@ const navigation = [
   { label: "HOME", href: "/", dropdown: false },
   { label: "TOURS", href: "/tours", dropdown: true },
   { label: "TREKS", href: "/treks", dropdown: true },
-  { label: "EXPERIENCES", href: "/experiences", dropdown: true },
+  { label: "OUR STAY", href: "/experiences", dropdown: true },
   { label: "ABOUT US", href: "/about", dropdown: false },
   { label: "CONTACT", href: "/contact", dropdown: false },
 ];
 
 const fallbackAgencyProfile = {
-  brandName: "Trip Himalaya", tagline: "Discover Himachal. Experience Himalayas.", logoUrl: OFFICIAL_TRIP_HIMALAYA_LOGO, phone: "+918609752814", whatsapp: "918609752814", email: "hello@triphimalaya.in", address: "Dharamshala, Himachal Pradesh, India", instagramUrl: "", facebookUrl: "", youtubeUrl: "", googleMapsUrl: "",
+  brandName: "Trip Himalaya", tagline: "Discover Himachal. Experience Himalayas.", logoUrl: OFFICIAL_TRIP_HIMALAYA_LOGO, phone: "+918219628359", whatsapp: "918219628359", email: "hello@triphimalaya.in", address: "Dharamshala, Himachal Pradesh, India", instagramUrl: "", facebookUrl: "", youtubeUrl: "", googleMapsUrl: "",
 };
 
 type AgencyProfile = typeof fallbackAgencyProfile;
@@ -70,7 +70,7 @@ export default function PublicLayout({ children, showHeader = true }: { children
     <footer className="bg-primary-deep pt-12 text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-8 px-5 pb-10 sm:grid-cols-2 lg:grid-cols-5">
         <div><Brand light profile={profile} /><p className="mt-3 text-[11px] text-primary-foreground/70">Discover Himachal.<br />Experience Himalayas.</p><div className="mt-4 flex gap-3">{profile.instagramUrl ? <a href={profile.instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" className="focus-ring grid h-8 w-8 place-items-center rounded-md border border-primary-foreground/20 text-primary-foreground/80 transition-colors hover:border-accent hover:text-accent"><Instagram size={15} /></a> : null}{profile.facebookUrl ? <a href={profile.facebookUrl} target="_blank" rel="noreferrer" aria-label="Facebook" className="focus-ring grid h-8 w-8 place-items-center rounded-md border border-primary-foreground/20 text-primary-foreground/80 transition-colors hover:border-accent hover:text-accent"><Facebook size={15} /></a> : null}{profile.youtubeUrl ? <a href={profile.youtubeUrl} target="_blank" rel="noreferrer" aria-label="YouTube" className="focus-ring grid h-8 w-8 place-items-center rounded-md border border-primary-foreground/20 text-primary-foreground/80 transition-colors hover:border-accent hover:text-accent"><Youtube size={15} /></a> : null}<a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noreferrer" aria-label="WhatsApp" className="focus-ring grid h-8 w-8 place-items-center rounded-md border border-primary-foreground/20 text-primary-foreground/80 transition-colors hover:border-accent hover:text-accent"><MessageCircle size={15} /></a></div></div>
-        <FooterColumn title="QUICK LINKS" links={[{ label: "Home", href: "/" }, { label: "About Us", href: "/about" }, { label: "Treks", href: "/treks" }, { label: "Experiences", href: "/experiences" }, { label: "Contact", href: "/contact" }]} />
+        <FooterColumn title="QUICK LINKS" links={[{ label: "Home", href: "/" }, { label: "About Us", href: "/about" }, { label: "Treks", href: "/treks" }, { label: "Our Stay", href: "/experiences" }, { label: "Contact", href: "/contact" }]} />
         <FooterColumn title="TOP TREKS" links={topTreks.map(tour => ({ label: tour.title, href: `/tours/${tour.slug}` }))} />
         <FooterColumn title="TOP TOURS" links={topTours.map(tour => ({ label: tour.title, href: `/tours/${tour.slug}` }))} />
         <div><p className="text-[11px] font-bold tracking-wide text-accent">CONTACT US</p><ul className="mt-3 space-y-3 text-[11px] text-primary-foreground/75"><li><a className="flex items-center gap-2 hover:text-accent" href={phoneHref}><Phone size={13} /> {profile.phone}</a></li><li><a className="flex items-center gap-2 hover:text-accent" href={`mailto:${profile.email}`}><Mail size={13} /> {profile.email}</a></li><li className="flex items-start gap-2"><MapPin size={13} className="mt-0.5" /> {profile.address}</li></ul></div>

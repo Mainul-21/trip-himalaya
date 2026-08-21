@@ -38,6 +38,8 @@ describe("agency profile administration contract", () => {
     expect(schema).toContain('aboutStoryTitle: varchar("aboutStoryTitle"');
     expect(db).toContain("DEFAULT_EXPERIENCES");
     expect(db).toContain("JSON.stringify(experiences)");
+    expect(db).toContain('export type ExperienceItem = { title: string; copy: string; href: string; image: string }');
+    expect(db).toContain('experiencesTitle: "Stay close to the mountains."');
     expect(db).toContain('phone: "+918219628359"');
     expect(db).toContain('whatsapp: "918219628359"');
   });
@@ -71,16 +73,28 @@ describe("agency profile administration contract", () => {
     expect(portal).toContain("Connect the local database to edit this profile");
     expect(portal).toContain("databaseNeedsAttention");
     expect(portal).toContain("Try again");
-    expect(portal).toContain("Experiences page");
+    expect(portal).toContain(">Our Stay</h2>");
+    expect(portal).toContain('function addHotel()');
+    expect(portal).toContain('function removeHotel(index: number)');
+    expect(portal).toContain('label="Hotel image"');
+    expect(portal).toContain("Hotel booking or website link");
+    expect(portal).toContain(">Add hotel</Button>");
     expect(portal).toContain("About page — Our Story");
     expect(portal).toContain('name="experiencesTitle"');
     expect(portal).toContain('name="aboutStoryTitle"');
   });
 
-  it("renders administrator-managed Experiences and Our Story content publicly with official-logo loading fallback", () => {
+  it("renders administrator-managed Our Stay hotel cards and Our Story content publicly with official-logo loading fallback", () => {
     expect(publicPage).toContain("agencyProfile?.aboutStoryTitle");
     expect(publicPage).toContain("agencyProfile?.experiencesTitle");
     expect(publicPage).toContain("agencyProfile?.experiences");
+    expect(publicPage).toContain('eyebrow="Our Stay"');
+    expect(publicPage).toContain('getImageVariant(image, "card")');
+    expect(publicPage).toContain('target="_blank"');
+    expect(publicPage).toContain("View hotel");
+    expect(router).toContain('Enter a full http:// or https:// hotel link.');
+    expect(router).toContain('image: z.string().trim().url().or(z.string().startsWith("/manus-storage/"))');
+    expect(publicLayout).toContain('{ label: "OUR STAY", href: "/experiences", dropdown: true }');
     expect(app).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
     expect(app).toContain('alt="Trip Himalaya"');
   });

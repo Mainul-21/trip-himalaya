@@ -24,17 +24,10 @@ export const DEFAULT_TRAVEL_STYLES = [
 ] as const;
 
 export type TravelStyle = { title: string; href: string; image: string; copy: string };
-export type ExperienceItem = { title: string; copy: string; href: string };
+export type ExperienceItem = { title: string; copy: string; href: string; image: string };
 
 function createDefaultExperiences(): ExperienceItem[] {
-  return [
-    { title: "A day around McLeod Ganj", copy: "Culture, food and a clear feel for upper Dharamshala.", href: "/contact" },
-    { title: "A private family escape", copy: "Flexible timing and smaller distances for more shared time.", href: "/contact" },
-    { title: "A trail with a guide", copy: "Walk a route that matches your confidence and time.", href: "/contact" },
-    { title: "A slow Kangra Valley day", copy: "Views, local stops and space to take it in.", href: "/contact" },
-    { title: "A celebration in the hills", copy: "A useful plan for a birthday, reunion or meaningful pause.", href: "/contact" },
-    { title: "A made-to-fit week", copy: "Join treks, local stays and free days in one simple plan.", href: "/contact" },
-  ];
+  return [];
 }
 
 export const DEFAULT_EXPERIENCES: ExperienceItem[] = createDefaultExperiences();
@@ -58,8 +51,8 @@ export const DEFAULT_AGENCY_PROFILE = {
   thirdMetricLabel: "",
   thirdMetricValue: "",
   travelStyles: DEFAULT_TRAVEL_STYLES.map(style => ({ ...style })),
-  experiencesTitle: "Experiences for your kind of mountain time.",
-  experiencesIntro: "Choose a slower day, a local plan or a route made around you.",
+  experiencesTitle: "Stay close to the mountains.",
+  experiencesIntro: "Explore hotels and stays selected by Trip Himalaya. Open a stay to view its booking or website link.",
   experiences: createDefaultExperiences(),
   aboutStoryTitle: "A mountain journey that started in Dharamshala.",
   aboutStoryBody: "Trip Himalaya was founded in 2020 by Ravi Kant with a simple belief: travelling in the Himalayas should feel personal, clear, and connected to the place.",
@@ -282,7 +275,12 @@ export async function getAgencyProfile(): Promise<AgencyProfileReadValues> {
     experiences: (() => {
       try {
         const parsed = profile.experiencesJson ? JSON.parse(profile.experiencesJson) : [];
-        return Array.isArray(parsed) && parsed.length ? parsed : createDefaultExperiences();
+        return Array.isArray(parsed) ? parsed.map((item): ExperienceItem => ({
+          title: typeof item?.title === "string" ? item.title : "",
+          copy: typeof item?.copy === "string" ? item.copy : "",
+          href: typeof item?.href === "string" ? item.href : "",
+          image: typeof item?.image === "string" ? item.image : "",
+        })) : createDefaultExperiences();
       } catch { return createDefaultExperiences(); }
     })(),
     aboutStoryTitle: profile.aboutStoryTitle || DEFAULT_AGENCY_PROFILE.aboutStoryTitle,

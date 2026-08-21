@@ -294,3 +294,7 @@
 - [x] Ensure all six first-viewport homepage experience-card images load reliably without altering the supplied reference layout.
 - [x] Repair homepage Tour Packages and Plan Your Trip CTAs so each reliably navigates to its intended section or route.
 - [x] Set +91 8219628359 as the official public Trip Himalaya number across all telephone, WhatsApp, enquiry, booking, header, and footer contact actions.
+- [x] Transform the public Experiences page into an Our Stay hotel-link page without changing unrelated public flows.
+- [x] Let administrators manage Our Stay hotel cards with hotel name, image, short details, and a safe external booking or website link.
+- [x] Replace public Experiences navigation labels with Our Stay while preserving responsive reference-aligned navigation.
+- [x] Add regression coverage and responsive public QA for administrator-managed Our Stay hotel cards and outbound links.

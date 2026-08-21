@@ -1,5 +1,11 @@
 # Visual QA Verification
 
+## Our Stay conversion — 21 August 2026
+
+The former public Experiences route was checked at 1280 px desktop and 390 px mobile widths after its conversion to **Our Stay**. The shared header and footer now label the destination “Our Stay”, the page uses a clear hotel-and-stays heading, and the hero retains the established Trip Himalaya public-page treatment.
+
+No hotel has been published yet, so the visitor-facing page correctly shows the intentional empty state rather than invented accommodation listings. The empty state directs visitors to contact Trip Himalaya. Administrator controls now provide the needed hotel name, image upload, short details, and full external booking or website link fields; public cards render only after these required data points are saved. Desktop and phone layouts remained readable with no visible clipping or overlap.
+
 ## Focused refinements — 17 August 2026
 
 The public homepage, tour catalogue, and administrator sign-in screen were checked at a 1280×720 desktop viewport and a 375×812 mobile viewport. The official Trip Himalaya logo is visible in the public header, mobile header, footer, and administrator sign-in card. The shared branding fallback keeps these surfaces consistent when agency-profile data is unavailable.
