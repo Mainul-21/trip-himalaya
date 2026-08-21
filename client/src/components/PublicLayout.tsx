@@ -47,7 +47,7 @@ export function PublicHeader({ profile = fallbackAgencyProfile }: { profile?: Ag
         {user ? <Link href="/admin" className="focus-ring border-b-2 border-transparent pb-1 text-xs font-semibold tracking-wide text-primary-foreground/90 transition-colors hover:text-accent">ADMIN DASHBOARD</Link> : null}
       </nav>
       <div className="flex items-center gap-2 sm:gap-3 lg:contents">
-        <Link href={isHomepage ? "#plan" : "/contact"} className="focus-ring hidden items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-xs font-semibold tracking-wide text-accent-foreground shadow-md transition-transform hover:scale-[1.03] md:inline-flex">PLAN YOUR TRIP <span className="grid h-5 w-5 place-items-center rounded-full border border-accent-foreground/60"><Send size={11} /></span></Link>
+        <Link href={isHomepage ? "/contact" : "/contact"} className="focus-ring hidden items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-xs font-semibold tracking-wide text-accent-foreground shadow-md transition-transform hover:scale-[1.03] md:inline-flex">PLAN YOUR TRIP <span className="grid h-5 w-5 place-items-center rounded-full border border-accent-foreground/60"><Send size={11} /></span></Link>
         <button type="button" className="focus-ring grid h-11 w-11 place-items-center rounded-md border border-primary-foreground/40 text-primary-foreground transition-colors hover:bg-primary-foreground/10 lg:hidden" onClick={() => setMobileOpen(open => !open)} aria-expanded={mobileOpen} aria-controls="mobile-menu" aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}>{mobileOpen ? <X size={20} /> : <Menu size={21} strokeWidth={2.3} />}</button>
       </div>
     </div>
