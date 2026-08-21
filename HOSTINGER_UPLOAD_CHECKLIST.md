@@ -30,13 +30,14 @@ Use these settings exactly:
 | Branch | `main` |
 | Application type | **Node.js Web App**; choose Express.js if Hostinger recognises it, otherwise Other |
 | Node version | **22.x** |
+| Package manager | **pnpm 11.22.0** |
 | Install command | `pnpm install --frozen-lockfile` |
 | Build command | `pnpm build` |
 | Start command | `pnpm start` |
 | Entry file, if hPanel asks for one instead of a start command | `dist/index.js` |
 | Runtime environment | `NODE_ENV=production` |
 
-The production build creates both `dist/index.js` (the Express server) and `dist/public` (the React frontend). The server uses Hostinger’s assigned `PORT`; do not force a custom public port.
+The production build creates both `dist/index.js` (the Express server) and `dist/public` (the React frontend). The project is pinned to **pnpm 11.22.0**, matching the Hostinger runtime shown in the build log. Do not enable a separate Corepack override or choose pnpm 10. The server uses Hostinger’s assigned `PORT`; do not force a custom public port.
 
 ## 4. Add environment variables before the first deploy
 

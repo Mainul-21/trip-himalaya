@@ -34,9 +34,10 @@ Create the variables listed in [`HOSTINGER_ENV.example`](./HOSTINGER_ENV.example
 
 1. In hPanel, open **Websites → Add Website → Deploy Web App** and choose the Node.js app flow. [Hostinger’s current Node.js guide](https://www.hostinger.com/support/how-to-deploy-a-nodejs-website-in-hostinger/) confirms Node apps are supported on Business and Cloud plans.
 2. Import the GitHub repository or upload the complete project ZIP. Do **not** upload only the old Vite `dist/public` folder for this full-stack option.
-3. Enter the build and entry settings shown above, then add the required environment variables.
-4. Deploy. For server-side Node apps, Hostinger creates the public routing bridge automatically; do not replace its generated `public_html/.htaccess` with unrelated rules.
-5. Test `/`, `/admin`, `/admin/login`, `/tours`, and `/api/trpc` from the deployed domain.
+3. The project is pinned to **pnpm 11.22.0** to match Hostinger’s current runtime. If hPanel has a package-manager selector, choose **pnpm**; do not enable a separate Corepack override or use pnpm 10.
+4. Enter the build and entry settings shown above, then add the required environment variables.
+5. Deploy. For server-side Node apps, Hostinger creates the public routing bridge automatically; do not replace its generated `public_html/.htaccess` with unrelated rules.
+6. Test `/`, `/admin`, `/admin/login`, `/tours`, and `/api/trpc` from the deployed domain.
 
 ## Static-only fallback (visual route repair only)
 

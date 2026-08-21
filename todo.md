@@ -310,3 +310,4 @@
 - [x] Build and validate a Hostinger deployment package that preserves public routes and restores direct administrator-route access.
 - [x] Deliver a complete owner-facing Hostinger upload checklist covering the Node app, static routing, environment variables, database, and administrator verification.
 - [x] Deliver a complete owner-facing guide that separates Hostinger full-stack deployment from Google Search Console verification and indexing.
+- [x] Align package-manager metadata with Hostinger's pnpm 11 runtime and validate a frozen install plus production build.
