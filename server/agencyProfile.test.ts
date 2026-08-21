@@ -127,6 +127,11 @@ describe("agency profile administration contract", () => {
     expect(home).toContain('agency?.whyTripTitle || "WHY TRIP HIMALAYA?"');
   });
 
+  it("uses a valid block container for the traveller score beside the star component", () => {
+    expect(home).toContain('<div className="mt-4 flex items-center gap-2 text-2xl font-bold text-accent"><span>{verifiedAverage.toFixed(1)}</span><Stars rating={verifiedAverage} /></div>');
+    expect(home).not.toContain('<p className="mt-4 flex items-center gap-2 text-2xl font-bold text-accent">{verifiedAverage.toFixed(1)} <Stars rating={verifiedAverage} /></p>');
+  });
+
   it("allows a blank short tagline and uses the shared official logo fallback on public and administrator surfaces", () => {
     expect(router).toContain("tagline: z.string().trim().max(220)");
     expect(portal).toContain('label="Short tagline (optional)"');

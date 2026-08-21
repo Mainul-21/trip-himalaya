@@ -312,6 +312,7 @@
 - [x] Deliver a complete owner-facing guide that separates Hostinger full-stack deployment from Google Search Console verification and indexing.
 - [x] Align package-manager metadata with Hostinger's pnpm 11 runtime and validate a frozen install plus production build.
 
-- [ ] Locate and correct the React DOM nesting warning caused by a div rendered inside a paragraph on the public homepage.
-- [ ] Add regression coverage and verify the corrected homepage no longer logs the invalid DOM-nesting warning.
+- [x] Locate and correct the React DOM nesting warning caused by a div rendered inside a paragraph on the public homepage.
+- [x] Add regression coverage and verify the corrected homepage no longer logs the invalid DOM-nesting warning.
 - [x] Add a narrowly scoped pnpm build-dependency allowlist for Hostinger and validate the production installation and build.
+- [x] Replace the obsolete pnpm 11 `.npmrc` build setting with the supported workspace allowlist and validate managed CI deployment.
