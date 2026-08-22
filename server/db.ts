@@ -102,8 +102,9 @@ function isMissingAgencyBrandingColumn(error: unknown) {
 let _db: ReturnType<typeof drizzle> | null = null;
 
 export async function getDb() {
-  if (!_db && process.env.DATABASE_URL) _db = drizzle(process.env.DATABASE_URL);
-  return _db;
+if (!_db && process.env.DATABASE_URL) {
+  const dbUrl = process.env.DATABASE_URL.split('?')[0];
+  _db = drizzle(dbUrl, { ssl: { rejectUnauthorized: true } } as any);
 }
 
 function requireDb<T>(db: T | null): T {
