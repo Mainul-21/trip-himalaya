@@ -32,6 +32,7 @@ describe("Hostinger deployment contract", () => {
       packageManager: string;
     };
     const guide = fs.readFileSync(path.join(root, "HOSTINGER_DEPLOYMENT.md"), "utf8");
+    const npmConfig = fs.readFileSync(path.join(root, ".npmrc"), "utf8");
 
     expect(pkg.packageManager).toBe("npm@10.9.2");
     expect(fs.existsSync(path.join(root, "package-lock.json"))).toBe(true);
@@ -39,6 +40,7 @@ describe("Hostinger deployment contract", () => {
     expect(fs.existsSync(path.join(root, "pnpm-workspace.yaml"))).toBe(false);
     expect(guide).toContain("npm ci");
     expect(guide).toContain("dist/index.js");
+    expect(npmConfig).toContain("include=dev");
   });
 
   it("does not retain ineffective root permission hooks that run outside the failed package install stage", () => {

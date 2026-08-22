@@ -36,14 +36,16 @@ Create the variables listed in [`HOSTINGER_ENV.example`](./HOSTINGER_ENV.example
 
 1. In hPanel, open **Websites → Add Website → Deploy Web App** and choose the Node.js app flow. [Hostinger’s current Node.js guide](https://www.hostinger.com/support/how-to-deploy-a-nodejs-website-in-hostinger/) confirms Node apps are supported on Business and Cloud plans.
 2. Import the GitHub repository or upload the complete project ZIP. Do **not** upload only the old Vite `dist/public` folder for this full-stack option.
-3. If hPanel has a package-manager selector, choose **npm**. The repository commits a single Linux-generated `package-lock.json` and declares npm 10.9.2 in `package.json`; do not select pnpm or enable a Corepack override.
+3. If hPanel has a package-manager selector, choose **npm**. The repository commits a single Linux-generated `package-lock.json`, declares npm 10.9.2 in `package.json`, and includes a required root `.npmrc`; do not select pnpm, remove `.npmrc`, or enable a Corepack override.
 4. Enter the build and entry settings shown above, then add the required environment variables.
 5. Deploy. For server-side Node apps, Hostinger creates the public routing bridge automatically; do not replace its generated `public_html/.htaccess` with unrelated rules.
 6. Test `/`, `/admin`, `/admin/login`, `/tours`, and `/api/trpc` from the deployed domain.
 
 ### npm clean-install policy
 
-The repository uses one package-management contract: **npm 10.9.2** and the root `package-lock.json`. The lockfile was regenerated on Linux and validated with a clean `npm ci`, tests, TypeScript compilation, and the production build. This avoids the prior pnpm nested native-binary install path and removes ineffective root-level permission hooks.
+The repository uses one package-management contract: **npm 10.9.2**, the root `package-lock.json`, and the committed `.npmrc`. The lockfile was regenerated on Linux and validated with a clean `npm ci`, tests, TypeScript compilation, and the production build. This avoids the prior pnpm nested native-binary install path and removes ineffective root-level permission hooks.
+
+Hostinger builds while `NODE_ENV=production` is set. By default, npm can omit `devDependencies` in that environment, which excludes the required `vite`, TypeScript, Vitest, and `esbuild` build toolchain. The committed `.npmrc` contains `include=dev`, so the build toolchain is installed for `npm run build` while the running server still receives `NODE_ENV=production`. Do not replace the build command with `npx vite`, and do not remove this configuration.
 
 Use the normal `npm ci` and `npm run build` commands. Do **not** add `ignore-scripts`, `unsafe-perm`, runtime `chmod`, `sudo`, or generated package-manager workarounds. The build still requires trusted package lifecycle scripts to install native binaries.
 
