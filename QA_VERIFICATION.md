@@ -6,6 +6,12 @@
 
 The desktop full-page capture reproduced an intermittent blank-card state even though all six managed image URLs returned successful image responses. The homepage now assigns high network priority to the existing small category images while retaining their original source paths, labels, order, filter links, and approved reference layout. A fresh desktop capture at 1280 × 900 and phone capture at 390 × 844 both show all six images: Trekking, Spiritual Tours, Camping, Village Experiences, Himachal Tours, and Custom Tours. The targeted regression assertion, full Vitest suite, TypeScript check, and production build pass.
 
+## Administrator journeys workspace recheck — 22 August 2026
+
+**Status: PASS — protected workspace accessible at both breakpoints.**
+
+An authenticated principal-administrator preview session reached `/admin/tours` without redirecting to the sign-in page. At 1280 × 900, the expanded navy sidebar, principal identity, journey list, homepage Top Trips selectors, live and draft status badges, Best Seller badges, and edit/delete controls were visible together. At 390 × 844, the compact workspace preserved the Add journey action, Top Trips rank selectors, status badges, and edit/delete controls without clipping or overlap. No mutation was performed. The unpublished `Hdhddhbd` draft remains available only in the protected workspace for administrator correction and is not evidence of public content exposure.
+
 ## Our Stay conversion — 21 August 2026
 
 The former public Experiences route was checked at 1280 px desktop and 390 px mobile widths after its conversion to **Our Stay**. The shared header and footer now label the destination “Our Stay”, the page uses a clear hotel-and-stays heading, and the hero retains the established Trip Himalaya public-page treatment.
