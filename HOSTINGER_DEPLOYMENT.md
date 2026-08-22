@@ -49,10 +49,6 @@ Hostinger builds while `NODE_ENV=production` is set. By default, npm can omit `d
 
 Use the normal `npm ci` and `npm run build` commands. Do **not** add `ignore-scripts`, `unsafe-perm`, runtime `chmod`, `sudo`, or generated package-manager workarounds. The build still requires trusted package lifecycle scripts to install native binaries.
 
-### Install-only deployment fallback
-
-Some Hostinger Express deployments invoke `npm install` but do not subsequently display or run the configured build command. This project therefore includes a narrowly scoped npm `postinstall` fallback: `npm run build`. It produces both the Vite client in `dist/public` and the Express entry bundle at `dist/index.js` immediately after a successful npm installation. It is safe if Hostinger also runs `npm run build` afterwards; the second build only replaces the same generated output. Keep the Hostinger framework as **Express** or **Other** with the Node entry file set to `dist/index.js`; do not switch the deployment to the Vite or Next.js framework presets.
-
 ### If Hostinger’s npm install reports `spawnSync .../esbuild/bin/esbuild EACCES`
 
 First confirm that hPanel is using **npm**, Node **22.x**, root **`./`**, and the latest `main` branch with `package-lock.json`. Then click **Save and redeploy** to recreate the managed build workspace.
