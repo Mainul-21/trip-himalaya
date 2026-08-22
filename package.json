@@ -104,5 +104,12 @@
     "vite-plugin-manus-runtime": "0.0.59",
     "vitest": "^2.1.4"
   },
+  "devEngines": {
+    "packageManager": {
+      "name": "npm",
+      "version": "10.9.2",
+      "onFail": "warn"
+    }
+  },
   "packageManager": "npm@10.9.2"
 }
