@@ -4,52 +4,33 @@ import path from "node:path";
 
 const root = path.resolve(import.meta.dirname, "..");
 
-describe("Hostinger deployment contract", () => {
-  it("ships an Apache SPA fallback that keeps API requests separate from client routes", () => {
-    const config = fs.readFileSync(path.join(root, "client/public/.htaccess"), "utf8");
-
-    expect(config).toContain("RewriteEngine On");
-    expect(config).toContain("RewriteRule ^api(?:/|$) - [L]");
-    expect(config).toContain("RewriteRule ^ index.html [L]");
-    expect(config).toContain("RewriteCond %{REQUEST_FILENAME} -f [OR]");
-  });
-
-  it("documents the full Node deployment required by the protected administrator portal", () => {
-    const guide = fs.readFileSync(path.join(root, "HOSTINGER_DEPLOYMENT.md"), "utf8");
-    const environment = fs.readFileSync(path.join(root, "HOSTINGER_ENV.example"), "utf8");
-
-    expect(guide).toContain("npm run build");
-    expect(guide).toContain("dist/index.js");
-    expect(guide).toContain("/api/trpc");
-    expect(guide).toContain("static-only");
-    expect(environment).toContain("DATABASE_URL=");
-    expect(environment).toContain("JWT_SECRET=");
-    expect(environment).toContain("CLOUDINARY_URL=");
-  });
-
-  it("uses the committed npm lockfile and no pnpm workspace policy for the Hostinger deployment", () => {
-    const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")) as {
-      packageManager: string;
-    };
-    const guide = fs.readFileSync(path.join(root, "HOSTINGER_DEPLOYMENT.md"), "utf8");
-    const npmConfig = fs.readFileSync(path.join(root, ".npmrc"), "utf8");
-
-    expect(pkg.packageManager).toBe("npm@10.9.2");
-    expect(fs.existsSync(path.join(root, "package-lock.json"))).toBe(true);
-    expect(fs.existsSync(path.join(root, "pnpm-lock.yaml"))).toBe(false);
-    expect(fs.existsSync(path.join(root, "pnpm-workspace.yaml"))).toBe(false);
-    expect(guide).toContain("npm ci");
-    expect(guide).toContain("dist/index.js");
-    expect(npmConfig).toContain("include=dev");
-  });
-
-  it("does not retain ineffective root permission hooks that run outside the failed package install stage", () => {
+describe("Next.js and Hostinger deployment contract", () => {
+  it("uses Next.js production scripts while retaining a safe install-only build fallback", () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")) as {
       scripts: Record<string, string>;
     };
+    expect(pkg.scripts.dev).toBe("next dev");
+    expect(pkg.scripts.build).toBe("next build");
+    expect(pkg.scripts.start).toBe("next start");
+    expect(pkg.scripts.postinstall).toBe("npm run build");
+  });
 
-    expect(pkg.scripts.preinstall).toBeUndefined();
-    expect(pkg.scripts.postinstall).toBeUndefined();
-    expect(pkg.scripts.build).toContain("esbuild");
+  it("ships an App Router shell and node-runtime tRPC handler for public and protected legacy routes", () => {
+    const routeShell = fs.readFileSync(path.join(root, "app/[[...path]]/page.tsx"), "utf8");
+    const apiRoute = fs.readFileSync(path.join(root, "app/api/trpc/[trpc]/route.ts"), "utf8");
+    const nextConfig = fs.readFileSync(path.join(root, "next.config.mjs"), "utf8");
+    expect(routeShell).toContain("LegacyClientApp");
+    expect(apiRoute).toContain("fetchRequestHandler");
+    expect(apiRoute).toContain('runtime = "nodejs"');
+    expect(nextConfig).toContain('output: "standalone"');
+  });
+
+  it("documents the required Next.js Web App deployment instead of static Vite or Express hosting", () => {
+    const guide = fs.readFileSync(path.join(root, "HOSTINGER_DEPLOYMENT.md"), "utf8");
+    expect(guide).toContain("Framework preset | **Next.js**");
+    expect(guide).toContain("npm run build");
+    expect(guide).toContain("npm start");
+    expect(guide).toContain("Do not select **Vite**, **Express**, or **Other**");
+    expect(guide).toContain("DATABASE_URL");
   });
 });
