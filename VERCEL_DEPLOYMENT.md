@@ -1,5 +1,15 @@
 # Vercel deployment guide
 
+## Current production choice: Vercel for `triphimalya.com`
+
+Trip Himalaya is deployed on **Vercel**. Hostinger may remain only as the domain registrar or DNS manager; do **not** deploy this application to Hostinger or point the website records to a Hostinger web-app IP.
+
+In **Vercel → Project → Settings → Domains**, add both `triphimalya.com` and `www.triphimalya.com`. Make `triphimalya.com` the primary domain and redirect `www` to it. Then, at the current DNS provider (for example, **Hostinger hPanel → Domains → DNS Zone Editor**), set the apex `@` record to the **A-record value displayed by Vercel** and set the `www` CNAME to the **exact Vercel CNAME target**. Remove only conflicting old `@` and `www` website records; keep MX, TXT, and other email records.
+
+In **Vercel → Project → Settings → Environment Variables**, add `DATABASE_URL`, `JWT_SECRET`, and `CLOUDINARY_URL` for Production. Their values were exposed in earlier screenshots, so first rotate the TiDB password, generate a new random JWT secret, and regenerate the Cloudinary credential. Redeploy after saving the variables because environment-variable changes apply to the next deployment. [Vercel’s environment-variable guide](https://vercel.com/kb/guide/how-to-add-vercel-environment-variables) and [domain guide](https://vercel.com/docs/domains/working-with-domains/add-a-domain) explain those dashboard flows.
+
+After Vercel marks the domain as valid, open `https://triphimalya.com/api/health`. It should return JSON containing `"ok": true` and `"service": "trip-himalaya-api"`. Then test the homepage, `https://triphimalya.com/admin/login`, and `https://www.triphimalya.com` (which should redirect to the primary domain).
+
 ## Blank-page repair
 
 The repository now uses a Vercel-safe Vite build and an SPA fallback that **does not intercept `/api/*`**. This matters because the public site loads its journeys and forms through the API function. The project also includes a lightweight deployment check at `/api/health`.
