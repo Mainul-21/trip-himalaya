@@ -4,7 +4,7 @@
 
 Hostinger directs Node.js application owners to inspect the failed deployment’s full **Build logs** from **Websites → Dashboard → Deployments → failed build → Build logs**. It specifically advises checking the lines marked as errors and the end of the log, confirming the selected Node version, environment variables, package scripts, and ensuring that `node_modules` is not supplied in a ZIP deployment. The exact error line and surrounding stack are required before applying a permission-oriented workaround. Source: [Hostinger — How to troubleshoot Node.js deployment build errors](https://www.hostinger.com/support/how-to-troubleshoot-a-failed-node-js-deployment-using-build-logs/).
 
-pnpm 11 configuration other than registry/auth settings belongs in the committed root `pnpm-workspace.yaml`; it identifies `allowBuilds`, `nodeLinker`, `unsafePerm`, and `ignoreScripts` as build-related settings. The project already uses the supported `allowBuilds` policy to permit only `@tailwindcss/oxide` and `esbuild`, rather than disabling scripts. Source: [pnpm — Settings (pnpm-workspace.yaml)](https://pnpm.io/settings).
+The original pnpm 11 configuration and permission workarounds did not resolve the managed-workspace failure. The project now uses a single npm 10.9.2 contract with a Linux-generated `package-lock.json`, validated by a clean npm install and production build. Trusted package lifecycle scripts remain enabled.
 
 ## Current safety conclusion
 
@@ -22,7 +22,7 @@ In the managed development environment, both `node_modules/esbuild/bin/esbuild` 
 
 A clean pnpm 11.22.0 install with `NODE_ENV=production` still installed esbuild and the Tailwind oxide package. The setting is not a replacement for a true production-only install in this setup. pnpm documents `--prod` as the option that omits `devDependencies`; however, it cannot be used for the Hostinger build because Vite and esbuild are build-time dependencies. Source: [pnpm install](https://pnpm.io/cli/install).
 
-An isolated npm installation can also install and execute esbuild successfully, but an npm fallback is not the correct current recommendation: the project is configured for pnpm and a clean npm build exposed separate platform optional-dependency resolution issues. The validated project-side pnpm change is `packageImportMethod: copy`, which preserves normal executable mode in a clean pnpm install without widening lifecycle-script permissions.
+An isolated npm installation initially exposed a stale Linux optional-dependency gap in the old npm lockfile. After regenerating that lockfile on Linux, a clean `npm ci` installed all native dependencies, tests passed, TypeScript passed, and the production bundle succeeded. npm is now the chosen deployment path because it eliminates the repository’s conflicting pnpm lockfile and pnpm-specific native-install policy.
 
 ## Final evidence and required Hostinger action
 
@@ -34,4 +34,4 @@ The latest sanitized Hostinger log provides conclusive evidence that its deploym
 
 Each failure is `spawnSync … EACCES` beneath `/home/u880874999/domains/triphimalya.com/hbuilds/source/repository/node_modules/`. Since independent packages fail at the same executable-filesystem boundary after pnpm has allowed their scripts, this is not an application source-code error, an unapproved-build issue, or a missing dependency. A project `postinstall` hook cannot fix it because the installer fails before that hook can run; `ignore-scripts` is invalid because the build still needs the esbuild binary.
 
-The owner must ask Hostinger to clear or recreate the affected Web App build workspace and pnpm store, verify its mount permits execution for the Web App deployment user, and keep approved lifecycle scripts enabled. After Hostinger confirms the remediation, redeploy from the latest `main` branch using Express, Node 22.x, pnpm, root `./`, entry file `dist/index.js`, and `NODE_ENV=production`.
+The owner should redeploy the latest `main` branch using Express, Node 22.x, **npm**, root `./`, entry file `dist/index.js`, and `NODE_ENV=production`. If the same failure occurs during `npm ci`, the owner must ask Hostinger to clear or recreate the affected Web App build workspace and npm cache, verify its mount permits execution for the Web App deployment user, and keep lifecycle scripts enabled.

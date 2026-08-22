@@ -18,7 +18,7 @@ describe("Hostinger deployment contract", () => {
     const guide = fs.readFileSync(path.join(root, "HOSTINGER_DEPLOYMENT.md"), "utf8");
     const environment = fs.readFileSync(path.join(root, "HOSTINGER_ENV.example"), "utf8");
 
-    expect(guide).toContain("pnpm build");
+    expect(guide).toContain("npm run build");
     expect(guide).toContain("dist/index.js");
     expect(guide).toContain("/api/trpc");
     expect(guide).toContain("static-only");
@@ -27,38 +27,27 @@ describe("Hostinger deployment contract", () => {
     expect(environment).toContain("CLOUDINARY_URL=");
   });
 
-  it("uses a copy-based pnpm import policy so native build binaries retain executable permissions", () => {
-    const workspace = fs.readFileSync(path.join(root, "pnpm-workspace.yaml"), "utf8");
+  it("uses the committed npm lockfile and no pnpm workspace policy for the Hostinger deployment", () => {
+    const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")) as {
+      packageManager: string;
+    };
     const guide = fs.readFileSync(path.join(root, "HOSTINGER_DEPLOYMENT.md"), "utf8");
 
-    expect(workspace).toContain("packageImportMethod: copy");
-    expect(workspace).toContain("'@tailwindcss/oxide': true");
-    expect(workspace).toContain("esbuild: true");
-    expect(guide).toContain("packageImportMethod: copy");
+    expect(pkg.packageManager).toBe("npm@10.9.2");
+    expect(fs.existsSync(path.join(root, "package-lock.json"))).toBe(true);
+    expect(fs.existsSync(path.join(root, "pnpm-lock.yaml"))).toBe(false);
+    expect(fs.existsSync(path.join(root, "pnpm-workspace.yaml"))).toBe(false);
+    expect(guide).toContain("npm ci");
     expect(guide).toContain("dist/index.js");
   });
 
-  it("retains the requested recursive postinstall chmod 755 permission normalization without disabling scripts", () => {
+  it("does not retain ineffective root permission hooks that run outside the failed package install stage", () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")) as {
       scripts: Record<string, string>;
     };
 
-    expect(pkg.scripts.postinstall).toContain("chmod -R 755 node_modules/.bin");
-    expect(pkg.scripts.postinstall).toContain("chmod -R 755 node_modules/*/bin");
-    expect(pkg.scripts.postinstall).toContain("chmod -R 755 node_modules/esbuild/bin");
-    expect(pkg.scripts.postinstall).toContain("node_modules/*/node_modules/esbuild/bin");
-    expect(pkg.scripts.postinstall).not.toContain("unsafe-perm");
-  });
-
-  it("retains the requested node_modules-wide preinstall chmod 755, nested esbuild, and nested executable-shim normalization without deleting the lockfile contract", () => {
-    const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")) as {
-      scripts: Record<string, string>;
-    };
-
-    expect(pkg.scripts.preinstall).toBe(
-      "chmod -R 755 node_modules 2>/dev/null || true; chmod -R +x node_modules/**/esbuild/bin/esbuild 2>/dev/null || true; chmod -R +x node_modules/**/.bin/* 2>/dev/null || true",
-    );
-    expect(pkg.scripts.preinstall).not.toContain("npm-run-all");
-    expect(pkg.scripts.preinstall).not.toContain("unsafe-perm");
+    expect(pkg.scripts.preinstall).toBeUndefined();
+    expect(pkg.scripts.postinstall).toBeUndefined();
+    expect(pkg.scripts.build).toContain("esbuild");
   });
 });
