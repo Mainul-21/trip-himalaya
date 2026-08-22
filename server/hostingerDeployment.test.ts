@@ -43,13 +43,13 @@ describe("Hostinger deployment contract", () => {
     expect(npmConfig).toContain("include=dev");
   });
 
-  it("does not retain ineffective root permission hooks that run outside the failed package install stage", () => {
+  it("builds the Express bundle after npm installation when a host invokes only the install stage", () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")) as {
       scripts: Record<string, string>;
     };
 
     expect(pkg.scripts.preinstall).toBeUndefined();
-    expect(pkg.scripts.postinstall).toBeUndefined();
+    expect(pkg.scripts.postinstall).toBe("npm run build");
     expect(pkg.scripts.build).toContain("esbuild");
   });
 });

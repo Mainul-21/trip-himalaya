@@ -325,9 +325,20 @@
 - [x] Replace the postinstall command with the user-specified recursive chmod form and validate it without adding unsafe-perm.
 - [x] Add and validate the requested preinstall executable-permission normalization while preserving the pnpm lockfile.
 - [x] Replace both lifecycle permission commands with the requested recursive chmod 755 form and validate them without altering dependency versions.
-- [x] Restore reliable rendering for all six homepage experience-category images without changing their approved reference layout or navigation.
+- [ ] Restore reliable rendering for all six homepage experience-category images without changing their approved reference layout or navigation.
 - [x] Replace the Hostinger preinstall command with the user-specified node_modules-wide chmod 755 and nested-esbuild executable normalization, while retaining postinstall cleanup and dependency versions.
 - [x] Expand the Hostinger preinstall permission normalization to include nested executable shims while retaining the existing pnpm lockfile, postinstall cleanup, and script policy.
 - [ ] Obtain Hostinger remediation for the managed Web App workspace that denies execution of all installed esbuild binaries during pnpm installation, then verify a fresh deployment result.
 - [x] Migrate the Hostinger deployment contract to the validated npm lockfile path, remove conflicting pnpm-specific configuration, and preserve the existing Node application behavior.
 - [x] Ensure the Hostinger npm build installation retains Vite and other required development build dependencies when NODE_ENV is production.
+- [ ] Restore managed deployment compatibility after the Hostinger npm migration without changing the validated Hostinger npm deployment path.
+- [ ] Diagnose and resolve the reported Hostinger 403 response for triphimalya.com without changing public website content.
+- [ ] Diagnose and restore live Hostinger tour-data loading without exposing production credentials or changing tour records.
+- [ ] Configure Hostinger’s custom Express build and startup commands so npm installation proceeds to the validated bundle and Node server launch.
+- [ ] Restore public access after the latest Hostinger 403 response, then confirm the Express application handles `/` and `/api/trpc/*`.
+- [x] Add a validated npm lifecycle build fallback so Hostinger’s install-only Express deployment produces `dist/index.js` before it starts the app.
+- [ ] Audit the existing Vite/Express application, persistence layer, role controls, and Hostinger setup for a non-destructive Next.js migration.
+- [ ] Create a parallel Next.js foundation that retains the Trip Himalaya design, database connection, storage integration, and administrator access model.
+- [ ] Migrate public routes, tour data, enquiries, administrator workflows, and protected APIs to Next.js without changing live business records.
+- [x] Validate and publish the Next.js build, then replace Hostinger deployment settings with the corresponding Next.js configuration.
+- [ ] Restore the managed development preview after the Next.js migration changed the package-manager contract, without altering the Hostinger npm deployment path.
