@@ -16,7 +16,7 @@ This checklist deploys the **existing public website and working administrator p
 
 The recommended approach is connecting Hostinger directly to the private GitHub repository **`Mainul-21/triphimalaya02`**, branch **`main`**. Before deployment, make sure the current project changes are committed and pushed to that branch. Do not upload your local `.env` file to GitHub.
 
-If you upload manually, upload the **whole project source**—including `client`, `server`, `drizzle`, `package.json`, `pnpm-lock.yaml`, `.htaccess` source, and the deployment documents. Do not upload only an older `dist/public` folder for the Node deployment.
+If you upload manually, upload the **whole project source**—including `client`, `server`, `drizzle`, `package.json`, `package-lock.json`, `.htaccess` source, and the deployment documents. Do not upload only an older `dist/public` folder for the Node deployment.
 
 ## 3. Create the Node.js Web App in Hostinger
 
@@ -30,14 +30,14 @@ Use these settings exactly:
 | Branch | `main` |
 | Application type | **Node.js Web App**; choose Express.js if Hostinger recognises it, otherwise Other |
 | Node version | **22.x** |
-| Package manager | **pnpm 11.22.0** |
-| Install command | `pnpm install --frozen-lockfile` |
-| Build command | `pnpm build` |
-| Start command | `pnpm start` |
+| Package manager | **npm 10.x** |
+| Install command | `npm ci` |
+| Build command | `npm run build` |
+| Start command | `npm start` |
 | Entry file, if hPanel asks for one instead of a start command | `dist/index.js` |
 | Runtime environment | `NODE_ENV=production` |
 
-The production build creates both `dist/index.js` (the Express server) and `dist/public` (the React frontend). The project is pinned to **pnpm 11.22.0**, matching the Hostinger runtime shown in the build log. Do not enable a separate Corepack override or choose pnpm 10. The server uses Hostinger’s assigned `PORT`; do not force a custom public port.
+The production build creates both `dist/index.js` (the Express server) and `dist/public` (the React frontend). The project uses the committed Linux-generated `package-lock.json` and declares **npm 10.9.2**. Do not enable a Corepack override or choose pnpm. The server uses Hostinger’s assigned `PORT`; do not force a custom public port.
 
 ## 4. Add environment variables before the first deploy
 
@@ -56,9 +56,9 @@ Use [`HOSTINGER_ENV.example`](./HOSTINGER_ENV.example) as the **name-only templa
 
 ## 5. Deploy and wait for a successful build
 
-Start the deployment from hPanel. Wait until the build log confirms that `pnpm install --frozen-lockfile`, `pnpm build`, and `pnpm start` all complete. If the build fails, do not change public page files; first copy the relevant Hostinger build-log error and share it for diagnosis.
+Start the deployment from hPanel. Wait until the build log confirms that `npm ci`, `npm run build`, and `npm start` all complete. If the build fails, do not change public page files; first copy the relevant Hostinger build-log error and share it for diagnosis.
 
-> The project intentionally uses `pnpm start`, which runs `dist/index.js` in production. Do not use `npm run dev`, `vite preview`, or a fixed port for Hostinger production.
+> The project intentionally uses `npm start`, which runs `dist/index.js` in production. Do not use `npm run dev`, `vite preview`, or a fixed port for Hostinger production.
 
 ## 6. Direct-route protection for `/admin`
 
@@ -83,7 +83,7 @@ Use a private/incognito browser window for the visitor checks, then sign in only
 
 ## 8. If `/admin` still shows Invalid Page
 
-First confirm that you deployed the **full Node project**, rather than only frontend files. Next, open Hostinger’s latest deployment log and check that `dist/index.js` exists after `pnpm build`. Then confirm that the application start command is `pnpm start` (or entry file `dist/index.js`), all required environment variables are present, and the Node app was restarted after changing variables.
+First confirm that you deployed the **full Node project**, rather than only frontend files. Next, open Hostinger’s latest deployment log and check that `dist/index.js` exists after `npm run build`. Then confirm that the application start command is `npm start` (or entry file `dist/index.js`), all required environment variables are present, and the Node app was restarted after changing variables.
 
 If you have only a static hosting plan, the `.htaccess` file can repair direct route loading but cannot supply the private `/api/trpc` backend. In that situation, use a Hostinger Node.js Web App plan or keep the existing full-stack deployment on Vercel/Manus while pointing your domain to it.
 

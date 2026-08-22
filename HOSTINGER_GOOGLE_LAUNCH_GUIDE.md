@@ -18,7 +18,7 @@ Hostinger’s Node.js deployment guidance confirms that eligible hosting plans c
 
 ## Part B — Prepare the deployment source
 
-Use the GitHub repository **`Mainul-21/triphimalaya02`**, branch **`main`**. The repository must include all source code, not only frontend files. Required project items include `client/`, `server/`, `drizzle/`, `package.json`, `pnpm-lock.yaml`, and the `client/public/.htaccess` routing fallback.
+Use the GitHub repository **`Mainul-21/triphimalaya02`**, branch **`main`**. The repository must include all source code, not only frontend files. Required project items include `client/`, `server/`, `drizzle/`, `package.json`, `package-lock.json`, and the `client/public/.htaccess` routing fallback.
 
 Do **not** upload any `.env` file to GitHub, File Manager, or `public_html`.
 
@@ -32,13 +32,14 @@ When the Business plan is shown as active, use **hPanel → Websites → Web App
 | Branch | `main` |
 | App type | Node.js Web App; choose Express.js if Hostinger offers it, otherwise Other |
 | Node.js version | 22.x |
-| Install command | `pnpm install --frozen-lockfile` |
-| Build command | `pnpm build` |
-| Start command | `pnpm start` |
+| Package manager | npm 10.x |
+| Install command | `npm ci` |
+| Build command | `npm run build` |
+| Start command | `npm start` |
 | Entry file if required instead of a start command | `dist/index.js` |
 | Environment | `NODE_ENV=production` |
 
-The build produces `dist/index.js` for the Express server and `dist/public` for the React visitor application. The `pnpm start` command runs the production server. Never use `npm run dev` in Hostinger production.
+The build produces `dist/index.js` for the Express server and `dist/public` for the React visitor application. The `npm start` command runs the production server. Never use `npm run dev` in Hostinger production.
 
 ## Part D — Add secrets safely
 
@@ -68,7 +69,7 @@ Start deployment from hPanel and wait for a successful install, build and start 
 | Admin sign-in | Tour, enquiry and profile data loads through `/api/trpc`. |
 | Admin image upload | Works after valid Cloudinary configuration. |
 
-If the admin route still fails, first check that the app is a **Node Web App**, that the build output includes `dist/index.js`, the start command is `pnpm start`, and every required variable is present. A static `public_html` upload cannot replace this backend.
+If the admin route still fails, first check that the app is a **Node Web App**, that the build output includes `dist/index.js`, the start command is `npm start`, and every required variable is present. A static `public_html` upload cannot replace this backend.
 
 ## Part F — Put the website into Google Search
 

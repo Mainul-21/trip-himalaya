@@ -18,8 +18,10 @@ This is the required option if the administrator portal must actually sign in, l
 | App type | **Node.js Web App**; select **Express.js** if detected, otherwise **Other** |
 | Node version | **22.x** |
 | Repository | `Mainul-21/triphimalaya02`, branch `main` |
-| Install command | `pnpm install --frozen-lockfile` |
-| Build command | `pnpm build` |
+| Package manager | **npm 10.x** |
+| Install command | `npm ci` |
+| Build command | `npm run build` |
+| Start command | `npm start` |
 | Output directory | `dist` |
 | Entry file | `dist/index.js` |
 | Runtime environment | `NODE_ENV=production` |
@@ -34,37 +36,30 @@ Create the variables listed in [`HOSTINGER_ENV.example`](./HOSTINGER_ENV.example
 
 1. In hPanel, open **Websites → Add Website → Deploy Web App** and choose the Node.js app flow. [Hostinger’s current Node.js guide](https://www.hostinger.com/support/how-to-deploy-a-nodejs-website-in-hostinger/) confirms Node apps are supported on Business and Cloud plans.
 2. Import the GitHub repository or upload the complete project ZIP. Do **not** upload only the old Vite `dist/public` folder for this full-stack option.
-3. The project is pinned to **pnpm 11.22.0** to match Hostinger’s current runtime. If hPanel has a package-manager selector, choose **pnpm**; do not enable a separate Corepack override or use pnpm 10.
+3. If hPanel has a package-manager selector, choose **npm**. The repository commits a single Linux-generated `package-lock.json` and declares npm 10.9.2 in `package.json`; do not select pnpm or enable a Corepack override.
 4. Enter the build and entry settings shown above, then add the required environment variables.
 5. Deploy. For server-side Node apps, Hostinger creates the public routing bridge automatically; do not replace its generated `public_html/.htaccess` with unrelated rules.
 6. Test `/`, `/admin`, `/admin/login`, `/tours`, and `/api/trpc` from the deployed domain.
 
-### pnpm 11 native-build policy
+### npm clean-install policy
 
-The repository includes `pnpm-workspace.yaml`, which permits only the two native dependencies required by this production build: `@tailwindcss/oxide` and `esbuild`. Keep this file at the repository root when deploying from GitHub or a full-project ZIP.
+The repository uses one package-management contract: **npm 10.9.2** and the root `package-lock.json`. The lockfile was regenerated on Linux and validated with a clean `npm ci`, tests, TypeScript compilation, and the production build. This avoids the prior pnpm nested native-binary install path and removes ineffective root-level permission hooks.
 
-Do **not** run `pnpm approve-builds` in Hostinger, add a broad `allow-scripts=true` setting, or use the obsolete `.npmrc` key `build-dependencies-for`. Those alternatives either do not apply to pnpm 11 or weaken the project’s dependency-script controls. With the committed workspace policy present, use the normal **Install command** and **Build command** in the settings table above.
+Use the normal `npm ci` and `npm run build` commands. Do **not** add `ignore-scripts`, `unsafe-perm`, runtime `chmod`, `sudo`, or generated package-manager workarounds. The build still requires trusted package lifecycle scripts to install native binaries.
 
-### If Hostinger’s pnpm install reports `spawnSync .../esbuild/bin/esbuild EACCES`
+### If Hostinger’s npm install reports `spawnSync .../esbuild/bin/esbuild EACCES`
 
-This error occurs during dependency installation, before the application `build` script starts. It means the deployment environment has not preserved esbuild’s executable permission when packages were hard-linked from pnpm’s store.
+First confirm that hPanel is using **npm**, Node **22.x**, root **`./`**, and the latest `main` branch with `package-lock.json`. Then click **Save and redeploy** to recreate the managed build workspace.
 
-The repository now sets `packageImportMethod: copy` in the root `pnpm-workspace.yaml`. This makes pnpm copy package files into its virtual store instead of hard-linking them, while retaining the existing scoped approvals for only `@tailwindcss/oxide` and `esbuild`.
-
-1. Keep **Package manager** as `pnpm`, Node as **22.x**, and Entry file as **`dist/index.js`**.
-2. Confirm the GitHub deployment uses the latest `main` branch, which includes the updated `pnpm-workspace.yaml` and regenerated `pnpm-lock.yaml`.
-3. Click **Save and redeploy** so Hostinger performs a clean installation with the copy-import policy.
-4. Do **not** add `ignore-scripts=true`, `allow-scripts=true`, `chmod` commands, `sudo` commands, or an npm fallback. These do not address the hard-link permission cause and can introduce new native-dependency installation issues.
-
-The copy-import policy was validated from a clean pnpm 11.22.0 installation: esbuild retained mode `755`, executed successfully, and the production build, TypeScript check, and full test suite passed.
+If the same `EACCES` error remains during `npm ci`, it is a Hostinger deployment-workspace restriction: the package manager cannot repair an executable blocked by the managed filesystem while installation is in progress. Send the sanitized final log lines to Hostinger support and ask them to recreate the Web App build workspace and verify that its deployment user can execute package binaries under `node_modules`.
 
 ## Static-only fallback (visual route repair only)
 
 Use this only if the Node/API server is already hosted separately under the same domain. Run:
 
 ```bash
-pnpm install --frozen-lockfile
-pnpm build
+npm ci
+npm run build
 ```
 
 Upload the **contents** of `dist/public`—including the hidden `.htaccess` file—to `public_html`, not the `dist/public` directory itself. In hPanel File Manager, enable hidden-file visibility and confirm `public_html/.htaccess` contains the project’s SPA fallback rule.
@@ -85,11 +80,11 @@ This corrects the direct `/admin` invalid-page route. It does **not** create the
 ## If the issue remains
 
 1. Confirm Hostinger deployed the **full Node project**, not only a frontend ZIP.
-2. Open the latest hPanel deployment logs and confirm `pnpm build` completed.
+2. Open the latest hPanel deployment logs and confirm `npm run build` completed.
 3. Confirm `dist/index.js` exists in the Node build output and `NODE_ENV=production` is set.
 4. Confirm all required environment variable names and values are set in hPanel, then redeploy or restart the Node application.
 5. If using static-only upload, confirm the hidden `.htaccess` is in `public_html` and no conflicting older rewrite file replaced it.
-6. If the log still reports `ERR_PNPM_IGNORED_BUILDS`, confirm the deployed source includes the root-level `pnpm-workspace.yaml` file and that the app is using pnpm 11.22.0; then start a fresh deployment from the `main` branch.
-7. If the log reports `spawnSync .../esbuild/bin/esbuild EACCES`, confirm the deployed branch contains the current root `pnpm-workspace.yaml` with `packageImportMethod: copy`, then trigger a fresh deployment. Do not disable scripts or add a runtime `chmod` workaround.
+6. If the log reports an npm optional-dependency resolution error, confirm the deployed source includes the committed root `package-lock.json`; then start a fresh deployment from the latest `main` branch.
+7. If the log reports `spawnSync .../esbuild/bin/esbuild EACCES` during `npm ci`, do not disable scripts or add a runtime `chmod` workaround. Ask Hostinger to reset the Web App build workspace and ensure the deployment filesystem permits binary execution.
 
 The public page files and React route definitions are unchanged by this configuration.
