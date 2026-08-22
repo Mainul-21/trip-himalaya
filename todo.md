@@ -319,3 +319,6 @@
 - [x] Update Hostinger deployment guidance to explain the committed pnpm 11 workspace allowlist and avoid obsolete approval commands.
 - [x] Diagnose and resolve the Hostinger esbuild postinstall EACCES deployment failure with a validated pnpm copy-import policy that preserves scoped native build scripts.
 - [ ] Redeploy the current main branch on Hostinger and verify the provider no longer reports an esbuild EACCES error.
+- [ ] Escalate the confirmed Hostinger no-exec filesystem failure with the sanitized multi-package esbuild EACCES evidence, then verify the provider-side remediation by redeploying.
+- [x] Document the confirmed multi-package esbuild EACCES evidence and the safe Hostinger support escalation request.
+- [x] Add and validate the requested scoped postinstall executable-permission normalization without deleting the lockfile or disabling lifecycle scripts.

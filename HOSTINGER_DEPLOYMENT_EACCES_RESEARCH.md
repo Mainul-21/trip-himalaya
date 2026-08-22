@@ -22,4 +22,16 @@ In the managed development environment, both `node_modules/esbuild/bin/esbuild` 
 
 A clean pnpm 11.22.0 install with `NODE_ENV=production` still installed esbuild and the Tailwind oxide package. The setting is not a replacement for a true production-only install in this setup. pnpm documents `--prod` as the option that omits `devDependencies`; however, it cannot be used for the Hostinger build because Vite and esbuild are build-time dependencies. Source: [pnpm install](https://pnpm.io/cli/install).
 
-A clean npm installation in an isolated copy installed esbuild successfully with both direct and platform binaries on mode `755`, and `esbuild --version` ran successfully. This supports the panel-level npm fallback for Hostinger’s pnpm virtual-store EACCES condition. The first complete npm build test uncovered a separate npm optional-dependency resolution issue for Rollup’s platform package, so the fallback must be validated with a package-lock-consistent npm install before being presented as a final deployment resolution.
+An isolated npm installation can also install and execute esbuild successfully, but an npm fallback is not the correct current recommendation: the project is configured for pnpm and a clean npm build exposed separate platform optional-dependency resolution issues. The validated project-side pnpm change is `packageImportMethod: copy`, which preserves normal executable mode in a clean pnpm install without widening lifecycle-script permissions.
+
+## Final evidence and required Hostinger action
+
+The latest sanitized Hostinger log provides conclusive evidence that its deployment workspace cannot execute native files under the repository `node_modules` path. pnpm completes dependency resolution and links all 407 packages. The approved Tailwind native dependency then finishes successfully. Three separate esbuild copies subsequently fail when their own installer runs `esbuild --version`:
+
+- `node_modules/vitest/node_modules/esbuild/bin/esbuild`
+- `node_modules/@esbuild-kit/core-utils/node_modules/esbuild/bin/esbuild`
+- `node_modules/esbuild/bin/esbuild`
+
+Each failure is `spawnSync … EACCES` beneath `/home/u880874999/domains/triphimalya.com/hbuilds/source/repository/node_modules/`. Since independent packages fail at the same executable-filesystem boundary after pnpm has allowed their scripts, this is not an application source-code error, an unapproved-build issue, or a missing dependency. A project `postinstall` hook cannot fix it because the installer fails before that hook can run; `ignore-scripts` is invalid because the build still needs the esbuild binary.
+
+The owner must ask Hostinger to clear or recreate the affected Web App build workspace and pnpm store, verify its mount permits execution for the Web App deployment user, and keep approved lifecycle scripts enabled. After Hostinger confirms the remediation, redeploy from the latest `main` branch using Express, Node 22.x, pnpm, root `./`, entry file `dist/index.js`, and `NODE_ENV=production`.

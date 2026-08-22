@@ -37,4 +37,14 @@ describe("Hostinger deployment contract", () => {
     expect(guide).toContain("packageImportMethod: copy");
     expect(guide).toContain("dist/index.js");
   });
+
+  it("retains the requested scoped postinstall permission normalization without disabling scripts", () => {
+    const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")) as {
+      scripts: Record<string, string>;
+    };
+
+    expect(pkg.scripts.postinstall).toContain("chmod +x node_modules/.bin/*");
+    expect(pkg.scripts.postinstall).toContain("node_modules/**/bin/*");
+    expect(pkg.scripts.postinstall).toContain("|| true");
+  });
 });
