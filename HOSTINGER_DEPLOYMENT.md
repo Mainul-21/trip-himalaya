@@ -30,16 +30,17 @@ This is the required option if the administrator portal must actually sign in, l
 
 Create the variables listed in [`HOSTINGER_ENV.example`](./HOSTINGER_ENV.example) in **hPanel → Website → Environment Variables**. Use your own secret values—never upload a real `.env` file to GitHub or the public web root.
 
-`DATABASE_URL`, `JWT_SECRET`, and `INITIAL_ADMIN_SETUP_KEY` are required for the server and approved admin account workflow. `CLOUDINARY_URL` is required for administrator image uploads outside the managed development platform. This project’s server listens on the `PORT` provided by Hostinger; do not force a fixed public port.
+`DATABASE_URL`, `JWT_SECRET`, and `INITIAL_ADMIN_SETUP_KEY` are required for the server and approved admin account workflow. For TiDB Cloud public endpoints, set `DATABASE_SSL=true`; the application also auto-enables TLS when the database URL uses port `4000`. If TiDB Cloud Dedicated supplies a CA certificate, set `DATABASE_SSL_CA_PATH` to the deployed certificate path and keep `DATABASE_SSL_REJECT_UNAUTHORIZED=true`. `CLOUDINARY_URL` is required for administrator image uploads outside the managed development platform. This project’s server listens on the `PORT` provided by Hostinger; do not force a fixed public port.
 
 ### Deploy steps
 
 1. In hPanel, open **Websites → Add Website → Deploy Web App** and choose the Node.js app flow. [Hostinger’s current Node.js guide](https://www.hostinger.com/support/how-to-deploy-a-nodejs-website-in-hostinger/) confirms Node apps are supported on Business and Cloud plans.
 2. Import the GitHub repository or upload the complete project ZIP. Do **not** upload only the old Vite `dist/public` folder for this full-stack option.
 3. If hPanel has a package-manager selector, choose **npm**. The repository commits a single Linux-generated `package-lock.json`, declares npm 10.9.2 in `package.json`, and includes a required root `.npmrc`; do not select pnpm, remove `.npmrc`, or enable a Corepack override.
-4. Enter the build and entry settings shown above, then add the required environment variables.
-5. Deploy. For server-side Node apps, Hostinger creates the public routing bridge automatically; do not replace its generated `public_html/.htaccess` with unrelated rules.
-6. Test `/`, `/admin`, `/admin/login`, `/tours`, and `/api/trpc` from the deployed domain.
+4. Enter the build and entry settings shown above, then add the required environment variables. Do not paste a local `.env` file into the public web root.
+5. Apply the existing Drizzle migrations to the configured database using a controlled migration step. Do not use `pnpm db:push` or any destructive reset against an existing production database; first confirm the target database and take a backup.
+6. Deploy. For server-side Node apps, Hostinger creates the public routing bridge automatically; do not replace its generated `public_html/.htaccess` with unrelated rules.
+7. Test `/`, `/admin`, `/admin/login`, `/tours`, `/api/health`, and `/api/trpc` from the deployed domain.
 
 ### npm clean-install policy
 
@@ -84,9 +85,10 @@ This corrects the direct `/admin` invalid-page route. It does **not** create the
 1. Confirm Hostinger deployed the **full Node project**, not only a frontend ZIP.
 2. Open the latest hPanel deployment logs and confirm `npm run build` completed.
 3. Confirm `dist/index.js` exists in the Node build output and `NODE_ENV=production` is set.
-4. Confirm all required environment variable names and values are set in hPanel, then redeploy or restart the Node application.
-5. If using static-only upload, confirm the hidden `.htaccess` is in `public_html` and no conflicting older rewrite file replaced it.
-6. If the log reports an npm optional-dependency resolution error, confirm the deployed source includes the committed root `package-lock.json`; then start a fresh deployment from the latest `main` branch.
-7. If the log reports `spawnSync .../esbuild/bin/esbuild EACCES` during `npm ci`, do not disable scripts or add a runtime `chmod` workaround. Ask Hostinger to reset the Web App build workspace and ensure the deployment filesystem permits binary execution.
+4. Confirm `DATABASE_URL` points to the intended TiDB database, `DATABASE_SSL=true` is set for TiDB Cloud public endpoints, and the optional CA path is readable when used; then redeploy or restart the Node application.
+5. Confirm the database has all migrations through `0013_lovely_thunderball.sql` applied before diagnosing application queries.
+6. If using static-only upload, confirm the hidden `.htaccess` is in `public_html` and no conflicting older rewrite file replaced it.
+7. If the log reports an npm optional-dependency resolution error, confirm the deployed source includes the committed root `package-lock.json`; then start a fresh deployment from the latest `main` branch.
+8. If the log reports `spawnSync .../esbuild/bin/esbuild EACCES` during `npm ci`, do not disable scripts or add a runtime `chmod` workaround. Ask Hostinger to reset the Web App build workspace and ensure the deployment filesystem permits binary execution.
 
 The public page files and React route definitions are unchanged by this configuration.

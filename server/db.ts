@@ -1,5 +1,7 @@
 import { and, asc, desc, eq, inArray, isNotNull, isNull, like, or } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
+import { createPool, type PoolOptions } from "mysql2";
+import { readFileSync } from "node:fs";
 import { randomUUID } from "crypto";
 import {
   agencyProfiles,
@@ -101,8 +103,40 @@ function isMissingAgencyBrandingColumn(error: unknown) {
 
 let _db: ReturnType<typeof drizzle> | null = null;
 
+function shouldUseTls(databaseUrl: string) {
+  const explicit = process.env.DATABASE_SSL?.trim().toLowerCase();
+  if (explicit === "true") return true;
+  if (explicit === "false") return false;
+  if (process.env.TIDB_ENABLE_SSL?.trim().toLowerCase() === "true") return true;
+  try {
+    return new URL(databaseUrl).port === "4000";
+  } catch {
+    return false;
+  }
+}
+
+function getDatabaseOptions(databaseUrl: string): PoolOptions {
+  const options: PoolOptions = {
+    uri: databaseUrl,
+    enableKeepAlive: true,
+    waitForConnections: true,
+    connectionLimit: Number(process.env.DATABASE_CONNECTION_LIMIT || 5),
+  };
+  if (shouldUseTls(databaseUrl)) {
+    const caPath = process.env.DATABASE_SSL_CA_PATH?.trim();
+    options.ssl = {
+      minVersion: "TLSv1.2",
+      rejectUnauthorized: process.env.DATABASE_SSL_REJECT_UNAUTHORIZED?.trim().toLowerCase() !== "false",
+      ...(caPath ? { ca: readFileSync(caPath) } : {}),
+    };
+  }
+  return options;
+}
+
 export async function getDb() {
-  if (!_db && process.env.DATABASE_URL) _db = drizzle(process.env.DATABASE_URL);
+  if (!_db && process.env.DATABASE_URL) {
+    _db = drizzle(createPool(getDatabaseOptions(process.env.DATABASE_URL)));
+  }
   return _db;
 }
 

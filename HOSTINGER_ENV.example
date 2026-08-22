@@ -5,7 +5,13 @@ NODE_ENV=production
 PORT=3000
 
 # Required for the Trip Himalaya server and approved administrator sign-in.
-DATABASE_URL=mysql://USER:PASSWORD@HOST:4000/DATABASE?ssl={"rejectUnauthorized":true}
+DATABASE_URL=mysql://USER:PASSWORD@HOST:4000/DATABASE
+# TiDB Cloud public endpoints require TLS. The server also auto-enables TLS for port 4000.
+DATABASE_SSL=true
+# Optional for TiDB Cloud Dedicated when a downloaded CA file is required.
+# DATABASE_SSL_CA_PATH=/absolute/path/to/ca.pem
+# Keep certificate verification enabled in production.
+# DATABASE_SSL_REJECT_UNAUTHORIZED=true
 JWT_SECRET=generate-a-long-random-secret-at-least-32-characters
 INITIAL_ADMIN_SETUP_KEY=use-a-separate-long-random-once-only-setup-key
 
