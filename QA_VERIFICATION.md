@@ -1,10 +1,16 @@
 # Visual QA Verification
 
-## Homepage experience-category image recheck — 22 August 2026
+## Homepage experience-category image delivery repair — 22 August 2026
 
-**Status: PASS — no source or delivery change required.**
+**Status: PASS — desktop and mobile verified.**
 
-The reported blank-card state was checked again after the preview completed managed asset resolution. All six homepage experience-category cards visibly rendered their existing Himalayan imagery: Trekking, Spiritual Tours, Camping, Village Experiences, Himachal Tours, and Custom Tours. Their labels, order, filter links, and approved reference layout remain unchanged. The appearance was transient rather than a reproducible image-delivery defect, so no unnecessary mapping or content change was made.
+The desktop full-page capture reproduced an intermittent blank-card state even though all six managed image URLs returned successful image responses. The homepage now assigns high network priority to the existing small category images while retaining their original source paths, labels, order, filter links, and approved reference layout. A fresh desktop capture at 1280 × 900 and phone capture at 390 × 844 both show all six images: Trekking, Spiritual Tours, Camping, Village Experiences, Himachal Tours, and Custom Tours. The targeted regression assertion, full Vitest suite, TypeScript check, and production build pass.
+
+## Administrator journeys workspace recheck — 22 August 2026
+
+**Status: PASS — protected workspace accessible at both breakpoints.**
+
+An authenticated principal-administrator preview session reached `/admin/tours` without redirecting to the sign-in page. At 1280 × 900, the expanded navy sidebar, principal identity, journey list, homepage Top Trips selectors, live and draft status badges, Best Seller badges, and edit/delete controls were visible together. At 390 × 844, the compact workspace preserved the Add journey action, Top Trips rank selectors, status badges, and edit/delete controls without clipping or overlap. No mutation was performed. The unpublished `Hdhddhbd` draft remains available only in the protected workspace for administrator correction and is not evidence of public content exposure.
 
 ## Our Stay conversion — 21 August 2026
 

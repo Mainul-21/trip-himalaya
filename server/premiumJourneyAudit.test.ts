@@ -32,7 +32,7 @@ describe("premium journey presentation", () => {
     expect(home).toContain("cat-village_f7870b29.jpg");
     expect(home).toContain("cat-tours_8d0fd3d0.jpg");
     expect(home).toContain("cat-custom_9ca90b70.jpg");
-    expect(home).toContain('loading="eager" decoding="async" className="h-28 w-full rounded-sm object-cover"');
+    expect(home).toContain('loading="eager" fetchPriority="high" decoding="async" className="h-28 w-full rounded-sm object-cover"');
     expect(home).not.toContain('getImageVariant(item.image, "card")} alt={item.title.toLowerCase()} width={640} height={512} loading="lazy"');
     expect(home).toContain("trpc.tours.list.useQuery");
     expect(home).toContain("const categories = fallbackTripStyles");
