@@ -1,8 +1,11 @@
 # Project TODO
 
 - [x] Create a mountain-led visual system inspired by the supplied reference with distinct Trip Himalaya branding.
+- [x] Restore npm as the explicit Hostinger deployment package-manager contract while allowing the managed pnpm preview to warn rather than refuse.
 - [x] Restore the previous stable Vite and Express project architecture while preserving existing database records and administrator data.
-- [ ] Allow the managed pnpm preview to run the restored Vite development command while retaining Hostinger’s explicit npm deployment workflow.
+- [x] Allow the managed pnpm preview to run the restored Vite development command while retaining Hostinger’s explicit npm deployment workflow.
+- [ ] Resolve the Hostinger HTTPS `ERR_SSL_PROTOCOL_ERROR` for both the apex and www Trip Himalaya domains before validating application routes.
+- [ ] Restore TypeScript-clean global browser event typing in the Vite entry point after the architecture rollback.
 - [x] Build a fast, responsive public homepage with hero, trust strip, experience categories, featured tours, benefits, enquiry panel, and footer.
 - [x] Add public pages for tours, tour detail, trekking, experiences, about, contact, blog, search results, booking confirmation, enquiry confirmation, and an interactive 404 page.
 - [x] Remove destination-directory pages and destination navigation from the public site.
@@ -333,3 +336,6 @@
 - [ ] Obtain Hostinger remediation for the managed Web App workspace that denies execution of all installed esbuild binaries during pnpm installation, then verify a fresh deployment result.
 - [x] Migrate the Hostinger deployment contract to the validated npm lockfile path, remove conflicting pnpm-specific configuration, and preserve the existing Node application behavior.
 - [x] Ensure the Hostinger npm build installation retains Vite and other required development build dependencies when NODE_ENV is production.
+- [ ] Correct the Hostinger deployment regression test to read the project root rather than the parent workspace metadata.
+- [ ] Restore explicit TypeScript typing for browser cache event handlers in the Vite entry point.
+- [ ] Configure triphimalya.com through the existing Vercel project and verify both apex and www domain routing after DNS propagation.

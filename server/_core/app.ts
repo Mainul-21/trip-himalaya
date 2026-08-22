@@ -23,6 +23,10 @@ export function createApp() {
   app.use(express.urlencoded({ limit: PUBLIC_BODY_LIMIT, extended: true }));
   registerStorageProxy(app);
   registerOAuthRoutes(app);
+  app.get("/api/health", (_req, res) => {
+    res.setHeader("Cache-Control", "no-store");
+    res.status(200).json({ ok: true, service: "trip-himalaya-api" });
+  });
   app.use(
     "/api/trpc",
     createExpressMiddleware({
