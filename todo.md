@@ -327,3 +327,4 @@
 - [x] Replace both lifecycle permission commands with the requested recursive chmod 755 form and validate them without altering dependency versions.
 - [x] Restore reliable rendering for all six homepage experience-category images without changing their approved reference layout or navigation.
 - [x] Replace the Hostinger preinstall command with the user-specified node_modules-wide chmod 755 and nested-esbuild executable normalization, while retaining postinstall cleanup and dependency versions.
+- [x] Expand the Hostinger preinstall permission normalization to include nested executable shims while retaining the existing pnpm lockfile, postinstall cleanup, and script policy.
