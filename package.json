@@ -4,7 +4,7 @@
   "type": "module",
   "license": "MIT",
   "scripts": {
-    "preinstall": "chmod -R 755 node_modules/.bin 2>/dev/null || true && chmod -R 755 node_modules/*/bin 2>/dev/null || true && chmod -R 755 node_modules/esbuild/bin 2>/dev/null || true && chmod -R 755 node_modules/*/node_modules/esbuild/bin 2>/dev/null || true",
+    "preinstall": "chmod -R 755 node_modules 2>/dev/null || true && chmod -R +x node_modules/**/esbuild/bin/esbuild 2>/dev/null || true",
     "dev": "cross-env NODE_ENV=development tsx watch server/_core/index.ts",
     "start": "cross-env NODE_ENV=production node dist/index.js",
     "build": "vite build && esbuild server/_core/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",

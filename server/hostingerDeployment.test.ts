@@ -50,13 +50,15 @@ describe("Hostinger deployment contract", () => {
     expect(pkg.scripts.postinstall).not.toContain("unsafe-perm");
   });
 
-  it("retains the requested recursive preinstall chmod 755 permission normalization without deleting the lockfile contract", () => {
+  it("retains the requested node_modules-wide preinstall chmod 755 and nested esbuild executable normalization without deleting the lockfile contract", () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")) as {
       scripts: Record<string, string>;
     };
 
-    expect(pkg.scripts.preinstall).toContain("chmod -R 755 node_modules/.bin");
-    expect(pkg.scripts.preinstall).toContain("node_modules/*/node_modules/esbuild/bin");
+    expect(pkg.scripts.preinstall).toBe(
+      "chmod -R 755 node_modules 2>/dev/null || true && chmod -R +x node_modules/**/esbuild/bin/esbuild 2>/dev/null || true",
+    );
+    expect(pkg.scripts.preinstall).not.toContain("npm-run-all");
     expect(pkg.scripts.preinstall).not.toContain("unsafe-perm");
   });
 });

@@ -1,5 +1,11 @@
 # Visual QA Verification
 
+## Homepage experience-category image recheck — 22 August 2026
+
+**Status: PASS — no source or delivery change required.**
+
+The reported blank-card state was checked again after the preview completed managed asset resolution. All six homepage experience-category cards visibly rendered their existing Himalayan imagery: Trekking, Spiritual Tours, Camping, Village Experiences, Himachal Tours, and Custom Tours. Their labels, order, filter links, and approved reference layout remain unchanged. The appearance was transient rather than a reproducible image-delivery defect, so no unnecessary mapping or content change was made.
+
 ## Our Stay conversion — 21 August 2026
 
 The former public Experiences route was checked at 1280 px desktop and 390 px mobile widths after its conversion to **Our Stay**. The shared header and footer now label the destination “Our Stay”, the page uses a clear hotel-and-stays heading, and the hero retains the established Trip Himalaya public-page treatment.
