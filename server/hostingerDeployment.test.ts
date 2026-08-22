@@ -43,8 +43,9 @@ describe("Hostinger deployment contract", () => {
       scripts: Record<string, string>;
     };
 
-    expect(pkg.scripts.postinstall).toContain("chmod +x node_modules/.bin/*");
-    expect(pkg.scripts.postinstall).toContain("node_modules/**/bin/*");
-    expect(pkg.scripts.postinstall).toContain("|| true");
+    expect(pkg.scripts.postinstall).toContain("chmod -R +x node_modules/.bin");
+    expect(pkg.scripts.postinstall).toContain("chmod -R +x node_modules/*/bin");
+    expect(pkg.scripts.postinstall).toContain("chmod -R +x node_modules/esbuild/bin");
+    expect(pkg.scripts.postinstall).not.toContain("unsafe-perm");
   });
 });

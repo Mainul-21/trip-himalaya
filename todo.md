@@ -322,3 +322,4 @@
 - [ ] Escalate the confirmed Hostinger no-exec filesystem failure with the sanitized multi-package esbuild EACCES evidence, then verify the provider-side remediation by redeploying.
 - [x] Document the confirmed multi-package esbuild EACCES evidence and the safe Hostinger support escalation request.
 - [x] Add and validate the requested scoped postinstall executable-permission normalization without deleting the lockfile or disabling lifecycle scripts.
+- [x] Replace the postinstall command with the user-specified recursive chmod form and validate it without adding unsafe-perm.
