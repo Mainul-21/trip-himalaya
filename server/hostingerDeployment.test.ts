@@ -48,4 +48,14 @@ describe("Hostinger deployment contract", () => {
     expect(pkg.scripts.postinstall).toContain("chmod -R +x node_modules/esbuild/bin");
     expect(pkg.scripts.postinstall).not.toContain("unsafe-perm");
   });
+
+  it("retains the requested preinstall permission normalization without deleting the lockfile contract", () => {
+    const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")) as {
+      scripts: Record<string, string>;
+    };
+
+    expect(pkg.scripts.preinstall).toContain("chmod -R +x node_modules/.bin");
+    expect(pkg.scripts.preinstall).toContain("node_modules/*/node_modules/esbuild/bin");
+    expect(pkg.scripts.preinstall).not.toContain("unsafe-perm");
+  });
 });

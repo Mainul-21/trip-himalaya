@@ -323,3 +323,4 @@
 - [x] Document the confirmed multi-package esbuild EACCES evidence and the safe Hostinger support escalation request.
 - [x] Add and validate the requested scoped postinstall executable-permission normalization without deleting the lockfile or disabling lifecycle scripts.
 - [x] Replace the postinstall command with the user-specified recursive chmod form and validate it without adding unsafe-perm.
+- [x] Add and validate the requested preinstall executable-permission normalization while preserving the pnpm lockfile.
