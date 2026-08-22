@@ -324,3 +324,4 @@
 - [x] Add and validate the requested scoped postinstall executable-permission normalization without deleting the lockfile or disabling lifecycle scripts.
 - [x] Replace the postinstall command with the user-specified recursive chmod form and validate it without adding unsafe-perm.
 - [x] Add and validate the requested preinstall executable-permission normalization while preserving the pnpm lockfile.
+- [x] Replace both lifecycle permission commands with the requested recursive chmod 755 form and validate them without altering dependency versions.

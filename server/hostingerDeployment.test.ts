@@ -38,23 +38,24 @@ describe("Hostinger deployment contract", () => {
     expect(guide).toContain("dist/index.js");
   });
 
-  it("retains the requested scoped postinstall permission normalization without disabling scripts", () => {
+  it("retains the requested recursive postinstall chmod 755 permission normalization without disabling scripts", () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")) as {
       scripts: Record<string, string>;
     };
 
-    expect(pkg.scripts.postinstall).toContain("chmod -R +x node_modules/.bin");
-    expect(pkg.scripts.postinstall).toContain("chmod -R +x node_modules/*/bin");
-    expect(pkg.scripts.postinstall).toContain("chmod -R +x node_modules/esbuild/bin");
+    expect(pkg.scripts.postinstall).toContain("chmod -R 755 node_modules/.bin");
+    expect(pkg.scripts.postinstall).toContain("chmod -R 755 node_modules/*/bin");
+    expect(pkg.scripts.postinstall).toContain("chmod -R 755 node_modules/esbuild/bin");
+    expect(pkg.scripts.postinstall).toContain("node_modules/*/node_modules/esbuild/bin");
     expect(pkg.scripts.postinstall).not.toContain("unsafe-perm");
   });
 
-  it("retains the requested preinstall permission normalization without deleting the lockfile contract", () => {
+  it("retains the requested recursive preinstall chmod 755 permission normalization without deleting the lockfile contract", () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")) as {
       scripts: Record<string, string>;
     };
 
-    expect(pkg.scripts.preinstall).toContain("chmod -R +x node_modules/.bin");
+    expect(pkg.scripts.preinstall).toContain("chmod -R 755 node_modules/.bin");
     expect(pkg.scripts.preinstall).toContain("node_modules/*/node_modules/esbuild/bin");
     expect(pkg.scripts.preinstall).not.toContain("unsafe-perm");
   });
