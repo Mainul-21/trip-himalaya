@@ -1,6 +1,8 @@
 # Project TODO
 
 - [x] Create a mountain-led visual system inspired by the supplied reference with distinct Trip Himalaya branding.
+- [x] Restore the previous stable Vite and Express project architecture while preserving existing database records and administrator data.
+- [ ] Allow the managed pnpm preview to run the restored Vite development command while retaining Hostinger’s explicit npm deployment workflow.
 - [x] Build a fast, responsive public homepage with hero, trust strip, experience categories, featured tours, benefits, enquiry panel, and footer.
 - [x] Add public pages for tours, tour detail, trekking, experiences, about, contact, blog, search results, booking confirmation, enquiry confirmation, and an interactive 404 page.
 - [x] Remove destination-directory pages and destination navigation from the public site.
