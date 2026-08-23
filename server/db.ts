@@ -134,16 +134,10 @@ function getDatabaseOptions(databaseUrl: string): PoolOptions {
 }
 
 export async function getDb() {
-<<<<<<< HEAD
-if (!_db && process.env.DATABASE_URL) {
-  const dbUrl = process.env.DATABASE_URL.split('?')[0];
-  _db = drizzle(dbUrl, { ssl: { rejectUnauthorized: true } } as any);
-=======
   if (!_db && process.env.DATABASE_URL) {
     _db = drizzle(createPool(getDatabaseOptions(process.env.DATABASE_URL)));
   }
   return _db;
->>>>>>> fc0de2d1d109426734ad74f8dd6e62b566e6aa4d
 }
 
 function requireDb<T>(db: T | null): T {
