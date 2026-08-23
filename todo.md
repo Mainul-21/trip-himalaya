@@ -406,3 +406,6 @@
 - [ ] Verify the live domain’s homepage, public routes, administrator sign-in entry, HTTPS behavior, and required deployment configuration after the fix.
 - [ ] Reconcile the live host’s stale or incomplete administrator JavaScript assets so `/admin/login` can load its current compiled chunk without a dynamic-import error.
 - [ ] Verify the deployed custom domain serves a matching build manifest and complete asset set before retesting administrator sign-in.
+- [ ] Remove the obsolete local Agency Profile “missing newer profile fields” warning when the current API already reports a schema-ready profile, without rerunning `db:push` or modifying business data.
+- [x] Replace the unsafe Agency Profile `db:push` remediation text with an accurate non-destructive hosting-schema diagnosis and regression test.
+- [ ] Align Hostinger's private `DATABASE_URL` with the intended schema-ready TiDB database (or apply only reviewed additive migration to its separate database), then confirm the live Agency Profile API returns both readiness flags as false.

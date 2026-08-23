@@ -41,12 +41,14 @@ Generate a safe session secret with:
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-When the database URL is ready, apply the schema and start the site:
+For a **new, empty database only**, apply the initial schema and start the site:
 
 ```powershell
 pnpm db:push
 pnpm dev
 ```
+
+If this project already has tours, agency settings, bookings, reviews, or administrators, start with `pnpm dev` instead. Do **not** run `pnpm db:push` merely because the Agency Profile screen says profile fields are unavailable: first confirm that `DATABASE_URL` points to the intended database. For an older separate database, inspect its columns and apply only a reviewed additive migration through that database’s own console. Never truncate tables or alter primary keys to clear this warning.
 
 Open the address shown in the terminal. Set up the principal administrator at `/admin/setup` only when the database has no administrator yet. Local setup creates that initial principal account directly. Afterwards, sign in at `/admin/login`.
 
@@ -76,7 +78,7 @@ Create a free Cloudinary account, open its dashboard, and copy the **API Environ
 | `pnpm test` | Run automated checks |
 | `pnpm check` | Check TypeScript |
 | `pnpm vercel:build` | Reproduce the Vercel production build locally |
-| `pnpm db:push` | Apply the database schema after setting `DATABASE_URL` |
+| `pnpm db:push` | Initialize a **new empty** database only; do not use it as a fix for an existing Agency Profile schema warning |
 | `pnpm audit:prod` | Check production dependency advisories |
 
 If a command fails, first check `.env`, then run `pnpm install --frozen-lockfile` again. Do not use `--force` or `--legacy-peer-deps`.

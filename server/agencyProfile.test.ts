@@ -80,7 +80,9 @@ describe("agency profile administration contract", () => {
     expect(portal).toContain('name="thirdMetricLabel"');
     expect(portal).toContain('name="thirdMetricValue"');
     expect(portal).toContain("retry: false");
-    expect(portal).toContain("One safe local database update is needed");
+    expect(portal).toContain("Agency profile data needs a hosting check");
+    expect(portal).toContain("Do not run <code>db:push</code>");
+    expect(portal).not.toContain("One safe local database update is needed");
     expect(portal).toContain("Connect the local database to edit this profile");
     expect(portal).toContain("databaseNeedsAttention");
     expect(portal).toContain("Try again");
