@@ -4,7 +4,7 @@ import path from "node:path";
 
 const root = process.cwd();
 
-describe("Hostinger deployment contract", () => {
+describe("deployment configuration", () => {
   it("ships an Apache SPA fallback that keeps API requests separate from client routes", () => {
     const config = fs.readFileSync(path.join(root, "client/public/.htaccess"), "utf8");
 
@@ -27,11 +27,13 @@ describe("Hostinger deployment contract", () => {
     expect(environment).toContain("CLOUDINARY_URL=");
   });
 
-  it("pins the managed pnpm runtime and scopes its pnpm 11 build policy", () => {
+  it("pins the managed pnpm runtime and retains Vercel and deployment documentation", () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")) as {
       packageManager: string;
       devEngines?: { packageManager?: { name?: string; onFail?: string } };
     };
+    const guide = fs.readFileSync(path.join(root, "HOSTINGER_DEPLOYMENT.md"), "utf8");
+    const vercelGuide = fs.readFileSync(path.join(root, "VERCEL_DEPLOYMENT.md"), "utf8");
     const pnpmWorkspace = fs.readFileSync(path.join(root, "pnpm-workspace.yaml"), "utf8");
 
     expect(pkg.packageManager).toBe("pnpm@11.22.0");
@@ -41,6 +43,9 @@ describe("Hostinger deployment contract", () => {
     expect(pnpmWorkspace).toContain("allowBuilds:");
     expect(pnpmWorkspace).toContain("esbuild: true");
     expect(pnpmWorkspace).toContain("'@tailwindcss/oxide': true");
+    expect(vercelGuide).toContain("pnpm install --frozen-lockfile");
+    expect(vercelGuide).toContain("pnpm vercel:build");
+    expect(guide).toContain("dist/index.js");
   });
 
   it("does not retain ineffective root permission hooks that run outside the failed package install stage", () => {

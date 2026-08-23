@@ -1,11 +1,38 @@
 # Project TODO
 
 - [x] Create a mountain-led visual system inspired by the supplied reference with distinct Trip Himalaya branding.
+<<<<<<< Updated upstream
 - [x] Restore npm as the explicit Hostinger deployment package-manager contract while allowing the managed pnpm preview to warn rather than refuse.
 - [x] Restore the previous stable Vite and Express project architecture while preserving existing database records and administrator data.
 - [x] Allow the managed pnpm preview to run the restored Vite development command while retaining Hostinger’s explicit npm deployment workflow.
 - [ ] Resolve the Hostinger HTTPS `ERR_SSL_PROTOCOL_ERROR` for both the apex and www Trip Himalaya domains before validating application routes.
 - [ ] Restore TypeScript-clean global browser event typing in the Vite entry point after the architecture rollback.
+=======
+- [x] Align the Vercel and managed-preview package-manager metadata with pnpm 11.22.0 so deployments do not warn or refuse the project configuration.
+- [x] Review the uploaded prompt document and implement its safe, relevant requirements for the Trip Himalaya website.
+- [x] Upgrade the public reviews area with a premium trust-focused design that uses only authentic customer content and clearly identifies the Google Reviews destination.
+- [x] Add administrator controls for the Google Reviews link and review-section presentation without fabricating ratings, review counts, or testimonials.
+- [x] Add explicit administrator-managed review-section presentation fields for authentic heading, supporting copy, and CTA visibility or label.
+- [x] Add regression coverage proving review-presentation settings and the Google Reviews link persist without allowing fabricated Google claims, rating counts, or testimonials.
+- [x] Assess the existing administrator-access recovery path without exposing passwords or modifying account data.
+- [ ] Verify authenticated administrator tour, profile, and responsive-sidebar workflows without modifying protected production data.
+- [x] Implement a principal-only administrator password-recovery mechanism only if the owner explicitly requests a reset and confirms the recovery secret is available.
+- [x] Add a recovery-secret-protected principal password-reset procedure with rate limiting, session invalidation, generic responses, and regression coverage.
+- [x] Add an accessible principal password-reset form that submits the secret only to the same-origin API and redirects to secure sign-in after success.
+- [x] Add production-safe security headers, HTTPS enforcement, and generic API error responses without breaking Vercel or managed preview routing.
+- [x] Replace ad hoc public and credential throttles with scoped in-memory rate limits that expose a retry time and protect all tRPC procedures.
+- [x] Harden administrator sessions, cookies, logout invalidation, and password-changing actions with server-side controls.
+- [x] Tighten image-upload validation and produce regression coverage plus a security-audit report with required credential rotation steps.
+- [x] Route public-form, credential, and protected-procedure throttling through the shared scoped limiter with retry timing and regression coverage.
+- [x] Complete and verify a clean sign-out-and-login redirect after a successful sensitive administrator profile change.
+- [x] Add regression coverage proving credential login/setup and protected procedures return a retry time through the shared limiter.
+- [x] Ensure the sensitive-profile reauthentication redirect reaches `/admin/login` even when client logout cleanup fails, with behavior-level regression coverage.
+- [x] Suppress logout-cleanup failures during sensitive-profile reauthentication while always redirecting cleanly to `/admin/login`, with behavior-level regression coverage.
+- [x] Restore explicit TypeScript typing for browser cache event handlers in the Vite entry point.
+- [x] Correct the Hostinger deployment regression test to read the project root rather than the parent workspace metadata.
+- [x] Restore the tracked pnpm workspace policy required by the managed Vite preview without changing Hostinger’s npm deployment contract.
+- [x] Rebuild the local npm dependency directory to replace the stale pnpm esbuild executable shim before final Vite server-bundle validation.
+>>>>>>> Stashed changes
 - [x] Build a fast, responsive public homepage with hero, trust strip, experience categories, featured tours, benefits, enquiry panel, and footer.
 - [x] Add public pages for tours, tour detail, trekking, experiences, about, contact, blog, search results, booking confirmation, enquiry confirmation, and an interactive 404 page.
 - [x] Remove destination-directory pages and destination navigation from the public site.
@@ -339,3 +366,11 @@
 - [x] Correct the Hostinger deployment regression test to read the project root rather than the parent workspace metadata.
 - [x] Restore explicit TypeScript typing for browser cache event handlers in the Vite entry point.
 - [ ] Configure triphimalya.com through the existing Vercel project and verify both apex and www domain routing after DNS propagation.
+- [x] Extend review-presentation regression coverage to reject fabricated Google verification, counts, ratings, and testimonial claims in public and administrator-facing source contracts.
+- [x] Audit existing public routes, review data, CTA behavior, metadata, structured data, sitemap, robots directives, and asset delivery before the premium upgrade.
+- [x] Replace basic loading states with a lightweight branded travel-inspired loader that respects reduced-motion preferences and avoids layout shift.
+- [x] Build a premium dedicated traveller-feedback experience using only administrator-published genuine reviews, with an honest empty state and real Google Reviews destination when configured.
+- [x] Refine the Call, WhatsApp, quote, tour, and contact CTA hierarchy with consistent accessible vector icons, desktop labels, safe mobile placement, and existing business contact details.
+- [x] Strengthen factual Dharamshala and Himachal technical/local SEO through titles, descriptions, canonical metadata, Open Graph, schema, internal links, image alt text, sitemap, and robots directives without keyword stuffing or fake review schema.
+- [x] Improve premium mobile-first presentation, image loading, animation performance, touch targets, and visual consistency without disrupting current routes or administrator controls.
+- [x] Add targeted tests and desktop, tablet, and phone QA for loading, review, CTA, SEO, and performance changes before publication.

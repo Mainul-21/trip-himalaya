@@ -10,6 +10,14 @@ import "./index.css";
 
 const queryClient = new QueryClient();
 
+type QueryCacheEvent = Parameters<
+  Parameters<ReturnType<typeof queryClient.getQueryCache>["subscribe"]>[0]
+>[0];
+
+type MutationCacheEvent = Parameters<
+  Parameters<ReturnType<typeof queryClient.getMutationCache>["subscribe"]>[0]
+>[0];
+
 const redirectToLoginIfUnauthorized = (error: unknown) => {
   if (!(error instanceof TRPCClientError)) return;
   if (typeof window === "undefined") return;
@@ -21,19 +29,19 @@ const redirectToLoginIfUnauthorized = (error: unknown) => {
   startLogin();
 };
 
-queryClient.getQueryCache().subscribe(event => {
+queryClient.getQueryCache().subscribe((event: QueryCacheEvent) => {
   if (event.type === "updated" && event.action.type === "error") {
     const error = event.query.state.error;
     redirectToLoginIfUnauthorized(error);
-    console.error("[API Query Error]", error);
+    console.warn("A request could not be completed.");
   }
 });
 
-queryClient.getMutationCache().subscribe(event => {
+queryClient.getMutationCache().subscribe((event: MutationCacheEvent) => {
   if (event.type === "updated" && event.action.type === "error") {
     const error = event.mutation.state.error;
     redirectToLoginIfUnauthorized(error);
-    console.error("[API Mutation Error]", error);
+    console.warn("A request could not be completed.");
   }
 });
 

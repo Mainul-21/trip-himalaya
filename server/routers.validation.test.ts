@@ -2,7 +2,8 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as db from "./db";
 import { appRouter } from "./routers";
 import type { TrpcContext } from "./_core/context";
-import { resetPublicFormRateLimitForTests } from "./publicFormRateLimit";
+import { protectedProcedure, router } from "./_core/trpc";
+import { resetRateLimitsForTests } from "./requestRateLimit";
 
 vi.mock("./db", () => ({
   createBooking: vi.fn(),
@@ -14,6 +15,7 @@ vi.mock("./db", () => ({
   createTour: vi.fn(),
   credentialAdminExists: vi.fn(),
   getUserByEmail: vi.fn(),
+  upsertUser: vi.fn(),
   createCredentialAdmin: vi.fn(),
   enableExistingPrincipalCredential: vi.fn(),
 }));
@@ -39,12 +41,12 @@ function createContext(role: AuthenticatedUser["role"]): TrpcContext {
   return {
     user,
     req: { protocol: "https", headers: {} } as TrpcContext["req"],
-    res: { clearCookie: () => undefined, cookie: () => undefined } as TrpcContext["res"],
+    res: { clearCookie: () => undefined, cookie: () => undefined, setHeader: () => undefined } as TrpcContext["res"],
   };
 }
 
 describe("visitor submissions", () => {
-  beforeEach(() => { vi.clearAllMocks(); resetPublicFormRateLimitForTests(); });
+  beforeEach(() => { vi.clearAllMocks(); resetRateLimitsForTests(); });
 
   it("rejects malformed booking, enquiry, newsletter, and search inputs before persistence", async () => {
     const caller = appRouter.createCaller(createContext("user"));
@@ -105,6 +107,49 @@ describe("visitor submissions", () => {
   });
 });
 
+describe("shared request throttling", () => {
+  beforeEach(() => { vi.clearAllMocks(); resetRateLimitsForTests(); });
+
+  function rateLimitContext(role: AuthenticatedUser["role"] = "admin") {
+    const ctx = createContext(role);
+    const setHeader = vi.fn();
+    ctx.res = { clearCookie: vi.fn(), cookie: vi.fn(), setHeader } as TrpcContext["res"];
+    return { ctx, setHeader };
+  }
+
+  it("applies the shared identifier-scoped retry limit to credential login and principal setup", async () => {
+    const login = rateLimitContext();
+    const loginCaller = appRouter.createCaller(login.ctx);
+    vi.mocked(db.getUserByEmail).mockResolvedValue(undefined);
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      await expect(loginCaller.adminAuth.login({ email: "admin@example.com", password: "not-the-password" })).rejects.toMatchObject({ code: "UNAUTHORIZED" });
+    }
+    await expect(loginCaller.adminAuth.login({ email: "admin@example.com", password: "not-the-password" })).rejects.toMatchObject({ code: "TOO_MANY_REQUESTS" });
+    expect(login.setHeader).toHaveBeenCalledWith("Retry-After", expect.stringMatching(/^[1-9][0-9]*$/));
+
+    resetRateLimitsForTests();
+    const setup = rateLimitContext("principal");
+    const setupCaller = appRouter.createCaller(setup.ctx);
+    vi.mocked(db.credentialAdminExists).mockResolvedValue(true);
+    for (let attempt = 0; attempt < 5; attempt += 1) {
+      await expect(setupCaller.adminAuth.setupPrincipal({ name: "Mainul Islam", email: "owner@example.com", password: "A secure password 123" })).rejects.toMatchObject({ code: "FORBIDDEN" });
+    }
+    await expect(setupCaller.adminAuth.setupPrincipal({ name: "Mainul Islam", email: "owner@example.com", password: "A secure password 123" })).rejects.toMatchObject({ code: "TOO_MANY_REQUESTS" });
+    expect(setup.setHeader).toHaveBeenCalledWith("Retry-After", expect.stringMatching(/^[1-9][0-9]*$/));
+  });
+
+  it("applies the shared retry limit to protected procedures", async () => {
+    const protectedRouter = router({ probe: protectedProcedure.query(() => ({ ok: true })) });
+    const { ctx, setHeader } = rateLimitContext();
+    const caller = protectedRouter.createCaller(ctx);
+    for (let attempt = 0; attempt < 150; attempt += 1) {
+      await expect(caller.probe()).resolves.toEqual({ ok: true });
+    }
+    await expect(caller.probe()).rejects.toMatchObject({ code: "TOO_MANY_REQUESTS" });
+    expect(setHeader).toHaveBeenCalledWith("Retry-After", expect.stringMatching(/^[1-9][0-9]*$/));
+  });
+});
+
 describe("principal setup repair", () => {
   beforeEach(() => vi.clearAllMocks());
 
@@ -119,7 +164,7 @@ describe("principal setup repair", () => {
     const caller = appRouter.createCaller(ctx);
     await expect(caller.adminAuth.setupPrincipal({ name: "Mainul Islam", email: "owner@example.com", password: "A_secure_password_2026" })).resolves.toEqual({ success: true, role: "principal" });
     expect(db.enableExistingPrincipalCredential).toHaveBeenCalledWith(expect.objectContaining({ id: owner.id, email: "owner@example.com", name: "Mainul Islam" }));
-    expect(cookie).toHaveBeenCalledWith(expect.any(String), "secure-principal-session", expect.objectContaining({ httpOnly: true, secure: true, maxAge: 1000 * 60 * 60 * 24 * 14 }));
+    expect(cookie).toHaveBeenCalledWith(expect.any(String), "secure-principal-session", expect.objectContaining({ httpOnly: true, secure: true, sameSite: "strict", maxAge: 1000 * 60 * 30 }));
   });
 
   it("creates the first principal account for a standalone local database with no platform owner row", async () => {
@@ -215,6 +260,12 @@ describe("administrator media upload", () => {
   it("rejects invalid image bytes before managed storage is called", async () => {
     const caller = appRouter.createCaller(createContext("admin"));
     await expect(caller.media.upload({ filename: "not-a-photo.png", mimeType: "image/png", dataBase64: Buffer.from("not an image").toString("base64") })).rejects.toMatchObject({ code: "BAD_REQUEST" });
+  });
+
+  it("rejects malformed or non-canonical base64 before managed storage is called", async () => {
+    const caller = appRouter.createCaller(createContext("admin"));
+    await expect(caller.media.upload({ filename: "malformed.png", mimeType: "image/png", dataBase64: "iVBORw0KGgo=not-base64" })).rejects.toMatchObject({ code: "BAD_REQUEST" });
+    expect(db.createMediaAsset).not.toHaveBeenCalled();
   });
 
   it("denies both visitor and unauthenticated access to the media library", async () => {

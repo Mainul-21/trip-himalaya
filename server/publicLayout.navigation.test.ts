@@ -23,7 +23,10 @@ describe("supplied reference header and footer contract", () => {
   it("keeps every supplied navigation item, the functional plan action, and role-aware dashboard access", () => {
     expect(source).toContain('label: "HOME"');
     expect(source).toContain('label: "OUR STAY"');
+    expect(source).toContain('label: "REVIEWS"');
     expect(source).toContain('href={isHomepage ? "/contact" : "/contact"}');
+    expect(source).toContain("CALL NOW");
+    expect(source).toContain("GET A QUOTE");
     expect(source).toContain('user ? <Link href="/admin"');
     expect(source).toContain("ADMIN DASHBOARD");
   });

@@ -15,7 +15,9 @@ describe("premium journey presentation", () => {
     expect(home).toContain("EXPERIENCE THE HIMALAYAS.");
     expect(home).toContain("Curated journeys. Local expertise. Unforgettable memories.");
     expect(home).toContain("Choose your perfect experience");
-    expect(home).toContain("Based on published Trip Himalaya reviews");
+    expect(home).toContain("TRAVELLED. REMEMBERED. SHARED.");
+    expect(home).toContain("Average from {reviews.length} published guest");
+    expect(home).toContain("VIEW GOOGLE REVIEWS");
     expect(home).toContain("PLAN YOUR HIMACHAL TRIP");
     expect(home).toContain('function scrollToSection(sectionId: "packages" | "plan")');
     expect(home).toContain('scrollToSection("packages")');
@@ -37,6 +39,7 @@ describe("premium journey presentation", () => {
     expect(home).toContain("trpc.tours.list.useQuery");
     expect(home).toContain("const categories = fallbackTripStyles");
     expect(home).not.toContain("500+ Google Reviews");
+    expect(home).not.toContain("Google verified");
     for (const label of ["TREKKING", "SPIRITUAL TOURS", "CAMPING", "VILLAGE EXPERIENCES", "HIMACHAL TOURS", "CUSTOM TOURS"]) {
       expect(home).toContain(`title: "${label}"`);
     }

@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { prepareImageUpload } from "@/lib/imageUpload";
+import { completeSensitiveProfileChange } from "@/lib/profileSecurity";
 import { trpc } from "@/lib/trpc";
 import { addJourneyDay, addJourneyItem, cleanJourneyDetails, removeJourneyDay, removeJourneyItem, updateJourneyDay, updateJourneyItem } from "@/lib/journeyEditor";
 import {
@@ -270,6 +271,10 @@ function AgencyProfile() {
       facebookUrl: String(form.get("facebookUrl") || "").trim(),
       youtubeUrl: String(form.get("youtubeUrl") || "").trim(),
       googleMapsUrl: String(form.get("googleMapsUrl") || "").trim(),
+      reviewSectionTitle: String(form.get("reviewSectionTitle") || "").trim(),
+      reviewSectionIntro: String(form.get("reviewSectionIntro") || "").trim(),
+      reviewCtaLabel: String(form.get("reviewCtaLabel") || "").trim(),
+      reviewCtaEnabled: form.get("reviewCtaEnabled") === "on",
       exploreTitle: String(form.get("exploreTitle") || "").trim(),
       exploreIntro: String(form.get("exploreIntro") || "").trim(),
       touristCount: String(form.get("touristCount") || "").trim(),
@@ -312,8 +317,9 @@ function AgencyProfile() {
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#eef4f2] text-[#e17818]"><Building2 className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Our Stay</h2><p className="mt-1 text-sm leading-6 text-slate-500">Add each hotel or stay shown to visitors. Upload its image, write clear short details, then paste the hotel’s full booking or website link.</p></div></div><div className="mt-6 grid gap-4"><Field label="Page heading" name="experiencesTitle" defaultValue={data.experiencesTitle} required /><div><Label htmlFor="agency-experiencesIntro">Short introduction</Label><Textarea id="agency-experiencesIntro" name="experiencesIntro" defaultValue={data.experiencesIntro} className="mt-2 min-h-20 bg-white" required /></div><div className="grid gap-4 md:grid-cols-2">{experiences.map((item, index) => <div key={`${item.title}-${index}`} className="rounded-2xl border border-[#d7e3de] bg-[#f8fbf9] p-4"><div className="flex items-center justify-between gap-3"><h3 className="font-bold text-[#123d5b]">Hotel {index + 1}</h3><Button type="button" variant="outline" size="sm" onClick={() => removeHotel(index)} className="border-red-200 text-red-700 hover:bg-red-50 hover:text-red-800"><Trash2 className="size-4" />Remove</Button></div><div className="mt-4 grid gap-3"><AgencyImageUploader label="Hotel image" value={item.image} onChange={value => updateExperience(index, { image: value })} help="Use a clear photo of this hotel or stay." /><div><Label htmlFor={`experience-title-${index}`}>Hotel name</Label><Input id={`experience-title-${index}`} value={item.title} onChange={event => updateExperience(index, { title: event.target.value })} className="mt-2 h-11 bg-white" required /></div><div><Label htmlFor={`experience-copy-${index}`}>Short details</Label><Textarea id={`experience-copy-${index}`} value={item.copy} onChange={event => updateExperience(index, { copy: event.target.value })} className="mt-2 min-h-20 bg-white" required /></div><div><Label htmlFor={`experience-href-${index}`}>Hotel booking or website link</Label><Input id={`experience-href-${index}`} value={item.href} onChange={event => updateExperience(index, { href: event.target.value })} className="mt-2 h-11 bg-white" placeholder="https://hotel-example.com" type="url" required /></div></div></div>)}</div><Button type="button" variant="outline" onClick={addHotel} disabled={experiences.length >= 12} className="w-full border-dashed border-[#b9cbc4] py-6 font-bold text-[#123d5b] hover:bg-[#eef4f2]"><Plus className="size-4" />Add hotel</Button></div></section>
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#eef4f2] text-[#e17818]"><Pencil className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">About page — Our Story</h2><p className="mt-1 text-sm leading-6 text-slate-500">Update the story shown to visitors. Keep it grounded in confirmed Trip Himalaya details.</p></div></div><div className="mt-6 grid gap-4"><Field label="Story heading" name="aboutStoryTitle" defaultValue={data.aboutStoryTitle} required /><div><Label htmlFor="agency-aboutStoryBody">First paragraph</Label><Textarea id="agency-aboutStoryBody" name="aboutStoryBody" defaultValue={data.aboutStoryBody} className="mt-2 min-h-28 bg-white" required /></div><div><Label htmlFor="agency-aboutStorySecondBody">Second paragraph</Label><Textarea id="agency-aboutStorySecondBody" name="aboutStorySecondBody" defaultValue={data.aboutStorySecondBody} className="mt-2 min-h-28 bg-white" required /></div></div></section>
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#fff1e5] text-[#e17818]"><Star className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Verified trip figures</h2><p className="mt-1 text-sm leading-6 text-slate-500">Optional homepage figures. Enter only confirmed numbers or wording; blank fields stay hidden from visitors.</p></div></div><div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Total tourists" name="touristCount" defaultValue={data.touristCount} placeholder="Example: 120+" /><Field label="Total tours" name="tourCount" defaultValue={data.tourCount} placeholder="Example: 18" /><Field label="Third metric label" name="thirdMetricLabel" defaultValue={data.thirdMetricLabel} placeholder="Example: Local routes" /><Field label="Third metric value" name="thirdMetricValue" defaultValue={data.thirdMetricValue} placeholder="Example: 12" /></div></section>
+      <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><div className="flex gap-3"><span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[#fff1e5] text-[#e17818]"><Star className="size-5" /></span><div><h2 className="font-bold text-[#123d5b]">Premium traveller stories</h2><p className="mt-1 text-sm leading-6 text-slate-500">Control the premium review-section copy and optional CTA. Use only real, supportable guest feedback; this website does not create Google ratings, verification badges, or testimonials.</p></div></div><div className="mt-6 grid gap-4"><Field label="Section heading" name="reviewSectionTitle" defaultValue={data.reviewSectionTitle} required /><div><Label htmlFor="review-section-intro">Supporting copy</Label><Textarea id="review-section-intro" name="reviewSectionIntro" defaultValue={data.reviewSectionIntro} className="mt-2 min-h-24 bg-white" required /><p className="mt-2 text-xs leading-5 text-slate-500">Keep this factual. Do not claim “Google verified” or publish an unsupported rating.</p></div><Field label="Google Reviews button label" name="reviewCtaLabel" defaultValue={data.reviewCtaLabel} required /><label className="flex items-center gap-3 rounded-xl border border-[#d7e3de] bg-[#f8fbf9] p-4 text-sm font-semibold text-[#123d5b]"><input name="reviewCtaEnabled" type="checkbox" defaultChecked={data.reviewCtaEnabled} className="size-4 accent-[#123d5b]" />Show the Google Reviews button when a real Google Business Profile or review URL is configured.</label></div></section>
       <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><h2 className="font-bold text-[#123d5b]">Contact details</h2><p className="mt-1 text-sm text-slate-500">Used in the footer, call button, WhatsApp button, and public contact areas.</p><div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Phone number" name="phone" type="tel" defaultValue={data.phone} required /><Field label="WhatsApp number" name="whatsapp" type="tel" defaultValue={data.whatsapp} required /><Field label="Public email" name="email" type="email" defaultValue={data.email} required /><div className="sm:col-span-2"><Label htmlFor="agency-address">Office / service address</Label><Textarea id="agency-address" name="address" defaultValue={data.address} className="mt-2 min-h-24 bg-white" required /></div></div></section>
-      <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><h2 className="font-bold text-[#123d5b]">Public profiles</h2><p className="mt-1 text-sm text-slate-500">Only links you enter here are shown in the public footer. Leave a field empty to hide it.</p><div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Instagram URL" name="instagramUrl" type="url" defaultValue={data.instagramUrl} /><Field label="Facebook URL" name="facebookUrl" type="url" defaultValue={data.facebookUrl} /><Field label="YouTube URL" name="youtubeUrl" type="url" defaultValue={data.youtubeUrl} /><Field label="Google Maps URL" name="googleMapsUrl" type="url" defaultValue={data.googleMapsUrl} /></div></section>
+      <section className="rounded-2xl border border-[#dfe8e8] bg-white p-5 shadow-[0_8px_22px_rgba(18,61,91,.04)] sm:p-6"><h2 className="font-bold text-[#123d5b]">Public profiles and trust links</h2><p className="mt-1 text-sm text-slate-500">Only links you enter here are shown publicly. Leave a field empty to hide it. The Google link appears in the premium Traveller Stories section; paste your real Google Business Profile or Google Reviews destination only.</p><div className="mt-6 grid gap-4 sm:grid-cols-2"><Field label="Instagram URL" name="instagramUrl" type="url" defaultValue={data.instagramUrl} /><Field label="Facebook URL" name="facebookUrl" type="url" defaultValue={data.facebookUrl} /><Field label="YouTube URL" name="youtubeUrl" type="url" defaultValue={data.youtubeUrl} /><div><Label htmlFor="google-reviews-url">Google Reviews / Business Profile URL</Label><Input id="google-reviews-url" name="googleMapsUrl" type="url" defaultValue={data.googleMapsUrl} className="mt-2 h-11 bg-white" placeholder="https://www.google.com/maps/..." /><p className="mt-2 text-xs leading-5 text-slate-500">This creates the public “View Google Reviews” button. It does not create, copy, or claim a Google rating or verification badge.</p></div></div></section>
       {update.error && <p role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">{update.error.message}</p>}
       {update.isSuccess && <p role="status" className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 text-sm text-emerald-800">Public agency details saved. Refresh the public website to see the updated branding and travel styles.</p>}
       <Button type="submit" disabled={update.isPending} className="h-12 rounded-xl bg-[#123d5b] px-6 font-bold hover:bg-[#0b2d46]">{update.isPending ? "Saving public profile…" : "Save public agency profile"}</Button>
@@ -1561,7 +1567,8 @@ function Reviews() {
 }
 
 function Profile() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const [, setLocation] = useLocation();
   const update = trpc.admin.updateProfile.useMutation();
   const [saved, setSaved] = useState(false);
   function submit(e: FormEvent<HTMLFormElement>) {
@@ -1572,8 +1579,17 @@ function Profile() {
         name: String(f.get("name")),
         email: String(f.get("email")),
         password: String(f.get("password")) || undefined,
+        currentPassword: String(f.get("currentPassword")) || undefined,
       },
-      { onSuccess: () => setSaved(true) }
+      {
+        onSuccess: async (result) => {
+          if (result.reauthenticate) {
+            await completeSensitiveProfileChange(logout, setLocation);
+            return;
+          }
+          setSaved(true);
+        },
+      }
     );
   }
   return (
@@ -1611,6 +1627,10 @@ function Profile() {
             <p className="mt-2 text-xs text-slate-500">
               For account security, new passwords need at least 12 characters.
             </p>
+          </div>
+          <div>
+            <Label htmlFor="currentPassword">Current password <span className="font-normal text-slate-400">(required when changing email or password)</span></Label>
+            <Input id="currentPassword" name="currentPassword" type="password" autoComplete="current-password" className="mt-2 h-11" placeholder="Confirm your current password" />
           </div>
         </div>
         <Button

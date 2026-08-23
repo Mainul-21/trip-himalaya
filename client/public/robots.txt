@@ -1,5 +1,8 @@
 User-agent: *
 Allow: /
 Disallow: /admin/
+Disallow: /admin/login
+Disallow: /admin/setup
+Disallow: /admin/recover
 
-Sitemap: /sitemap.xml
+Sitemap: https://himalayatrip-ahqqbylp.manus.space/sitemap.xml

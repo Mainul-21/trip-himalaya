@@ -48,6 +48,10 @@ export const DEFAULT_AGENCY_PROFILE = {
   facebookUrl: "",
   youtubeUrl: "",
   googleMapsUrl: "",
+  reviewSectionTitle: "TRAVELLED. REMEMBERED. SHARED.",
+  reviewSectionIntro: "Stories published from real Trip Himalaya guests. Read independent feedback through the review source your team provides.",
+  reviewCtaLabel: "VIEW GOOGLE REVIEWS",
+  reviewCtaEnabled: true,
   exploreTitle: "Choose your travel style.",
   exploreIntro: "Start with the kind of mountain time you want. Every choice opens a filtered journey list.",
   touristCount: "",
@@ -98,7 +102,7 @@ function agencyProfileFallback(schemaNeedsUpdate = false, databaseNeedsAttention
 
 function isMissingAgencyBrandingColumn(error: unknown) {
   const message = error instanceof Error ? error.message : String(error);
-  return /(exploreTitle|exploreIntro|travelStylesJson|touristCount|tourCount|thirdMetricLabel|thirdMetricValue|experiencesTitle|experiencesIntro|experiencesJson|aboutStoryTitle|aboutStoryBody|aboutStorySecondBody|heroTitle|heroAccentTitle|heroSubtitle|heroImagesJson|heroBadgesJson|whyTripTitle|whyTripItemsJson)/i.test(message) && /(unknown column|no such column|failed query)/i.test(message);
+  return /(reviewSectionTitle|reviewSectionIntro|reviewCtaLabel|reviewCtaEnabled|exploreTitle|exploreIntro|travelStylesJson|touristCount|tourCount|thirdMetricLabel|thirdMetricValue|experiencesTitle|experiencesIntro|experiencesJson|aboutStoryTitle|aboutStoryBody|aboutStorySecondBody|heroTitle|heroAccentTitle|heroSubtitle|heroImagesJson|heroBadgesJson|whyTripTitle|whyTripItemsJson)/i.test(message) && /(unknown column|no such column|failed query)/i.test(message);
 }
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -244,7 +248,7 @@ export async function listAdmins() {
     .orderBy(asc(users.createdAt));
 }
 
-export async function updateAdminAccount(id: number, values: { name?: string; email?: string; passwordHash?: string; isActive?: boolean }) {
+export async function updateAdminAccount(id: number, values: { name?: string; email?: string; passwordHash?: string; isActive?: boolean; lastSignedIn?: Date }) {
   const db = requireDb(await getDb());
   const next = { ...values, ...(values.email ? { email: values.email.toLowerCase() } : {}) };
   await db.update(users).set(next).where(eq(users.id, id));
@@ -301,6 +305,10 @@ export async function getAgencyProfile(): Promise<AgencyProfileReadValues> {
       heroTitle: DEFAULT_AGENCY_PROFILE.heroTitle,
       heroAccentTitle: DEFAULT_AGENCY_PROFILE.heroAccentTitle,
       heroSubtitle: DEFAULT_AGENCY_PROFILE.heroSubtitle,
+      reviewSectionTitle: DEFAULT_AGENCY_PROFILE.reviewSectionTitle,
+      reviewSectionIntro: DEFAULT_AGENCY_PROFILE.reviewSectionIntro,
+      reviewCtaLabel: DEFAULT_AGENCY_PROFILE.reviewCtaLabel,
+      reviewCtaEnabled: DEFAULT_AGENCY_PROFILE.reviewCtaEnabled,
       heroImages: [...DEFAULT_AGENCY_PROFILE.heroImages],
       heroBadges: DEFAULT_AGENCY_PROFILE.heroBadges.map(item => ({ ...item })),
       whyTripTitle: DEFAULT_AGENCY_PROFILE.whyTripTitle,
@@ -328,6 +336,10 @@ export async function getAgencyProfile(): Promise<AgencyProfileReadValues> {
     facebookUrl: profile.facebookUrl,
     youtubeUrl: profile.youtubeUrl,
     googleMapsUrl: profile.googleMapsUrl,
+    reviewSectionTitle: profile.reviewSectionTitle || DEFAULT_AGENCY_PROFILE.reviewSectionTitle,
+    reviewSectionIntro: profile.reviewSectionIntro || DEFAULT_AGENCY_PROFILE.reviewSectionIntro,
+    reviewCtaLabel: profile.reviewCtaLabel || DEFAULT_AGENCY_PROFILE.reviewCtaLabel,
+    reviewCtaEnabled: profile.reviewCtaEnabled ?? DEFAULT_AGENCY_PROFILE.reviewCtaEnabled,
     touristCount: profile.touristCount || "",
     tourCount: profile.tourCount || "",
     thirdMetricLabel: profile.thirdMetricLabel || "",

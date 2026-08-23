@@ -13,16 +13,16 @@ describe("getSessionCookieOptions", () => {
     expect(getSessionCookieOptions(request("http"))).toMatchObject({
       httpOnly: true,
       path: "/",
-      sameSite: "lax",
+      sameSite: "strict",
       secure: false,
     });
   });
 
-  it("retains Secure and SameSite=None for HTTPS deployments", () => {
+  it("retains Secure and SameSite=Strict for HTTPS deployments", () => {
     expect(getSessionCookieOptions(request("http", "https"))).toMatchObject({
       httpOnly: true,
       path: "/",
-      sameSite: "none",
+      sameSite: "strict",
       secure: true,
     });
   });

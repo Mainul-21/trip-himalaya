@@ -5,12 +5,12 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { ENV } from "./_core/env";
 import { sdk } from "./_core/sdk";
 import { adminProcedure, principalProcedure, publicProcedure, router } from "./_core/trpc";
-import { assertCredentialAttemptAllowed, clearCredentialFailures, hashPassword, recordCredentialFailure, verifyPassword } from "./adminAuth";
+import { hashPassword, verifyPassword } from "./adminAuth";
 import * as db from "./db";
 import { isAdminRole } from "./roles";
-import { COOKIE_NAME } from "../shared/const";
+import { ADMIN_SESSION_TTL_MS, COOKIE_NAME } from "../shared/const";
 import { storagePut } from "./storage";
-import { assertPublicFormSubmissionAllowed } from "./publicFormRateLimit";
+import { assertProcedureAllowed } from "./requestRateLimit";
 
 const email = z.string().trim().email().max(320);
 const password = z.string().min(12, "Use at least 12 characters.").max(128);
@@ -68,6 +68,7 @@ const experienceInput = z.object({
 const homepageBadgeInput = z.object({ title: z.string().trim().min(2).max(80), copy: z.string().trim().min(2).max(160) });
 const whyTripItemInput = z.object({ title: z.string().trim().min(2).max(100), copy: z.string().trim().min(2).max(240) });
 const managedImageUrl = z.string().trim().url().or(z.string().startsWith("/manus-storage/"));
+const authenticReviewCopy = z.string().trim().min(2).max(500).refine(value => !/google\s*(verified|rating)|verified\s*google/i.test(value), "Do not present unverified Google claims. Use factual review-section copy instead.");
 const agencyProfileInput = z.object({
   brandName: z.string().trim().min(2).max(160),
   tagline: z.string().trim().max(220),
@@ -80,6 +81,10 @@ const agencyProfileInput = z.object({
   facebookUrl: z.string().trim().url().max(2048).or(z.literal("")),
   youtubeUrl: z.string().trim().url().max(2048).or(z.literal("")),
   googleMapsUrl: z.string().trim().url().max(2048).or(z.literal("")),
+  reviewSectionTitle: authenticReviewCopy.max(160),
+  reviewSectionIntro: authenticReviewCopy,
+  reviewCtaLabel: z.string().trim().min(2).max(80).refine(value => !/google\s*(verified|rating)|verified\s*google/i.test(value), "Do not present unverified Google claims."),
+  reviewCtaEnabled: z.boolean(),
   exploreTitle: z.string().trim().min(2).max(220),
   exploreIntro: z.string().trim().min(2).max(1000),
   touristCount: z.string().trim().max(80),
@@ -115,10 +120,19 @@ function validImageSignature(buffer: Buffer, mimeType: "image/jpeg" | "image/png
   return buffer.length > 12 && buffer.subarray(0, 4).toString("ascii") === "RIFF" && buffer.subarray(8, 12).toString("ascii") === "WEBP";
 }
 
+function decodeUploadedImage(dataBase64: string) {
+  // Buffer accepts malformed base64 silently; require canonical base64 to avoid
+  // accepting data URLs, partial input, or alternate encodings at this boundary.
+  if (dataBase64.length % 4 !== 0 || !/^[A-Za-z0-9+/]*={0,2}$/.test(dataBase64)) return null;
+  const bytes = Buffer.from(dataBase64, "base64");
+  return bytes.length && bytes.toString("base64") === dataBase64 ? bytes : null;
+}
+
 export const appRouter = router({
   auth: router({
     me: publicProcedure.query(({ ctx }) => (ctx.user && isAdminRole(ctx.user.role) && ctx.user.isActive ? ctx.user : null)),
-    logout: publicProcedure.mutation(({ ctx }) => {
+    logout: publicProcedure.mutation(async ({ ctx }) => {
+      if (ctx.user) await db.upsertUser({ openId: ctx.user.openId, lastSignedIn: new Date() });
       ctx.res.clearCookie(COOKIE_NAME, { ...getSessionCookieOptions(ctx.req), maxAge: -1 });
       return { success: true } as const;
     }),
@@ -126,8 +140,8 @@ export const appRouter = router({
   adminAuth: router({
     setupStatus: publicProcedure.query(async () => ({ needsSetup: !(await db.credentialAdminExists()) })),
     setupPrincipal: publicProcedure.input(z.object({ name: textLine.max(160), email, password, setupKey: z.string().min(1).max(128).optional() })).mutation(async ({ ctx, input }) => {
+      assertProcedureAllowed(ctx.req, ctx.res, { scope: "credential-setup", maxRequests: 5, windowMs: 15 * 60 * 1000 }, input.email);
       if (await db.credentialAdminExists()) throw new TRPCError({ code: "FORBIDDEN", message: "The principal administrator is already configured." });
-      assertCredentialAttemptAllowed(`setup:${input.email}`);
       const owner = await db.getUserByEmail(input.email);
       const passwordHash = await hashPassword(input.password);
       let principal;
@@ -137,43 +151,49 @@ export const appRouter = router({
           !ENV.isProduction || matchesInitialSetupKey(ENV.initialAdminSetupKey, input.setupKey)
         );
         if (!hasAllowedExistingIdentity) {
-          recordCredentialFailure(`setup:${input.email}`);
           throw new TRPCError({ code: "FORBIDDEN", message: "The principal setup identity could not be verified." });
         }
         principal = await db.enableExistingPrincipalCredential({ id: owner.id, name: input.name, email: input.email, passwordHash });
       } else {
         if (ENV.isProduction && !matchesInitialSetupKey(ENV.initialAdminSetupKey, input.setupKey)) {
-          recordCredentialFailure(`setup:${input.email}`);
           throw new TRPCError({ code: "FORBIDDEN", message: "This hosted deployment needs its initial administrator setup key." });
         }
         await db.createCredentialAdmin({ name: input.name, email: input.email, passwordHash, role: "principal" });
         principal = await db.getUserByEmail(input.email);
       }
       if (!principal || !principal.passwordHash || principal.role !== "principal") {
-        recordCredentialFailure(`setup:${input.email}`);
         throw new TRPCError({ code: "CONFLICT", message: "The principal account could not be created. Please try again." });
       }
-      clearCredentialFailures(`setup:${input.email}`);
+      await db.upsertUser({ openId: principal.openId, lastSignedIn: new Date() });
       const token = await sdk.createSessionToken(principal.openId, { name: principal.name || "Principal administrator" });
-      ctx.res.cookie(COOKIE_NAME, token, { ...getSessionCookieOptions(ctx.req), maxAge: 1000 * 60 * 60 * 24 * 14 });
+      ctx.res.cookie(COOKIE_NAME, token, { ...getSessionCookieOptions(ctx.req), maxAge: ADMIN_SESSION_TTL_MS });
       return { success: true, role: "principal" } as const;
     }),
     login: publicProcedure.input(z.object({ email, password: z.string().min(1).max(128) })).mutation(async ({ ctx, input }) => {
-      try {
-        assertCredentialAttemptAllowed(`login:${input.email}`);
-      } catch (error) {
-        throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: error instanceof Error ? error.message : "Please try again later." });
-      }
+      assertProcedureAllowed(ctx.req, ctx.res, { scope: "credential-login", maxRequests: 5, windowMs: 15 * 60 * 1000 }, input.email);
       const user = await db.getUserByEmail(input.email);
       if (!user || !isAdminRole(user.role) || !user.isActive || !(await verifyPassword(input.password, user.passwordHash))) {
-        recordCredentialFailure(`login:${input.email}`);
         throw new TRPCError({ code: "UNAUTHORIZED", message: "Email or password is incorrect." });
       }
-      clearCredentialFailures(`login:${input.email}`);
-      const token = await sdk.createSessionToken(user.openId, { name: user.name || "Administrator" });
-      ctx.res.cookie(COOKIE_NAME, token, { ...getSessionCookieOptions(ctx.req), maxAge: 1000 * 60 * 60 * 24 * 14 });
       await db.upsertUser({ openId: user.openId, lastSignedIn: new Date() });
+      const token = await sdk.createSessionToken(user.openId, { name: user.name || "Administrator" });
+      ctx.res.cookie(COOKIE_NAME, token, { ...getSessionCookieOptions(ctx.req), maxAge: ADMIN_SESSION_TTL_MS });
       return { success: true, role: user.role } as const;
+    }),
+    recoverPrincipalPassword: publicProcedure.input(z.object({
+      email,
+      setupKey: z.string().min(1).max(512),
+      password,
+    })).mutation(async ({ ctx, input }) => {
+      assertProcedureAllowed(ctx.req, ctx.res, { scope: "principal-password-recovery", maxRequests: 3, windowMs: 60 * 60 * 1000 }, input.email);
+      const recoveryAllowed = ENV.initialAdminSetupKey.length > 0 && matchesInitialSetupKey(ENV.initialAdminSetupKey, input.setupKey);
+      const user = recoveryAllowed ? await db.getUserByEmail(input.email) : undefined;
+      if (!user || user.role !== "principal" || !user.isActive || !user.passwordHash) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Unable to reset administrator access." });
+      }
+      await db.updateAdminAccount(user.id, { passwordHash: await hashPassword(input.password), lastSignedIn: new Date() });
+      ctx.res.clearCookie(COOKIE_NAME, { ...getSessionCookieOptions(ctx.req), maxAge: -1 });
+      return { success: true } as const;
     }),
   }),
   tours: router({
@@ -206,8 +226,8 @@ export const appRouter = router({
   media: router({
     list: adminProcedure.query(() => db.listMediaAssets()),
     upload: adminProcedure.input(imageUploadInput).mutation(async ({ ctx, input }) => {
-      const bytes = Buffer.from(input.dataBase64, "base64");
-      if (!bytes.length || bytes.length > 1_500_000 || !validImageSignature(bytes, input.mimeType)) {
+      const bytes = decodeUploadedImage(input.dataBase64);
+      if (!bytes || bytes.length > 1_500_000 || !validImageSignature(bytes, input.mimeType)) {
         throw new TRPCError({ code: "BAD_REQUEST", message: "Please upload a valid JPG, PNG, or WebP image up to 1.5 MB." });
       }
       const extension = input.mimeType === "image/jpeg" ? "jpg" : input.mimeType === "image/png" ? "png" : "webp";
@@ -229,8 +249,8 @@ export const appRouter = router({
       guestName: textLine.max(160), email, phone: z.string().trim().min(7).max(40),
       travelDate: z.string().trim().max(32).optional(), travellers: z.number().int().min(1).max(30),
       message: z.string().trim().max(3000).optional(),
-    })).mutation(async ({ input }) => {
-      try { assertPublicFormSubmissionAllowed("booking", input.email); } catch (error) { throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: error instanceof Error ? error.message : "Please try again later." }); }
+    })).mutation(async ({ ctx, input }) => {
+      assertProcedureAllowed(ctx.req, ctx.res, { scope: "booking", maxRequests: 8, windowMs: 10 * 60 * 1000 }, input.email);
       await db.createBooking({ ...input, travelDate: input.travelDate || null, message: input.message || null });
       return { success: true } as const;
     }),
@@ -238,7 +258,7 @@ export const appRouter = router({
   }),
   enquiries: router({
     create: publicProcedure.input(z.object({ name: textLine.max(160), email, phone: z.string().trim().max(40).optional(), subject: z.string().trim().min(1).max(180), message: z.string().trim().min(1).max(4000) }))
-      .mutation(async ({ input }) => { try { assertPublicFormSubmissionAllowed("enquiry", input.email); } catch (error) { throw new TRPCError({ code: "TOO_MANY_REQUESTS", message: error instanceof Error ? error.message : "Please try again later." }); } await db.createEnquiry({ ...input, phone: input.phone || null }); return { success: true } as const; }),
+      .mutation(async ({ ctx, input }) => { assertProcedureAllowed(ctx.req, ctx.res, { scope: "enquiry", maxRequests: 8, windowMs: 10 * 60 * 1000 }, input.email); await db.createEnquiry({ ...input, phone: input.phone || null }); return { success: true } as const; }),
     list: adminProcedure.query(() => db.listEnquiries()),
   }),
   newsletter: router({
@@ -261,10 +281,19 @@ export const appRouter = router({
       return { bookings, enquiries, subscribers, tours };
     }),
     profile: adminProcedure.query(({ ctx }) => ctx.user),
-    updateProfile: adminProcedure.input(z.object({ name: textLine.max(160).optional(), email: email.optional(), password: password.optional() })).mutation(async ({ ctx, input }) => {
+    updateProfile: adminProcedure.input(z.object({ name: textLine.max(160).optional(), email: email.optional(), password: password.optional(), currentPassword: z.string().min(1).max(128).optional() })).mutation(async ({ ctx, input }) => {
+      const emailChanged = Boolean(input.email && input.email.toLowerCase() !== (ctx.user.email || "").toLowerCase());
+      const requiresReauthentication = Boolean(input.password || emailChanged);
+      if (requiresReauthentication && !(input.currentPassword && await verifyPassword(input.currentPassword, ctx.user.passwordHash))) {
+        throw new TRPCError({ code: "UNAUTHORIZED", message: "Enter your current password to change your email address or password." });
+      }
       const values = { ...(input.name ? { name: input.name } : {}), ...(input.email ? { email: input.email } : {}), ...(input.password ? { passwordHash: await hashPassword(input.password) } : {}) };
       await db.updateOwnAdminAccount(ctx.user.id, values);
-      return { success: true } as const;
+      if (requiresReauthentication) {
+        await db.upsertUser({ openId: ctx.user.openId, lastSignedIn: new Date() });
+        ctx.res.clearCookie(COOKIE_NAME, { ...getSessionCookieOptions(ctx.req), maxAge: -1 });
+      }
+      return { success: true, reauthenticate: requiresReauthentication } as const;
     }),
     admins: principalProcedure.query(() => db.listAdmins()),
     createAdmin: principalProcedure.input(z.object({ name: textLine.max(160), email, password })).mutation(async ({ input }) => {
@@ -277,7 +306,13 @@ export const appRouter = router({
         const target = (await db.listAdmins()).find(admin => admin.id === input.id);
         if (!target || target.role === "principal") throw new TRPCError({ code: "FORBIDDEN", message: "The principal administrator cannot be changed from this screen." });
         if (target.id === ctx.user.id && input.isActive === false) throw new TRPCError({ code: "BAD_REQUEST", message: "You cannot disable your own account." });
-        await db.updateAdminAccount(input.id, { ...(input.name ? { name: input.name } : {}), ...(input.email ? { email: input.email } : {}), ...(input.password ? { passwordHash: await hashPassword(input.password) } : {}), ...(input.isActive !== undefined ? { isActive: input.isActive } : {}) });
+        await db.updateAdminAccount(input.id, {
+          ...(input.name ? { name: input.name } : {}),
+          ...(input.email ? { email: input.email } : {}),
+          ...(input.password ? { passwordHash: await hashPassword(input.password) } : {}),
+          ...(input.isActive !== undefined ? { isActive: input.isActive } : {}),
+          ...(input.email || input.password || input.isActive !== undefined ? { lastSignedIn: new Date() } : {}),
+        });
         return { success: true } as const;
       }),
     deleteAdmin: principalProcedure.input(z.object({ id: z.number().int().positive() })).mutation(async ({ ctx, input }) => {

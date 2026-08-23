@@ -94,7 +94,17 @@
   .section-title { font-size: clamp(1.875rem, 4vw, 3rem); font-weight: 700; line-height: 1.1; text-transform: uppercase; color: var(--primary); }
   .rise, .rise-2, .rise-3 { animation: none; }
   .focus-ring { @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2; }
+  .journey-loader-haze { background: radial-gradient(circle at 50% -10%, oklch(0.68 0.19 45 / .18), transparent 56%); }
+  .journey-loader-wheel { animation: journey-wheel 2.8s linear infinite; border-top-color: oklch(0.68 0.19 45); border-right-color: oklch(0.31 0.084 258 / .55); }
+  .journey-loader-wheel-reverse { animation: journey-wheel-reverse 5.4s linear infinite; }
+  .journey-loader-needle { transform-origin: center 3.7rem; animation: journey-needle 1.5s cubic-bezier(.77,0,.175,1) infinite alternate; }
+  .whatsapp-float { animation: whatsapp-breathe 3.8s ease-in-out infinite; }
 }
+
+@keyframes journey-wheel { to { transform: rotate(360deg); } }
+@keyframes journey-wheel-reverse { to { transform: rotate(-360deg); } }
+@keyframes journey-needle { from { transform: translateY(-1.25rem) rotate(-16deg); } to { transform: translateY(-1.25rem) rotate(16deg); } }
+@keyframes whatsapp-breathe { 0%, 100% { box-shadow: 0 14px 30px rgba(37,211,102,.24); } 50% { box-shadow: 0 17px 36px rgba(37,211,102,.36); } }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }

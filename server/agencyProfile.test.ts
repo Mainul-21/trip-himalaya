@@ -13,6 +13,7 @@ const dashboardLayout = readFileSync(new URL("../client/src/components/Dashboard
 const sidebarPrimitive = readFileSync(new URL("../client/src/components/ui/sidebar.tsx", import.meta.url), "utf8");
 const dashboardSkeleton = readFileSync(new URL("../client/src/components/DashboardLayoutSkeleton.tsx", import.meta.url), "utf8");
 const adminLogin = readFileSync(new URL("../client/src/pages/AdminLogin.tsx", import.meta.url), "utf8");
+const journeyLoader = readFileSync(new URL("../client/src/components/JourneyLoader.tsx", import.meta.url), "utf8");
 
 describe("agency profile administration contract", () => {
   it("persists one structured public profile with logo, contact, and social profile fields", () => {
@@ -113,8 +114,8 @@ describe("agency profile administration contract", () => {
     expect(router).toContain('Enter a full http:// or https:// hotel link.');
     expect(router).toContain('image: z.string().trim().url().or(z.string().startsWith("/manus-storage/"))');
     expect(publicLayout).toContain('{ label: "OUR STAY", href: "/experiences", dropdown: true }');
-    expect(app).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
-    expect(app).toContain('alt="Trip Himalaya"');
+    expect(app).toContain("JourneyLoader");
+    expect(journeyLoader).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
   });
 
   it("renders administrator-managed homepage hero, slideshow, trust messages, and Why Trip Himalaya cards with safe fallbacks", () => {
@@ -127,9 +128,34 @@ describe("agency profile administration contract", () => {
     expect(home).toContain('agency?.whyTripTitle || "WHY TRIP HIMALAYA?"');
   });
 
-  it("uses a valid block container for the traveller score beside the star component", () => {
-    expect(home).toContain('<div className="mt-4 flex items-center gap-2 text-2xl font-bold text-accent"><span>{verifiedAverage.toFixed(1)}</span><Stars rating={verifiedAverage} /></div>');
+  it("uses a valid, premium traveller score and an administrator-controlled Google Reviews destination", () => {
+    expect(home).toContain('<span className="text-3xl font-bold text-accent">{verifiedAverage.toFixed(1)}</span>');
+    expect(home).toContain("const googleReviewsUrl = agency?.googleMapsUrl?.trim();");
+    expect(home).toContain("VIEW GOOGLE REVIEWS");
     expect(home).not.toContain('<p className="mt-4 flex items-center gap-2 text-2xl font-bold text-accent">{verifiedAverage.toFixed(1)} <Stars rating={verifiedAverage} /></p>');
+    expect(portal).toContain("Google Reviews / Business Profile URL");
+    expect(portal).toContain("does not create, copy, or claim a Google rating or verification badge");
+  });
+
+  it("persists configurable review presentation safely without creating unverified Google claims", () => {
+    expect(schema).toContain('reviewSectionTitle: varchar("reviewSectionTitle"');
+    expect(schema).toContain('reviewSectionIntro: varchar("reviewSectionIntro"');
+    expect(schema).toContain('reviewCtaLabel: varchar("reviewCtaLabel"');
+    expect(schema).toContain('reviewCtaEnabled: boolean("reviewCtaEnabled"');
+    expect(router).toContain('const authenticReviewCopy = z.string().trim().min(2).max(500).refine');
+    expect(router).toContain('reviewSectionTitle: authenticReviewCopy.max(160)');
+    expect(router).toContain('reviewSectionIntro: authenticReviewCopy');
+    expect(router).toContain('reviewCtaLabel: z.string().trim().min(2).max(80).refine');
+    expect(router).toContain('reviewCtaEnabled: z.boolean()');
+    expect(db).toContain('reviewSectionTitle: "TRAVELLED. REMEMBERED. SHARED."');
+    expect(db).toContain('reviewCtaLabel: "VIEW GOOGLE REVIEWS"');
+    expect(home).toContain('agency?.reviewSectionTitle || "TRAVELLED. REMEMBERED. SHARED."');
+    expect(home).toContain('agency?.reviewCtaEnabled === false ? "" : googleReviewsUrl');
+    expect(portal).toContain('name="reviewSectionTitle"');
+    expect(portal).toContain('name="reviewSectionIntro"');
+    expect(portal).toContain('name="reviewCtaLabel"');
+    expect(portal).toContain('name="reviewCtaEnabled"');
+    expect(home).not.toContain("Google verified");
   });
 
   it("allows a blank short tagline and uses the shared official logo fallback on public and administrator surfaces", () => {

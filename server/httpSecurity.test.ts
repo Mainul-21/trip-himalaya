@@ -9,6 +9,7 @@ describe("HTTP security policy", () => {
     expect(headers.get("X-Content-Type-Options")).toBe("nosniff");
     expect(headers.get("X-Frame-Options")).toBe("DENY");
     expect(headers.get("Referrer-Policy")).toBe("strict-origin-when-cross-origin");
+    expect(headers.get("Content-Security-Policy")).toContain("default-src 'self'");
     expect(headers.get("Strict-Transport-Security")).toBe("max-age=31536000; includeSubDomains");
   });
 });
