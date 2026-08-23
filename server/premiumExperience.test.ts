@@ -74,7 +74,7 @@ describe("premium public experience contract", () => {
     expect(seo).toContain('canonical.href = `${window.location.origin}${window.location.pathname}`');
     expect(seo).toContain('application/ld+json');
     expect(indexHtml).toContain("Dharamshala tour packages");
-    expect(robots).toContain("Disallow: /admin/recover");
+    expect(robots).not.toContain("/admin/recover");
     expect(robots).toContain("Sitemap: https://himalayatrip-ahqqbylp.manus.space/sitemap.xml");
     expect(sitemap).not.toContain("/reviews");
     expect(`${home}\n${seo}`).not.toContain("AggregateRating");

@@ -8,7 +8,6 @@ import JourneyLoader from "./components/JourneyLoader";
 
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
 const AdminPortal = lazy(() => import("./pages/AdminPortal"));
-const AdminRecovery = lazy(() => import("./pages/AdminRecovery"));
 const AdminSetup = lazy(() => import("./pages/AdminSetup"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Home = lazy(() => import("./pages/Home"));
@@ -32,7 +31,6 @@ function Router() {
     <Route path="/contact" component={Contact} />
     <Route path="/search" component={SearchPage} />
     <Route path="/admin/setup" component={AdminSetup} />
-    <Route path="/admin/recover" component={AdminRecovery} />
     <Route path="/admin/login" component={AdminLogin} />
     <Route path="/admin/:rest*" component={AdminPortal} />
     <Route path="/admin" component={AdminPortal} />

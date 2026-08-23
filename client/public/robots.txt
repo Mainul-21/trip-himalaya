@@ -3,6 +3,5 @@ Allow: /
 Disallow: /admin/
 Disallow: /admin/login
 Disallow: /admin/setup
-Disallow: /admin/recover
 
 Sitemap: https://himalayatrip-ahqqbylp.manus.space/sitemap.xml

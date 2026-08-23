@@ -390,3 +390,6 @@
 - [x] Add only fully round, icon-only bottom-right CTA controls that remain visible and tappable on desktop and phone without text labels.
 - [x] Improve public image delivery and loading priority without changing approved imagery, tour data, layouts, or content.
 - [x] Verify the exact restored visual baseline, header Plan action, icon-only CTAs, and image loading across desktop and phone.
+- [x] Remove the principal password-recovery page, sign-in link, route registration, recovery API procedure, and public documentation references.
+- [x] Retain only the existing email-and-password administrator sign-in flow with current principal/admin role protections and no public recovery or account-creation alternative.
+- [x] Add regression coverage and verify public recovery paths are unavailable while standard administrator authentication safeguards continue to work.

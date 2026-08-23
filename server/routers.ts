@@ -180,21 +180,6 @@ export const appRouter = router({
       ctx.res.cookie(COOKIE_NAME, token, { ...getSessionCookieOptions(ctx.req), maxAge: ADMIN_SESSION_TTL_MS });
       return { success: true, role: user.role } as const;
     }),
-    recoverPrincipalPassword: publicProcedure.input(z.object({
-      email,
-      setupKey: z.string().min(1).max(512),
-      password,
-    })).mutation(async ({ ctx, input }) => {
-      assertProcedureAllowed(ctx.req, ctx.res, { scope: "principal-password-recovery", maxRequests: 3, windowMs: 60 * 60 * 1000 }, input.email);
-      const recoveryAllowed = ENV.initialAdminSetupKey.length > 0 && matchesInitialSetupKey(ENV.initialAdminSetupKey, input.setupKey);
-      const user = recoveryAllowed ? await db.getUserByEmail(input.email) : undefined;
-      if (!user || user.role !== "principal" || !user.isActive || !user.passwordHash) {
-        throw new TRPCError({ code: "UNAUTHORIZED", message: "Unable to reset administrator access." });
-      }
-      await db.updateAdminAccount(user.id, { passwordHash: await hashPassword(input.password), lastSignedIn: new Date() });
-      ctx.res.clearCookie(COOKIE_NAME, { ...getSessionCookieOptions(ctx.req), maxAge: -1 });
-      return { success: true } as const;
-    }),
   }),
   tours: router({
     list: publicProcedure.query(() => db.listPublishedTours()),
