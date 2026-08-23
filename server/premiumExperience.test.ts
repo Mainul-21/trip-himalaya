@@ -41,7 +41,7 @@ describe("premium public experience contract", () => {
   });
 
   it("restores the header Plan Your Trip style, keeps icon-only floating CTAs, and removes phone actions from the homepage", () => {
-    expect(layout).toContain('const planHref = isHomepage ? "#plan" : "/#plan"');
+    expect(layout).toContain('const planHref = isHomepage ? "contact" : "/contact"');
     expect(layout).toContain("PLAN YOUR TRIP");
     expect(layout).toContain("rounded-md bg-accent px-5 py-2.5");
     expect(layout).toContain("md:inline-flex");

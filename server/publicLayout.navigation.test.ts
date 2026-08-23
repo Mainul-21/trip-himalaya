@@ -24,7 +24,7 @@ describe("supplied reference header and footer contract", () => {
     expect(source).toContain('label: "HOME"');
     expect(source).toContain('label: "OUR STAY"');
     expect(source).not.toContain('label: "REVIEWS"');
-    expect(source).toContain('const planHref = isHomepage ? "#plan" : "/#plan"');
+    expect(source).toContain('const planHref = isHomepage ? "contact" : "/contact"');
     expect(source).toContain("PLAN YOUR TRIP");
     expect(source).toContain("!isHomepage ? <a href={phoneHref}");
     expect(source).toContain("rounded-full");

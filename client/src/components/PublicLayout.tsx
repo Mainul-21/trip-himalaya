@@ -41,7 +41,7 @@ export function PublicHeader({ profile = fallbackAgencyProfile }: { profile?: Ag
   const isHomepage = location.split("?")[0] === "/";
   const phoneHref = `tel:${profile.phone.replace(/[^+0-9]/g, "")}`;
   const whatsappNumber = profile.whatsapp.replace(/\D/g, "");
-  const planHref = isHomepage ? "#plan" : "/#plan";
+  const planHref = isHomepage ? "contact" : "contact";
   return <header className={`relative z-50 isolate ${isHomepage ? "" : "bg-primary"}`}>
     <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4">
       <Brand light profile={profile} />
@@ -66,7 +66,7 @@ export default function PublicLayout({ children, showHeader = true }: { children
   const phoneHref = `tel:${profile.phone.replace(/[^+0-9]/g, "")}`;
   const [location] = useLocation();
   const isHomepage = location.split("?")[0] === "/";
-  const planHref = isHomepage ? "#plan" : "/#plan";
+  const planHref = isHomepage ? "contact" : "/contact";
   const topTreks = allTours.filter(tour => tour.category.toLowerCase().includes("trek")).slice(0, 5);
   const topTours = allTours.filter(tour => !tour.category.toLowerCase().includes("trek")).slice(0, 5);
 
