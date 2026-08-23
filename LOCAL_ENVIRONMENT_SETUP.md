@@ -45,12 +45,14 @@ Generate a secure `JWT_SECRET` on your PC with Node.js:
 node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
 ```
 
-Paste the generated value after `JWT_SECRET=`. Then run the database migration and start the website:
+Paste the generated value after `JWT_SECRET=`. For a **new, empty database only**, run the initial schema setup and start the website:
 
 ```powershell
 pnpm db:push
 pnpm dev
 ```
+
+If the database already contains Trip Himalaya tours, agency settings, bookings, reviews, or administrator records, run `pnpm dev` without `pnpm db:push`. Do not use `db:push` to clear an Agency Profile warning; verify that the database URL targets the intended database and use only the reviewed additive recovery instructions if a separately maintained schema is genuinely older.
 
 When the site opens locally, go to `/admin/setup` to create the first principal administrator account. This account uses the email-and-password administrator flow built into Trip Himalaya; no platform-owner identity or setup key is needed for this local one-time setup.
 

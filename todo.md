@@ -409,3 +409,5 @@
 - [ ] Remove the obsolete local Agency Profile “missing newer profile fields” warning when the current API already reports a schema-ready profile, without rerunning `db:push` or modifying business data.
 - [x] Replace the unsafe Agency Profile `db:push` remediation text with an accurate non-destructive hosting-schema diagnosis and regression test.
 - [ ] Align Hostinger's private `DATABASE_URL` with the intended schema-ready TiDB database (or apply only reviewed additive migration to its separate database), then confirm the live Agency Profile API returns both readiness flags as false.
+- [x] Replace the technical Agency Profile schema fallback with a concise administrator-facing message while retaining the safe retry and preventing edits against an incompatible schema.
+- [x] Remove remaining local troubleshooting instructions that recommend `db:push` for an existing Agency Profile schema warning.

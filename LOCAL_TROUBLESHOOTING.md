@@ -47,15 +47,9 @@ If a column already exists, do not add it again. Compare its type and nullabilit
 
 ## Agency Profile stays on “Loading public agency profile…”
 
-If the browser console shows a failed `agency.get` query selecting `exploreTitle`, `exploreIntro`, or `travelStylesJson`, the local `agencyProfiles` table is from an older project version. The current editor now shows a recovery message rather than retrying the failed request repeatedly.
+If the browser console shows a failed `agency.get` query selecting `exploreTitle`, `exploreIntro`, or `travelStylesJson`, the local `agencyProfiles` table may be from an older project version. The current editor protects saved data by locking changes rather than retrying the failed request repeatedly.
 
-From the project folder, run:
-
-```powershell
-npm run db:push
-```
-
-If Drizzle asks whether to truncate data, choose the non-destructive option. After it finishes, stop the server with `Ctrl + C` and run `npm run dev` again. Do not delete the `agencyProfiles` row: the migration only adds the newer Explore Himachal fields and preserves existing contact, logo, and social-profile settings.
+Do **not** use `npm run db:push` or `pnpm db:push` as a fix for an existing profile warning. First confirm that your local `DATABASE_URL` targets the intended database, then stop the server with `Ctrl + C` and run `npm run dev` again. If the same warning remains, inspect the missing columns in the TiDB SQL Editor and apply only the reviewed additive statements in `LOCAL_AGENCY_PROFILE_RECOVERY.md`. Never truncate the table, delete the `agencyProfiles` row, or change its primary key.
 
 ## Distinguish an empty catalogue from an unavailable API
 
