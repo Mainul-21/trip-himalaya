@@ -13,6 +13,7 @@ const Contact = lazy(() => import("./pages/Contact"));
 const Home = lazy(() => import("./pages/Home"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const PublicPage = lazy(() => import("./pages/PublicPage"));
+const PrivacyPolicy = lazy(() => import("./pages/PrivacyPolicy"));
 const SearchPage = lazy(() => import("./pages/SearchPage"));
 const TourBooking = lazy(() => import("./pages/TourBooking"));
 const TourDetail = lazy(() => import("./pages/TourDetail"));
@@ -29,6 +30,7 @@ function Router() {
     <Route path="/experiences"><PublicPage kind="experiences" /></Route>
     <Route path="/about"><PublicPage kind="about" /></Route>
     <Route path="/contact" component={Contact} />
+    <Route path="/privacy" component={PrivacyPolicy} />
     <Route path="/search" component={SearchPage} />
     <Route path="/admin/setup" component={AdminSetup} />
     <Route path="/admin/login" component={AdminLogin} />

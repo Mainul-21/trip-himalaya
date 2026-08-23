@@ -427,3 +427,8 @@
 - [x] Create a beginner-safe live TiDB recovery guide with a column inspection query, one-at-a-time additive SQL statements, and redeploy verification steps.
 - [x] Replace the technical Agency Profile schema fallback with a concise administrator-facing message while retaining the safe retry and preventing edits against an incompatible schema.
 - [x] Remove remaining local troubleshooting instructions that recommend `db:push` for an existing Agency Profile schema warning.
+
+- [x] Reduce the existing public header height and logo footprint while preserving the supplied logo, verified utility bar, navigation, Plan Your Trip action, and responsive mobile menu.
+- [x] Further reduce the public header footprint across desktop and mobile while preserving readable navigation and accessible touch controls.
+- [x] Add the owner-provided Privacy Policy content and verified contact details to the existing public privacy page without changing unrelated pages.
+- [x] Increase the public header and supplied logo to a balanced, more visible size while keeping the utility bar and responsive navigation intact.
