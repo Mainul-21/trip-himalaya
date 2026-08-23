@@ -71,6 +71,8 @@ If the `agencyProfiles` table itself is not found, **stop**. That means Hostinge
 
 Compare the returned column names with the table below. For every name that is **not** in the result, copy and run its SQL statement **one line at a time**. If TiDB says `Duplicate column name`, do not rerun that line; move to the next missing field.
 
+> **If the Step 2 result says `empty set`:** all 24 listed profile columns are missing. Use the copy-paste-ready file `agencyProfiles_add_missing_columns.sql` in this project. It contains exactly the 24 additive statements below and no destructive commands. Run the file as a script in the TiDB Cloud SQL Editor only after confirming `SELECT DATABASE()` returns `trip_himalaya`.
+
 | Missing column | Run only this statement |
 | --- | --- |
 | `reviewSectionTitle` | `ALTER TABLE \`agencyProfiles\` ADD COLUMN \`reviewSectionTitle\` varchar(160) NULL;` |
