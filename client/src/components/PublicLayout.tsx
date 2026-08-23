@@ -26,7 +26,7 @@ export function Brand({ light = false, profile = fallbackAgencyProfile, referenc
   const textClass = light ? "text-primary-foreground" : "text-primary";
   return <Link href="/" className={`flex items-center gap-3 ${textClass}`} aria-label={`${profile.brandName} home`}>
     <img src={resolveImageUrl(profile.logoUrl)} alt={`${profile.brandName} logo`} width={48} height={48} className="h-11 w-11 object-contain" />
-    <span className="leading-none"><span className="block font-display text-xl font-bold tracking-wide">{words[0] || "TRIP"}</span><span className="block font-display text-xl font-bold tracking-wide">{words.slice(1).join(" ") || "HIMALAYA"}</span>{profile.tagline && <span className={`mt-1 block text-[10px] ${light ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{profile.tagline}</span>}</span>
+    <span className="leading-none"><span className="brand-wordmark block text-[1.35rem] sm:text-[1.45rem]">{words[0] || "TRIP"}</span><span className="brand-wordmark block text-[1.35rem] sm:text-[1.45rem]">{words.slice(1).join(" ") || "HIMALAYA"}</span>{profile.tagline && <span className={`mt-1 block text-[10px] ${light ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{profile.tagline}</span>}</span>
   </Link>;
 }
 
@@ -42,7 +42,7 @@ export function PublicHeader({ profile = fallbackAgencyProfile }: { profile?: Ag
   const phoneHref = `tel:${profile.phone.replace(/[^+0-9]/g, "")}`;
   const whatsappNumber = profile.whatsapp.replace(/\D/g, "");
   const planHref = isHomepage ? "contact" : "contact";
-  return <header className={`relative z-50 isolate ${isHomepage ? "" : "bg-primary"}`}>
+  return <header className="relative z-50 isolate border-b border-primary-foreground/10 bg-[#0f172a]/[.97] shadow-[0_8px_24px_rgba(2,6,23,.18)] backdrop-blur-md">
     <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4">
       <Brand light profile={profile} />
       <nav className="hidden items-center gap-7 lg:flex" aria-label="Main navigation">

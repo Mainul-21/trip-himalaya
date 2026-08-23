@@ -206,6 +206,9 @@
 
 # Current Worklog
 
+- [x] Refine the public header “Trip Himalaya” brand font while preserving the existing logo, navigation, responsive sizing, and approved header layout.
+- [x] Replace the transparent public header with an accessible solid dark-navy surface and subtle blur while retaining the refined wordmark and existing navigation layout.
+
 - [x] Reproduce and document the Hostinger live-domain dynamic-import failure, confirming `/tours` requested a missing hashed `Tours-*.js` asset while no business data was changed.
 - [x] Add a one-time, loop-safe client recovery path for stale or missing Vite route chunks and present a clear retry message if recovery cannot succeed.
 - [x] Validate the recovery behavior with focused tests, TypeScript, production build, and local browser route checks.
@@ -411,6 +414,8 @@
 - [ ] Align Hostinger's private `DATABASE_URL` with the intended schema-ready TiDB database (or apply only reviewed additive migration to its separate database), then confirm the live Agency Profile API returns both readiness flags as false.
 - [ ] Prepare the exact reviewed additive TiDB SQL recovery for the live Agency Profile schema mismatch and verify the live API after the owner executes it in TiDB Cloud.
 - [x] Confirm the TiDB inspection returned an empty set and prepare the exact 24-column additive SQL script for that verified state.
+- [x] Confirm the post-recovery TiDB inspection reports all 24 required Agency Profile columns.
+- [ ] Restart/redeploy the live Hostinger server after the complete column verification, then confirm its Agency Profile API returns `schemaNeedsUpdate: false`.
 - [x] Create a beginner-safe live TiDB recovery guide with a column inspection query, one-at-a-time additive SQL statements, and redeploy verification steps.
 - [x] Replace the technical Agency Profile schema fallback with a concise administrator-facing message while retaining the safe retry and preventing edits against an incompatible schema.
 - [x] Remove remaining local troubleshooting instructions that recommend `db:push` for an existing Agency Profile schema warning.

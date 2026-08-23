@@ -59,6 +59,17 @@ describe("premium public experience contract", () => {
     expect(layout).toContain("WhatsAppIcon");
   });
 
+  it("uses a refined serif Trip Himalaya wordmark without changing the shared header structure", () => {
+    expect(indexHtml).toContain("DM+Serif+Display");
+    expect(styles).toContain(".brand-wordmark");
+    expect(layout).toContain('className="brand-wordmark block text-[1.35rem] sm:text-[1.45rem]"');
+    expect(layout).toContain('width={48} height={48}');
+    expect(layout).toContain('bg-[#0f172a]/[.97]');
+    expect(layout).toContain("backdrop-blur-md");
+    expect(layout).toContain("border-b border-primary-foreground/10");
+    expect(layout).toContain("PLAN YOUR TRIP");
+  });
+
   it("keeps the hero prioritized while deferred cards use optimized asynchronous image delivery", () => {
     expect(home).toContain('fetchPriority="high"');
     expect(home).toContain('loading="lazy" decoding="async"');
