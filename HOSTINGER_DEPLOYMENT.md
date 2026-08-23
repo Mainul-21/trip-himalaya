@@ -42,6 +42,20 @@ Create the variables listed in [`HOSTINGER_ENV.example`](./HOSTINGER_ENV.example
 6. Deploy. For server-side Node apps, Hostinger creates the public routing bridge automatically; do not replace its generated `public_html/.htaccess` with unrelated rules.
 7. Test `/`, `/admin`, `/admin/login`, `/tours`, `/api/health`, and `/api/trpc` from the deployed domain.
 
+### If a page says “Failed to fetch dynamically imported module”
+
+> This error means the browser has been given a JavaScript route file name such as `Tours-xxxx.js`, but that exact file is not available from the live Hostinger `assets/` directory. It is a **partial deployment or CDN-cache mismatch**. Do **not** run `pnpm db:push`, change the database, or delete tour/admin data for this error.
+
+Follow these steps in order:
+
+1. In hPanel, open **Websites → triphimalya.com → Deployments**. Confirm the selected GitHub branch is `main` and trigger **Settings and redeploy** (or **Redeploy**) from the current deployment. Wait for a successful build; do not interrupt it.
+2. Keep the Node.js configuration in the table above. Hostinger must build and deploy the **entire current project**, then start `dist/index.js`; do not upload a single JavaScript chunk or mix files from different builds.
+3. If Hostinger CDN/cache is enabled, use its **Clear cache** or **Purge cache** control after the new deployment becomes active. The exact label may differ by hPanel plan. Do not manually delete live files unless Hostinger provides a backup or clean-redeploy flow.
+4. Open a new incognito/private browser window and check `/`, `/tours`, and `/admin/login`. This avoids a browser tab using the previous build’s asset references.
+5. If the same route error appears after **two complete successful redeployments**, open a Hostinger support request. Include only the affected URL and missing asset path, for example `/assets/Tours-xxxx.js`; do not share database URLs, passwords, API keys, or session data.
+
+For the static-only fallback, upload the **complete contents** of one `dist/public` build—including `index.html`, `.htaccess`, and every file under `assets/`—in one deployment operation. A static-only upload still cannot power the protected administrator API, so the full Node.js deployment remains the correct production option.
+
 ### pnpm clean-install policy
 
 The repository uses one package-management contract: **pnpm 11.22.0**, the root `pnpm-lock.yaml`, and the committed `pnpm-workspace.yaml`. A frozen pnpm install was validated with the full test suite, TypeScript compilation, and the production build. The workspace explicitly permits the native binaries required by esbuild and Tailwind; do not replace this with an ad-hoc install or runtime permission workaround.

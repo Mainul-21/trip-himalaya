@@ -206,6 +206,11 @@
 
 # Current Worklog
 
+- [x] Reproduce and document the Hostinger live-domain dynamic-import failure, confirming `/tours` requested a missing hashed `Tours-*.js` asset while no business data was changed.
+- [x] Add a one-time, loop-safe client recovery path for stale or missing Vite route chunks and present a clear retry message if recovery cannot succeed.
+- [x] Validate the recovery behavior with focused tests, TypeScript, production build, and local browser route checks.
+- [ ] Provide the owner with exact Hostinger clean-redeploy and CDN/cache-purge steps, then recheck the custom domain after the owner-triggered deployment.
+
 - [ ] Stabilize localhost tour details, images, and API-backed content when the owner’s TiDB connection or managed storage is intermittent.
 - [x] Add clear local diagnostics and recovery guidance for database timeout and unavailable API states.
 - [x] Add administrator-managed multi-photo tour galleries with automatic card rotation and previous/next controls.
@@ -396,3 +401,8 @@
 - [x] Audit the current agencyProfiles database columns, Drizzle schema, and migrations to identify only missing additive profile fields.
 - [x] Apply verified non-destructive agencyProfiles additions without altering existing agency, tour, booking, enquiry, review, or administrator records.
 - [x] Restart services and verify the protected agency profile editor no longer blocks on an outdated local schema.
+- [x] Inspect the reported live-domain error on triphimalya.com, including response status, redirects, certificate, DNS, and deployed asset behavior.
+- [ ] Apply only verified safe corrections to the responsible deployment or configuration layer without changing site content or database data.
+- [ ] Verify the live domain’s homepage, public routes, administrator sign-in entry, HTTPS behavior, and required deployment configuration after the fix.
+- [ ] Reconcile the live host’s stale or incomplete administrator JavaScript assets so `/admin/login` can load its current compiled chunk without a dynamic-import error.
+- [ ] Verify the deployed custom domain serves a matching build manifest and complete asset set before retesting administrator sign-in.
