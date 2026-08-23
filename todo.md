@@ -434,3 +434,5 @@
 - [x] Increase the public header and supplied logo to a balanced, more visible size while keeping the utility bar and responsive navigation intact.
 - [x] Slightly enlarge the verified contact text and icons in the public header utility bar without changing its contact details or responsive behavior.
 - [x] Align the signed-in-only Admin Dashboard header link with the public navigation row without changing its access-control visibility.
+- [x] Standardize lower-page typography using the established heading treatment and a consistent modern body font while preserving the approved hero and upper layout.
+- [x] Add a responsive View All Packages action below the existing packages list with matching visual states and tours navigation.

@@ -60,7 +60,7 @@ describe("premium public experience contract", () => {
   });
 
   it("uses the supplied complete Trip Himalaya header logo with an authentic contact-only utility bar", () => {
-    expect(indexHtml).toContain("Montserrat:wght@600;700");
+    expect(indexHtml).toContain("Montserrat:wght@500;600;700;800");
     expect(styles).toContain(".brand-wordmark");
     expect(styles).toContain('font-family: "Montserrat", "Poppins", sans-serif');
     expect(styles).toContain(".brand-tagline");

@@ -89,7 +89,7 @@ export default function Home() {
 
   return <PublicLayout showHeader={false}>
     <Seo title="Trip Himalaya | Best Tour Agency in Dharamshala, India" description="Plan Dharamshala tour packages, Himachal Pradesh treks and private Himalayan holidays with Trip Himalaya’s practical local guidance." structuredData={agencySchema} />
-    <section className="relative">
+    <section className="homepage-hero relative">
       <img src={getImageVariant(activeHero.src, "hero")} alt="Himalayan valley with camping tents in Himachal Pradesh" width={1920} height={1080} className="absolute inset-0 h-full w-full object-cover" fetchPriority="high" loading="eager" decoding="async" sizes="100vw" />
       <div className="absolute inset-0" style={{ backgroundImage: "var(--gradient-hero-overlay)" }} />
       <PublicHeader profile={agency} />

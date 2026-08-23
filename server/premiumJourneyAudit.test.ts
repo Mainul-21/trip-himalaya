@@ -8,6 +8,7 @@ const tours = readFileSync(resolve(projectRoot, "client/src/pages/Tours.tsx"), "
 const search = readFileSync(resolve(projectRoot, "client/src/pages/SearchPage.tsx"), "utf8");
 const detail = readFileSync(resolve(projectRoot, "client/src/pages/TourDetail.tsx"), "utf8");
 const card = readFileSync(resolve(projectRoot, "client/src/components/TourCard.tsx"), "utf8");
+const styles = readFileSync(resolve(projectRoot, "client/src/index.css"), "utf8");
 
 describe("premium journey presentation", () => {
   it("keeps the homepage grounded and exposes all requested travel styles", () => {
@@ -23,6 +24,8 @@ describe("premium journey presentation", () => {
     expect(home).toContain('scrollToSection("packages")');
     expect(home).toContain('scrollToSection("plan")');
     expect(home).toContain('id="packages" className="scroll-mt-20');
+    expect(home).toContain("VIEW ALL PACKAGES");
+    expect(home).toContain('Link href="/tours"');
     expect(home).toContain('id="plan" className="scroll-mt-20');
     expect(home).toContain("WhatsApp Number");
     expect(home).toContain('placeholder="Date"');
@@ -43,6 +46,13 @@ describe("premium journey presentation", () => {
     for (const label of ["TREKKING", "SPIRITUAL TOURS", "CAMPING", "VILLAGE EXPERIENCES", "HIMACHAL TOURS", "CUSTOM TOURS"]) {
       expect(home).toContain(`title: "${label}"`);
     }
+  });
+
+  it("uses the shared Montserrat heading system below the approved homepage hero", () => {
+    expect(styles).toContain('--font-display: "Montserrat", "Poppins", sans-serif;');
+    expect(styles).toContain('body { background-color: var(--color-background); color: var(--color-foreground); font-family: "Inter", sans-serif; }');
+    expect(styles).toContain('.homepage-hero .font-display { font-family: "Oswald", sans-serif; }');
+    expect(home).toContain('<section className="homepage-hero relative">');
   });
 
   it("keeps tour discovery helpful without exposing local implementation details", () => {
