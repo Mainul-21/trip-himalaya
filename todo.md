@@ -206,6 +206,8 @@
 
 # Current Worklog
 
+- [x] Reduce the public header container and full-logo footprint while preserving readable navigation, utility details, and responsive mobile behavior.
+
 - [x] Replace the hand-built public header wordmark with the owner-supplied complete Trip Himalaya logo image and add a responsive reference-aligned utility bar using only verified agency contact details and authentic review data.
 
 - [x] Restyle the public header to the supplied white `#FFFFFF`, deep Himalayan navy `#0D2C5B`, and orange `#F56600` direction, with a bold two-line Trip Himalaya wordmark, orange tagline, and responsive navigation while retaining authentic-only review claims.

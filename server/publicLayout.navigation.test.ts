@@ -20,6 +20,9 @@ describe("supplied reference header and footer contract", () => {
     expect(source).toContain("flex items-center gap-2 sm:gap-3 lg:contents");
     expect(source).toContain('hidden border-b border-white/10 bg-[#0D2C5B] text-white lg:block');
     expect(source).toContain("Based in Himachal Pradesh");
+    expect(source).toContain("lg:min-h-[6.25rem]");
+    expect(source).toContain("lg:w-[232px]");
+    expect(source).toContain("max-h-[calc(100dvh-4.75rem)]");
   });
 
   it("keeps essential navigation, a homepage Plan Your Trip action, and role-aware dashboard access", () => {

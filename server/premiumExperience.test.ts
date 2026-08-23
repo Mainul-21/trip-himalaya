@@ -66,8 +66,8 @@ describe("premium public experience contract", () => {
     expect(styles).toContain(".brand-tagline");
     expect(layout).toContain('const SUPPLIED_COMPLETE_HEADER_LOGO = "/manus-storage/trip-himalaya-complete-logo_9a359425.jpg"');
     expect(layout).toContain('src={SUPPLIED_COMPLETE_HEADER_LOGO}');
-    expect(layout).toContain('width={288} height={105}');
-    expect(layout).toContain('lg:w-[288px]');
+    expect(layout).toContain('width={232} height={85}');
+    expect(layout).toContain('lg:w-[232px]');
     expect(layout).toContain("Based in Himachal Pradesh");
     expect(layout).toContain("profile.phone");
     expect(layout).toContain("profile.email");
