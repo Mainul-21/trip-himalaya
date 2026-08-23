@@ -38,6 +38,7 @@ describe("supplied reference header and footer contract", () => {
     expect(source).toContain("rounded-full");
     expect(source).toContain('user ? <Link href="/admin"');
     expect(source).toContain("ADMIN DASHBOARD");
+    expect(source).toContain("flex shrink-0 items-center whitespace-nowrap border-b-2 border-transparent pb-1");
   });
 
   it("keeps the owner-supplied complete header logo, contact details, social hooks, footer geometry, and official WhatsApp glyph", () => {
