@@ -218,7 +218,7 @@
 - [x] Reproduce and document the Hostinger live-domain dynamic-import failure, confirming `/tours` requested a missing hashed `Tours-*.js` asset while no business data was changed.
 - [x] Add a one-time, loop-safe client recovery path for stale or missing Vite route chunks and present a clear retry message if recovery cannot succeed.
 - [x] Validate the recovery behavior with focused tests, TypeScript, production build, and local browser route checks.
-- [ ] Provide the owner with exact Hostinger clean-redeploy and CDN/cache-purge steps, then recheck the custom domain after the owner-triggered deployment.
+- [x] Provide the owner with exact Hostinger clean-redeploy and CDN/cache-purge steps, then recheck the custom domain after the owner-triggered deployment.
 
 - [ ] Stabilize localhost tour details, images, and API-backed content when the owner’s TiDB connection or managed storage is intermittent.
 - [x] Add clear local diagnostics and recovery guidance for database timeout and unavailable API states.
