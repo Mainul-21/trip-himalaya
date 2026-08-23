@@ -61,3 +61,7 @@ A read-only check of the local `tours.list` tRPC endpoint returned **HTTP 200** 
 ## Local Agency Profile health verification — 23 August 2026
 
 A read-only request to the local public `agency.get` endpoint returned **HTTP 200** with the stored public profile data, including Experiences and About Our Story fields. Its response reports both `schemaNeedsUpdate: false` and `databaseNeedsAttention: false`. The earlier local Agency Profile 500/missing-column warning is therefore not present in the current environment. This verification did not save profile data, run migrations, inspect secrets, or alter any database records; authenticated administrator save-path QA remains pending an owner-signed-in session.
+
+## Local public imagery verification — 23 August 2026
+
+The configured managed-storage origin returned **HTTP 200** image responses for the current homepage hero, travel-style category, and optimized card-image references. A fresh homepage render displayed its Himalayan hero image, and the `Triund Sunrise Trek` public detail page displayed its tour hero image. The earlier blank render was not reproducible after the fresh image-request check, so no asset URL, tour record, or image storage object was changed.

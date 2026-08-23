@@ -202,7 +202,7 @@
 - [x] Apply the supplied Trip Himalaya logo across public brand placements using deployment-safe image delivery.
 - [x] Add administrator-editable public contact details and social-profile links to the website footer.
 - [x] Refine Why Choose Trip Himalaya with original local-expertise, safety, value, support, and responsible-travel themes inspired by the supplied visual reference.
-- [ ] Stabilize localhost tour details, images, and API-backed content when the owner’s TiDB connection or managed storage is intermittent.
+- [x] Stabilize localhost tour details, images, and API-backed content when the owner’s TiDB connection or managed storage is intermittent.
 
 # Current Worklog
 
@@ -222,7 +222,7 @@
 - [x] Validate the recovery behavior with focused tests, TypeScript, production build, and local browser route checks.
 - [x] Provide the owner with exact Hostinger clean-redeploy and CDN/cache-purge steps, then recheck the custom domain after the owner-triggered deployment.
 
-- [ ] Stabilize localhost tour details, images, and API-backed content when the owner’s TiDB connection or managed storage is intermittent.
+- [x] Stabilize localhost tour details, images, and API-backed content when the owner’s TiDB connection or managed storage is intermittent.
 - [x] Add clear local diagnostics and recovery guidance for database timeout and unavailable API states.
 - [x] Add administrator-managed multi-photo tour galleries with automatic card rotation and previous/next controls.
 - [x] Make the site logo editable from the administrator portal.
