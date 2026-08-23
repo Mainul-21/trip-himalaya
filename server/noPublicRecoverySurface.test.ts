@@ -14,7 +14,6 @@ describe("public administrator access surface", () => {
 
     expect(app).toContain('path="/admin/login"');
     expect(login).toContain("Sign in securely");
-    expect(login).toContain("There is no public registration, password-reset path, or social sign-in.");
     expect(app).not.toContain("/admin/recover");
     expect(login).not.toContain("/admin/recover");
     expect(router).not.toContain("recoverPrincipalPassword");

@@ -70,7 +70,7 @@ describe("premium public experience contract", () => {
     expect(home).toContain('"@type": "TravelAgency"');
     expect(home).toContain('name: "Dharamshala"');
     expect(home).toContain('name: "Himachal Pradesh"');
-    expect(home).toContain("Best Tour Agency in Dharamshala, India | Trip Himalaya");
+    expect(home).toContain("Trip Himalaya | Best Tour Agency in Dharamshala, India");
     expect(seo).toContain('canonical.href = `${window.location.origin}${window.location.pathname}`');
     expect(seo).toContain('application/ld+json');
     expect(indexHtml).toContain("Dharamshala tour packages");

@@ -42,8 +42,6 @@ export default function AdminLogin() {
         </div>
         <Button disabled={login.isPending} className="mt-7 h-12 w-full gap-2 rounded-xl bg-[#e9781c] text-xs font-extrabold uppercase tracking-[.1em] hover:bg-[#d86b12]"><LockKeyhole className="size-4" />{login.isPending ? "Checking access…" : "Sign in securely"}</Button>
         {login.error && <p className="mt-4 text-sm text-red-600">{login.error.message}</p>}
-        <p className="mt-5 text-center text-xs leading-5 text-slate-500">There is no public registration, password-reset path, or social sign-in.</p>
-      </form>
-    </div>
+        
   </main>;
 }
