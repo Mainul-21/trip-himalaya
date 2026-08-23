@@ -206,6 +206,8 @@
 
 # Current Worklog
 
+- [x] Update the existing About Us page with the owner-provided Dharamshala agency introduction, core offerings, and verified contact details without changing unrelated pages.
+
 - [x] Reduce the public header container and full-logo footprint while preserving readable navigation, utility details, and responsive mobile behavior.
 
 - [x] Replace the hand-built public header wordmark with the owner-supplied complete Trip Himalaya logo image and add a responsive reference-aligned utility bar using only verified agency contact details and authentic review data.

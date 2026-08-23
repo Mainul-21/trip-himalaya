@@ -7,15 +7,15 @@ export type AboutPoint = {
 };
 
 export const aboutServices: AboutPoint[] = [
-  { icon: Mountain, title: "Trekking journeys", copy: "Thoughtful routes, practical preparation, and a pace that fits your group." },
-  { icon: Compass, title: "Spiritual and Himachal tours", copy: "Meaningful visits and mountain days planned with local context and breathing room." },
-  { icon: MapPinned, title: "Camping and village experiences", copy: "Time outdoors, local landscapes, and stays that help you see more than a checklist." },
-  { icon: UsersRound, title: "Custom tours", copy: "A flexible plan for families, friends, couples, and travellers with a clear idea of their own." },
+  { icon: Mountain, title: "Guided treks", copy: "Triund, Kareri Lake, Thatharna, and custom mountain routes shaped around your group and pace." },
+  { icon: MapPinned, title: "Cultural & sightseeing tours", copy: "Dharamshala monasteries, local heritage, and regional escapes with meaningful local context." },
+  { icon: Compass, title: "Adventure activities", copy: "Bir Billing paragliding and custom expedition logistics for travellers seeking an active mountain experience." },
+  { icon: UsersRound, title: "Stays & custom travel planning", copy: "Handpicked stays paired with personalised trip guidance for solo travellers, families, and groups." },
 ];
 
 export const aboutReasons: AboutPoint[] = [
-  { icon: Compass, title: "Local Himalayan understanding", copy: "Trip plans are shaped around Dharamshala, Kangra, and Himachal conditions—not copied from a template." },
-  { icon: ShieldCheck, title: "Safety and clear details", copy: "We explain routes, stays, timing, inclusions, and practical preparation before you commit." },
-  { icon: HeartHandshake, title: "Comfort with honest pricing", copy: "A well-paced journey, sensible choices, and transparent conversations about what your plan includes." },
-  { icon: UsersRound, title: "Personal support", copy: "From the first conversation to the journey itself, you can speak with the team when you need help." },
+  { icon: Compass, title: "Local expertise", copy: "Based directly in Dharamshala, our deep local knowledge helps create safe, authentic, and hassle-free journeys across Himachal Pradesh." },
+  { icon: ShieldCheck, title: "Tailored itineraries", copy: "From the Thatharna Trek and Kareri Lake Trek to the Triund Sunrise Trek, we customise plans around your schedule and travel pace." },
+  { icon: HeartHandshake, title: "Diverse experiences", copy: "Choose peaceful monastery visits and Dharamshala culture tours, thrilling paragliding in Bir Billing, or a balanced mix of both." },
+  { icon: UsersRound, title: "End-to-end assistance", copy: "Comfortable stays, dedicated local trek guides, and practical travel planning let you focus on enjoying the mountains." },
 ];

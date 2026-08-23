@@ -7,20 +7,21 @@ const aboutPage = readFileSync(resolve(projectRoot, "client/src/pages/PublicPage
 const aboutContent = readFileSync(resolve(projectRoot, "client/src/lib/aboutContent.ts"), "utf8");
 
 describe("Trip Himalaya About Us page", () => {
-  it("keeps the existing About route personalized to the confirmed business", () => {
+  it("keeps the existing About route personalized to the owner-provided Dharamshala business copy", () => {
     expect(aboutPage).toContain("About Trip Himalaya");
-    expect(aboutPage).toContain('aboutStoryTitle || "Our story"');
-    expect(aboutPage).not.toContain("A mountain journey that started in Dharamshala.");
-    expect(aboutPage).toContain("founded in 2020 by Ravi Kant");
-    expect(aboutPage).not.toContain("A mountain journey that started in Dharamshala.");
-    expect(aboutPage).toContain("founded in 2020 by Ravi Kant");
-    expect(aboutPage).toContain("Meet the founder");
-    expect(aboutPage).toContain("Ravi Kant founded Trip Himalaya");
+    expect(aboutPage).toContain("isLegacyStory");
+    expect(aboutPage).toContain("Welcome to Trip Himalaya");
+    expect(aboutPage).toContain("heart of Dharamshala, Himachal Pradesh");
+    expect(aboutPage).toContain("Our core offerings");
+    expect(aboutPage).toContain("Why travel with us");
+    expect(aboutPage).toContain("Dharamshala, Himachal Pradesh, India");
+    expect(aboutPage).toContain("+91 82196 28359");
+    expect(aboutPage).toContain("triphimalayainfo@gmail.com");
     expect(aboutPage).toContain("Dhauladhar mountains near Dharamshala");
   });
 
-  it("covers the confirmed services and avoids unsupported achievement claims", () => {
-    for (const phrase of ["Trekking journeys", "Spiritual and Himachal tours", "Camping and village experiences", "Custom tours", "Safety and clear details", "Comfort with honest pricing", "Personal support"]) {
+  it("covers the confirmed trekking, cultural, adventure, and planning details without unsupported achievement claims", () => {
+    for (const phrase of ["Triund, Kareri Lake, Thatharna", "Dharamshala monasteries", "Bir Billing paragliding", "Local expertise", "Tailored itineraries", "Diverse experiences", "End-to-end assistance"]) {
       expect(aboutContent).toContain(phrase);
     }
     for (const unsupported of ["Google rating", "customers", "awards", "certification", "offices"]) {
