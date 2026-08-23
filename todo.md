@@ -206,6 +206,8 @@
 
 # Current Worklog
 
+- [x] Replace the hand-built public header wordmark with the owner-supplied complete Trip Himalaya logo image and add a responsive reference-aligned utility bar using only verified agency contact details and authentic review data.
+
 - [x] Restyle the public header to the supplied white `#FFFFFF`, deep Himalayan navy `#0D2C5B`, and orange `#F56600` direction, with a bold two-line Trip Himalaya wordmark, orange tagline, and responsive navigation while retaining authentic-only review claims.
 
 - [x] Refine the public header “Trip Himalaya” brand font while preserving the existing logo, navigation, responsive sizing, and approved header layout.
@@ -407,7 +409,7 @@
 - [x] Apply verified non-destructive agencyProfiles additions without altering existing agency, tour, booking, enquiry, review, or administrator records.
 - [x] Restart services and verify the protected agency profile editor no longer blocks on an outdated local schema.
 - [x] Inspect the reported live-domain error on triphimalya.com, including response status, redirects, certificate, DNS, and deployed asset behavior.
-- [ ] Apply only verified safe corrections to the responsible deployment or configuration layer without changing site content or database data.
+- [x] Apply only verified safe corrections to the responsible deployment or configuration layer without changing site content or database data.
 - [x] Verify the live domain’s homepage, public routes, administrator sign-in entry, HTTPS behavior, and required deployment configuration after the fix.
 - [x] Reconcile the live host’s stale or incomplete administrator JavaScript assets so `/admin/login` can load its current compiled chunk without a dynamic-import error.
 - [x] Verify the deployed custom domain serves a matching build manifest and complete asset set before retesting administrator sign-in.

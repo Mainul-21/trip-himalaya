@@ -18,6 +18,8 @@ describe("supplied reference header and footer contract", () => {
     expect(source).not.toContain("MoreVertical");
     expect(styles).toContain('@import "tailwindcss";');
     expect(source).toContain("flex items-center gap-2 sm:gap-3 lg:contents");
+    expect(source).toContain('hidden border-b border-white/10 bg-[#0D2C5B] text-white lg:block');
+    expect(source).toContain("Based in Himachal Pradesh");
   });
 
   it("keeps essential navigation, a homepage Plan Your Trip action, and role-aware dashboard access", () => {
@@ -32,8 +34,10 @@ describe("supplied reference header and footer contract", () => {
     expect(source).toContain("ADMIN DASHBOARD");
   });
 
-  it("keeps the supplied managed logo, contact details, social hooks, footer geometry, and official WhatsApp glyph", () => {
+  it("keeps the owner-supplied complete header logo, contact details, social hooks, footer geometry, and official WhatsApp glyph", () => {
     expect(source).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
+    expect(source).toContain("SUPPLIED_COMPLETE_HEADER_LOGO");
+    expect(source).toContain("trip-himalaya-complete-logo_9a359425.jpg");
     expect(source).toContain("resolveImageUrl(profile.logoUrl)");
     expect(source).toContain("trpc.agency.get.useQuery");
     expect(source).toContain("CONTACT US");

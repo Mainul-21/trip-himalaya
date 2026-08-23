@@ -18,6 +18,7 @@ const navigation = [
 const fallbackAgencyProfile = {
   brandName: "Trip Himalaya", tagline: "Explore. Experience. Live.", logoUrl: OFFICIAL_TRIP_HIMALAYA_LOGO, phone: "+918219628359", whatsapp: "918219628359", email: "hello@triphimalaya.in", address: "Dharamshala, Himachal Pradesh, India", instagramUrl: "", facebookUrl: "", youtubeUrl: "", googleMapsUrl: "",
 };
+const SUPPLIED_COMPLETE_HEADER_LOGO = "/manus-storage/trip-himalaya-complete-logo_9a359425.jpg";
 
 type AgencyProfile = typeof fallbackAgencyProfile;
 
@@ -44,8 +45,14 @@ export function PublicHeader({ profile = fallbackAgencyProfile }: { profile?: Ag
   const whatsappNumber = profile.whatsapp.replace(/\D/g, "");
   const planHref = isHomepage ? "contact" : "contact";
   return <header className="relative z-50 isolate border-b border-[#0D2C5B]/10 bg-white/95 shadow-[0_8px_24px_rgba(13,44,91,.1)] backdrop-blur-xl">
+    <div className="hidden border-b border-white/10 bg-[#0D2C5B] text-white lg:block">
+      <div className="mx-auto flex h-11 max-w-7xl items-center justify-between gap-6 px-7 text-[11px] font-semibold tracking-wide">
+        <div className="flex items-center gap-7 text-white/90"><span className="flex items-center gap-2"><MapPin size={14} className="text-[#F56600]" /> Based in Himachal Pradesh</span><a href={phoneHref} className="flex items-center gap-2 transition-colors hover:text-[#F56600]"><Phone size={13} className="text-[#F56600]" /> {profile.phone}</a><a href={`mailto:${profile.email}`} className="flex items-center gap-2 transition-colors hover:text-[#F56600]"><Mail size={13} className="text-[#F56600]" /> {profile.email}</a></div>
+        <div className="flex items-center gap-4 text-white/90">{profile.instagramUrl ? <a href={profile.instagramUrl} target="_blank" rel="noreferrer" aria-label="Instagram" className="transition-colors hover:text-[#F56600]"><Instagram size={16} /></a> : null}{profile.facebookUrl ? <a href={profile.facebookUrl} target="_blank" rel="noreferrer" aria-label="Facebook" className="transition-colors hover:text-[#F56600]"><Facebook size={15} /></a> : null}<a href={`https://wa.me/${whatsappNumber}`} target="_blank" rel="noreferrer" aria-label="WhatsApp" className="transition-colors hover:text-[#F56600]"><WhatsAppIcon className="size-4" /></a></div>
+      </div>
+    </div>
     <div className="mx-auto flex min-h-[5.75rem] max-w-7xl items-center justify-between gap-5 px-5 py-3 lg:min-h-[8.75rem] lg:gap-6 lg:px-7">
-      <Brand profile={profile} />
+      <Link href="/" className="focus-ring flex w-fit shrink-0 items-center" aria-label={`${profile.brandName} home`}><img src={SUPPLIED_COMPLETE_HEADER_LOGO} alt={`${profile.brandName} logo`} width={288} height={105} className="h-auto w-[176px] object-contain sm:w-[208px] lg:w-[288px]" /></Link>
       <nav className="hidden items-center gap-5 xl:gap-7 lg:flex" aria-label="Main navigation">
         {navigation.map(link => <Link key={link.href} href={link.href} className={`focus-ring flex items-center gap-1 text-xs font-bold tracking-wide text-[#0D2C5B] transition-colors hover:text-[#F56600] ${location.split("?")[0] === link.href ? "border-b-2 border-[#F56600] pb-1 text-[#0D2C5B]" : ""}`}>{link.label}{link.dropdown ? <ChevronDown size={13} /> : null}</Link>)}
         {user ? <Link href="/admin" className="focus-ring border-b-2 border-transparent pb-1 text-xs font-bold tracking-wide text-[#0D2C5B] transition-colors hover:text-[#F56600]">ADMIN DASHBOARD</Link> : null}

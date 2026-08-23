@@ -59,15 +59,20 @@ describe("premium public experience contract", () => {
     expect(layout).toContain("WhatsAppIcon");
   });
 
-  it("uses the supplied bold Himalayan-navy Trip Himalaya wordmark without changing the shared header structure", () => {
+  it("uses the supplied complete Trip Himalaya header logo with an authentic contact-only utility bar", () => {
     expect(indexHtml).toContain("Montserrat:wght@600;700");
     expect(styles).toContain(".brand-wordmark");
     expect(styles).toContain('font-family: "Montserrat", "Poppins", sans-serif');
     expect(styles).toContain(".brand-tagline");
-    expect(layout).toContain('className="brand-wordmark block text-[22px] sm:text-[26px] lg:text-[32px]"');
-    expect(layout).toContain('width={76} height={76}');
-    expect(layout).toContain("<Brand profile={profile} />");
-    expect(layout).toContain('const textClass = light ? "text-primary-foreground" : "text-[#0D2C5B]"');
+    expect(layout).toContain('const SUPPLIED_COMPLETE_HEADER_LOGO = "/manus-storage/trip-himalaya-complete-logo_9a359425.jpg"');
+    expect(layout).toContain('src={SUPPLIED_COMPLETE_HEADER_LOGO}');
+    expect(layout).toContain('width={288} height={105}');
+    expect(layout).toContain('lg:w-[288px]');
+    expect(layout).toContain("Based in Himachal Pradesh");
+    expect(layout).toContain("profile.phone");
+    expect(layout).toContain("profile.email");
+    expect(layout).not.toContain("1200+ Reviews");
+    expect(layout).not.toContain("4.9/5");
     expect(layout).toContain('bg-white/95');
     expect(layout).toContain("backdrop-blur-xl");
     expect(layout).toContain("border-b border-[#0D2C5B]/10");
