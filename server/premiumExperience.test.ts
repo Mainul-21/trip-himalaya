@@ -5,6 +5,7 @@ const app = readFileSync(new URL("../client/src/App.tsx", import.meta.url), "utf
 const loader = readFileSync(new URL("../client/src/components/JourneyLoader.tsx", import.meta.url), "utf8");
 const layout = readFileSync(new URL("../client/src/components/PublicLayout.tsx", import.meta.url), "utf8");
 const home = readFileSync(new URL("../client/src/pages/Home.tsx", import.meta.url), "utf8");
+const tourCard = readFileSync(new URL("../client/src/components/TourCard.tsx", import.meta.url), "utf8");
 const seo = readFileSync(new URL("../client/src/components/Seo.tsx", import.meta.url), "utf8");
 const styles = readFileSync(new URL("../client/src/index.css", import.meta.url), "utf8");
 const indexHtml = readFileSync(new URL("../client/index.html", import.meta.url), "utf8");
@@ -39,19 +40,30 @@ describe("premium public experience contract", () => {
     expect(home).not.toContain("AggregateRating");
   });
 
-  it("routes conversion through Plan Your Trip, keeps WhatsApp, and removes phone actions from the homepage", () => {
+  it("restores the header Plan Your Trip style, keeps icon-only floating CTAs, and removes phone actions from the homepage", () => {
     expect(layout).toContain('const planHref = isHomepage ? "#plan" : "/#plan"');
     expect(layout).toContain("PLAN YOUR TRIP");
+    expect(layout).toContain("rounded-md bg-accent px-5 py-2.5");
+    expect(layout).toContain("md:inline-flex");
     expect(layout).toContain("!isHomepage ? <a href={phoneHref}");
-    expect(layout).toContain("CHAT ON WHATSAPP");
-    expect(layout).toContain("Hello, I would like to know more about your Dharamshala tour packages.");
+    expect(layout).toContain('aria-label="Plan your Trip"');
+    expect(layout).toContain('aria-label="Chat on WhatsApp"');
+    expect(layout).toContain("I want to plan a trip.");
+    expect(layout).not.toContain("CHAT ON WHATSAPP");
     expect(layout).toContain("safe-area-inset-bottom");
-    expect(layout).toContain("rounded-full bg-accent");
+    expect(layout).toContain("fixed bottom-[max(1.25rem,env(safe-area-inset-bottom))] right-5 z-50 flex");
+    expect(layout).toContain("grid h-12 w-12 place-items-center rounded-full");
     expect(home).toContain('scrollToSection("plan")');
     expect(home).not.toContain("CALL NOW");
     expect(home).not.toContain("tel:");
     expect(layout).toContain("WhatsAppIcon");
-    expect(styles).toContain("whatsapp-breathe");
+  });
+
+  it("keeps the hero prioritized while deferred cards use optimized asynchronous image delivery", () => {
+    expect(home).toContain('fetchPriority="high"');
+    expect(home).toContain('loading="lazy" decoding="async"');
+    expect(tourCard).toContain('getImageVariant(tour.heroImage, "card")');
+    expect(tourCard).toContain('loading="lazy" decoding="async"');
   });
 
   it("implements factual on-page and crawl SEO without unsupported review schema", () => {

@@ -24,7 +24,8 @@ describe("image delivery", () => {
 
   it("keeps the supplied package cards compact while detail galleries request the appropriate size", () => {
     expect(card).toContain('className="h-40 w-full object-cover"');
-    expect(card).toContain("resolveImageUrl(tour.heroImage)");
+    expect(card).toContain('getImageVariant(tour.heroImage, "card")');
+    expect(card).toContain('loading="lazy" decoding="async"');
     expect(carousel).toContain("getImageVariant(activePhoto, compact ? \"card\" : \"hero\")");
     expect(carousel).toContain('sizes={compact ? "(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 25vw" : "100vw"}');
   });

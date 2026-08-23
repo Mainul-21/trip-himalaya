@@ -97,7 +97,7 @@
 - [x] Streamline tour-cover and gallery image workflows with quick image selection, editing, removal, and size-aware fast uploads.
 - [x] Remove technical image/slug presentation from public cards and refine the public and administrator UI to look like a professional agency product.
 - [x] Add regression coverage for multi-photo tour galleries and the corrected mobile-navigation breakpoint.
-- [ ] Open and exercise the phone navigation menu to verify every public link and contact action is visible and tappable.
+- [x] Open and exercise the phone navigation menu to verify every public link and contact action is visible and tappable.
 - [x] Diagnose the Vercel blank page using deployment logs, live browser inspection, and production asset routing checks.
 - [x] Repair the Vercel production configuration so the live domain renders the public app and API routes without blank-screen failures.
 - [x] Redesign the homepage as a restrained, professional travel-agency experience with less decorative text, clearer hierarchy, and authentic service-focused content.
@@ -376,3 +376,17 @@
 - [x] Run a fresh tablet-width visual QA pass for the final homepage, navigation, CTA, loader, and homepage-review state.
 - [x] Re-verify key public journeys after the final design-preservation revision, including home, tours, tour detail, contact or plan flow, and mobile navigation.
 - [x] Diagnose and restore visible tour-card imagery on the public tours catalogue without changing approved tour content or layout.
+- [x] Compare the current public styling with the previously approved Trip Himalaya visual baseline and identify only the visual changes to restore.
+- [x] Restore the previously approved public visual style while preserving SEO, security, performance, administrator controls, and working visitor journeys.
+- [x] Validate the restored style on desktop, tablet, and phone together with public routes and existing SEO safeguards.
+- [x] Inspect the reference website’s visible loading behavior and document a safe, accessibility-conscious adaptation for Trip Himalaya.
+- [x] Superseded by the final approved restored design: retain the header Plan Your Trip action and add only icon-only round bottom-right CTA controls.
+- [x] Superseded by the final approved restored design: retain the prior compass loader with reduced-motion support rather than the reference-informed alternate loader.
+- [x] Validate the final approved header Plan action, compass loader, and icon-only bottom-right CTA controls across desktop, tablet, phone, navigation, and public routes.
+- [x] Restore all visible public design decisions—including layout, header, CTA positions, button treatment, and loader—to the exact prior approved baseline while retaining non-visual safeguards.
+- [x] Verify the restored previous-design baseline across desktop, tablet, and phone without changing SEO, security, performance, admin controls, bookings, or enquiries.
+- [x] Restore the header Plan Your Trip control and its exact earlier button styling from the several-hours-earlier approved visual baseline.
+- [x] Restore the earlier public button styling and page layout without affecting SEO, security, booking, enquiry, or administrator capabilities.
+- [x] Add only fully round, icon-only bottom-right CTA controls that remain visible and tappable on desktop and phone without text labels.
+- [x] Improve public image delivery and loading priority without changing approved imagery, tour data, layouts, or content.
+- [x] Verify the exact restored visual baseline, header Plan action, icon-only CTAs, and image loading across desktop and phone.

@@ -18,7 +18,8 @@ describe("tour photo galleries", () => {
   it("uses the supplied reference's compact single-image package cards while detail pages retain the gallery", () => {
     expect(card).not.toContain("TourPhotoCarousel");
     expect(card).toContain('className="h-40 w-full object-cover"');
-    expect(card).toContain("resolveImageUrl(tour.heroImage)");
+    expect(card).toContain('getImageVariant(tour.heroImage, "card")');
+    expect(card).toContain('loading="lazy" decoding="async"');
     expect(detail).toContain("TourPhotoCarousel");
     expect(detail).toContain("gallery={tour.gallery}");
     expect(detail).toContain("priority");

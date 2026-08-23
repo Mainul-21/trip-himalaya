@@ -1,7 +1,7 @@
 import { Clock, Flame, MessageCircle, MountainSnow, Tent } from "lucide-react";
 import { Link } from "wouter";
 import { buildTourWhatsAppMessage } from "@/lib/tourWhatsApp";
-import { resolveImageUrl } from "@/lib/imageDelivery";
+import { getImageVariant } from "@/lib/imageDelivery";
 import { WhatsAppIcon } from "./PublicLayout";
 
 export type TourCardData = {
@@ -21,12 +21,12 @@ export type TourCardData = {
 
 export default function TourCard({ tour, whatsappNumber = "918219628359" }: { tour: TourCardData; compact?: boolean; whatsappNumber?: string }) {
   const whatsappMessage = buildTourWhatsAppMessage(tour);
-  const image = resolveImageUrl(tour.heroImage);
+  const image = getImageVariant(tour.heroImage, "card");
 
   return (
     <article className="overflow-hidden rounded-md border border-border bg-card shadow-[var(--shadow-card)]">
       <div className="relative">
-        <img src={image} alt={tour.title} width={800} height={560} loading="lazy" className="h-40 w-full object-cover" />
+        <img src={image} alt={tour.title} width={800} height={560} loading="lazy" decoding="async" className="h-40 w-full object-cover" />
         {tour.isBestSeller ? <span className="absolute left-0 top-3 flex items-center gap-1 rounded-r bg-accent px-2 py-1 text-[10px] font-bold text-accent-foreground"><Flame size={11} /> BESTSELLER</span> : null}
       </div>
       <div className="p-3">
