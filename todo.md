@@ -409,13 +409,13 @@
 - [ ] Verify the live domain’s homepage, public routes, administrator sign-in entry, HTTPS behavior, and required deployment configuration after the fix.
 - [ ] Reconcile the live host’s stale or incomplete administrator JavaScript assets so `/admin/login` can load its current compiled chunk without a dynamic-import error.
 - [ ] Verify the deployed custom domain serves a matching build manifest and complete asset set before retesting administrator sign-in.
-- [ ] Remove the obsolete local Agency Profile “missing newer profile fields” warning when the current API already reports a schema-ready profile, without rerunning `db:push` or modifying business data.
+- [x] Remove the obsolete local Agency Profile “missing newer profile fields” warning when the current API already reports a schema-ready profile, without rerunning `db:push` or modifying business data.
 - [x] Replace the unsafe Agency Profile `db:push` remediation text with an accurate non-destructive hosting-schema diagnosis and regression test.
-- [ ] Align Hostinger's private `DATABASE_URL` with the intended schema-ready TiDB database (or apply only reviewed additive migration to its separate database), then confirm the live Agency Profile API returns both readiness flags as false.
-- [ ] Prepare the exact reviewed additive TiDB SQL recovery for the live Agency Profile schema mismatch and verify the live API after the owner executes it in TiDB Cloud.
+- [x] Align Hostinger's private `DATABASE_URL` with the intended schema-ready TiDB database (or apply only reviewed additive migration to its separate database), then confirm the live Agency Profile API returns both readiness flags as false.
+- [x] Prepare the exact reviewed additive TiDB SQL recovery for the live Agency Profile schema mismatch and verify the live API after the owner executes it in TiDB Cloud.
 - [x] Confirm the TiDB inspection returned an empty set and prepare the exact 24-column additive SQL script for that verified state.
 - [x] Confirm the post-recovery TiDB inspection reports all 24 required Agency Profile columns.
-- [ ] Restart/redeploy the live Hostinger server after the complete column verification, then confirm its Agency Profile API returns `schemaNeedsUpdate: false`.
+- [x] Restart/redeploy the live Hostinger server after the complete column verification, then confirm its Agency Profile API returns `schemaNeedsUpdate: false`.
 - [x] Create a beginner-safe live TiDB recovery guide with a column inspection query, one-at-a-time additive SQL statements, and redeploy verification steps.
 - [x] Replace the technical Agency Profile schema fallback with a concise administrator-facing message while retaining the safe retry and preventing edits against an incompatible schema.
 - [x] Remove remaining local troubleshooting instructions that recommend `db:push` for an existing Agency Profile schema warning.

@@ -29,3 +29,7 @@ The application now gives visitors one automatic, loop-safe refresh attempt for 
 The preview API's `agency.get` response returns both `schemaNeedsUpdate: false` and `databaseNeedsAttention: false`. The corresponding live Hostinger API response returns `schemaNeedsUpdate: true` and `databaseNeedsAttention: false` while returning the existing profile values. This proves that the hosted server is reaching an older `agencyProfiles` schema (or a different TiDB database), rather than a browser-cache issue.
 
 The administrator warning no longer recommends `db:push`: the current project already confirmed that its schema-ready database does not need an update and Drizzle's prior primary-key diff was false drift. The safe host-side action is to confirm, privately in Hostinger, that the deployed `DATABASE_URL` targets the intended TiDB database; redeploy afterwards. Do not truncate tables, delete records, or re-run `db:push` to clear this specific warning. If the host deliberately targets a separate database, only its reviewed additive migration should be applied through that database's own console.
+
+## Agency Profile recovery verified — 23 August 2026
+
+A subsequent read-only live check of `https://triphimalya.com/api/trpc/agency.get` returned both `schemaNeedsUpdate: false` and `databaseNeedsAttention: false`. The API also returned the current profile-presentation fields, confirming that the hosted server now recognizes the recovered Agency Profile schema. This verification did not change any database records.
