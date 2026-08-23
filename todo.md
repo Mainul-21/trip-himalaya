@@ -231,9 +231,9 @@
 - [x] Document the safe retry path for `connect ETIMEDOUT` during `npm run db:push`.
 - [ ] Repair the local `agencyProfiles` migration mismatch where Drizzle attempts to add a primary key that already exists, without truncating or deleting data.
 - [x] Add regression coverage and safe Windows instructions for this migration state.
-- [ ] Determine whether localhost has zero tour rows or whether the public API is filtering existing tours incorrectly, then restore the existing records safely without seed data.
+- [x] Determine whether localhost has zero tour rows or whether the public API is filtering existing tours incorrectly, then restore the existing records safely without seed data.
 - [ ] Verify why localhost Admin Portal has no tour rows even though the managed project database contains published tours, without deleting or fabricating tour data.
-- [ ] Diagnose and repair localhost `tours.list` returning HTTP 500 while the same database contains four published tours, without changing tour data.
+- [x] Diagnose and repair localhost `tours.list` returning HTTP 500 while the same database contains four published tours, without changing tour data.
 - [ ] Resolve the local schema ambiguity after TiDB reports duplicate `isPublished`, using exact column-definition inspection before any further ALTER operation.
 - [x] Add administrator-managed multi-photo galleries to tours, including add, remove, and ordering controls.
 - [x] Add accessible automatic rotation plus previous/next buttons to tour cards and tour-detail galleries.

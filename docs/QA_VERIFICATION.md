@@ -53,3 +53,7 @@ The rebuilt managed production artifact was started on an isolated local port an
 ## Phone navigation verification — 15 August 2026
 
 At the phone breakpoint, the compact header keeps the Trip Himalaya mark, orange planning action, and labelled navigation-toggle control visible. Opening the control reveals every public destination—Home, Tours, Treks, Experiences, About us, Blogs, and Contact—alongside clear **Call us**, **WhatsApp**, and **Plan your trip** actions. The control changes its accessible hint from **Open navigation menu** to **Close navigation menu**, and the overlay remains usable without hiding the contact controls.
+
+## Local public tours health verification — 23 August 2026
+
+A read-only check of the local `tours.list` tRPC endpoint returned **HTTP 200** with published tour records, including their stored gallery references. The public `/tours` route also returned **HTTP 200** and rendered API-backed tour cards and images in the browser. No data repair, seed data, schema change, or administrative action was needed; the earlier local empty-list and HTTP 500 symptoms are not present in the current project environment.
