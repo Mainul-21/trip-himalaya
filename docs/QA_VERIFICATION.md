@@ -57,3 +57,7 @@ At the phone breakpoint, the compact header keeps the Trip Himalaya mark, orange
 ## Local public tours health verification — 23 August 2026
 
 A read-only check of the local `tours.list` tRPC endpoint returned **HTTP 200** with published tour records, including their stored gallery references. The public `/tours` route also returned **HTTP 200** and rendered API-backed tour cards and images in the browser. No data repair, seed data, schema change, or administrative action was needed; the earlier local empty-list and HTTP 500 symptoms are not present in the current project environment.
+
+## Local Agency Profile health verification — 23 August 2026
+
+A read-only request to the local public `agency.get` endpoint returned **HTTP 200** with the stored public profile data, including Experiences and About Our Story fields. Its response reports both `schemaNeedsUpdate: false` and `databaseNeedsAttention: false`. The earlier local Agency Profile 500/missing-column warning is therefore not present in the current environment. This verification did not save profile data, run migrations, inspect secrets, or alter any database records; authenticated administrator save-path QA remains pending an owner-signed-in session.
