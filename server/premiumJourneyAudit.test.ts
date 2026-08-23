@@ -15,9 +15,9 @@ describe("premium journey presentation", () => {
     expect(home).toContain("EXPERIENCE THE HIMALAYAS.");
     expect(home).toContain("Curated journeys. Local expertise. Unforgettable memories.");
     expect(home).toContain("Choose your perfect experience");
-    expect(home).toContain("TRAVELLED. REMEMBERED. SHARED.");
+    expect(home).toContain("REAL JOURNEYS. HONEST STORIES.");
     expect(home).toContain("Average from {reviews.length} published guest");
-    expect(home).toContain("VIEW GOOGLE REVIEWS");
+    expect(home).toContain("VIEW INDEPENDENT FEEDBACK");
     expect(home).toContain("PLAN YOUR HIMACHAL TRIP");
     expect(home).toContain('function scrollToSection(sectionId: "packages" | "plan")');
     expect(home).toContain('scrollToSection("packages")');

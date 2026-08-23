@@ -1,13 +1,6 @@
 # Project TODO
 
 - [x] Create a mountain-led visual system inspired by the supplied reference with distinct Trip Himalaya branding.
-<<<<<<< Updated upstream
-- [x] Restore npm as the explicit Hostinger deployment package-manager contract while allowing the managed pnpm preview to warn rather than refuse.
-- [x] Restore the previous stable Vite and Express project architecture while preserving existing database records and administrator data.
-- [x] Allow the managed pnpm preview to run the restored Vite development command while retaining Hostinger’s explicit npm deployment workflow.
-- [ ] Resolve the Hostinger HTTPS `ERR_SSL_PROTOCOL_ERROR` for both the apex and www Trip Himalaya domains before validating application routes.
-- [ ] Restore TypeScript-clean global browser event typing in the Vite entry point after the architecture rollback.
-=======
 - [x] Align the Vercel and managed-preview package-manager metadata with pnpm 11.22.0 so deployments do not warn or refuse the project configuration.
 - [x] Review the uploaded prompt document and implement its safe, relevant requirements for the Trip Himalaya website.
 - [x] Upgrade the public reviews area with a premium trust-focused design that uses only authentic customer content and clearly identifies the Google Reviews destination.
@@ -32,7 +25,6 @@
 - [x] Correct the Hostinger deployment regression test to read the project root rather than the parent workspace metadata.
 - [x] Restore the tracked pnpm workspace policy required by the managed Vite preview without changing Hostinger’s npm deployment contract.
 - [x] Rebuild the local npm dependency directory to replace the stale pnpm esbuild executable shim before final Vite server-bundle validation.
->>>>>>> Stashed changes
 - [x] Build a fast, responsive public homepage with hero, trust strip, experience categories, featured tours, benefits, enquiry panel, and footer.
 - [x] Add public pages for tours, tour detail, trekking, experiences, about, contact, blog, search results, booking confirmation, enquiry confirmation, and an interactive 404 page.
 - [x] Remove destination-directory pages and destination navigation from the public site.
@@ -374,3 +366,13 @@
 - [x] Strengthen factual Dharamshala and Himachal technical/local SEO through titles, descriptions, canonical metadata, Open Graph, schema, internal links, image alt text, sitemap, and robots directives without keyword stuffing or fake review schema.
 - [x] Improve premium mobile-first presentation, image loading, animation performance, touch targets, and visual consistency without disrupting current routes or administrator controls.
 - [x] Add targeted tests and desktop, tablet, and phone QA for loading, review, CTA, SEO, and performance changes before publication.
+- [x] Restore the familiar Plan Your Trip route as the shared Get a Quote conversion journey without changing booking or enquiry handling.
+- [x] Make public call-to-action buttons fully rounded across desktop, tablet, and phone layouts while retaining accessible focus states and readable labels.
+- [x] Replace the logo-based travel loader with a more engaging lightweight non-logo loading treatment that respects reduced-motion preferences.
+- [x] Remove the separate traveller-feedback public route and navigation entry while retaining the improved authentic review experience on the homepage.
+- [x] Remove the homepage phone CTA while retaining the selected non-phone contact path and strengthen the homepage-only authentic review section without fabricated claims.
+- [x] Validate the revised CTA, loader, navigation, and homepage reviews behavior through regression tests and responsive visual QA.
+- [x] Preserve the established public design and all existing working user journeys, retaining only the explicitly requested CTA, loader, homepage-review, SEO, performance, and security refinements.
+- [x] Run a fresh tablet-width visual QA pass for the final homepage, navigation, CTA, loader, and homepage-review state.
+- [x] Re-verify key public journeys after the final design-preservation revision, including home, tours, tour detail, contact or plan flow, and mobile navigation.
+- [x] Diagnose and restore visible tour-card imagery on the public tours catalogue without changing approved tour content or layout.

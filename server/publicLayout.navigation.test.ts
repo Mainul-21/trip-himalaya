@@ -20,13 +20,14 @@ describe("supplied reference header and footer contract", () => {
     expect(source).toContain("flex items-center gap-2 sm:gap-3 lg:contents");
   });
 
-  it("keeps every supplied navigation item, the functional plan action, and role-aware dashboard access", () => {
+  it("keeps essential navigation, a homepage Plan Your Trip action, and role-aware dashboard access", () => {
     expect(source).toContain('label: "HOME"');
     expect(source).toContain('label: "OUR STAY"');
-    expect(source).toContain('label: "REVIEWS"');
-    expect(source).toContain('href={isHomepage ? "/contact" : "/contact"}');
-    expect(source).toContain("CALL NOW");
-    expect(source).toContain("GET A QUOTE");
+    expect(source).not.toContain('label: "REVIEWS"');
+    expect(source).toContain('const planHref = isHomepage ? "#plan" : "/#plan"');
+    expect(source).toContain("PLAN YOUR TRIP");
+    expect(source).toContain("!isHomepage ? <a href={phoneHref}");
+    expect(source).toContain("rounded-full");
     expect(source).toContain('user ? <Link href="/admin"');
     expect(source).toContain("ADMIN DASHBOARD");
   });

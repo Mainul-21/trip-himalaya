@@ -103,7 +103,7 @@ describe("agency profile administration contract", () => {
     expect(portal).toContain('name="whyTripTitle"');
   });
 
-  it("renders administrator-managed Our Stay hotel cards and Our Story content publicly with official-logo loading fallback", () => {
+  it("renders administrator-managed Our Stay hotel cards and Our Story content publicly with a lightweight non-logo loading fallback", () => {
     expect(publicPage).toContain("agencyProfile?.aboutStoryTitle");
     expect(publicPage).toContain("agencyProfile?.experiencesTitle");
     expect(publicPage).toContain("agencyProfile?.experiences");
@@ -115,7 +115,9 @@ describe("agency profile administration contract", () => {
     expect(router).toContain('image: z.string().trim().url().or(z.string().startsWith("/manus-storage/"))');
     expect(publicLayout).toContain('{ label: "OUR STAY", href: "/experiences", dropdown: true }');
     expect(app).toContain("JourneyLoader");
-    expect(journeyLoader).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
+    expect(journeyLoader).toContain("Finding the next horizon");
+    expect(journeyLoader).toContain("Compass");
+    expect(journeyLoader).not.toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
   });
 
   it("renders administrator-managed homepage hero, slideshow, trust messages, and Why Trip Himalaya cards with safe fallbacks", () => {
@@ -131,7 +133,7 @@ describe("agency profile administration contract", () => {
   it("uses a valid, premium traveller score and an administrator-controlled Google Reviews destination", () => {
     expect(home).toContain('<span className="text-3xl font-bold text-accent">{verifiedAverage.toFixed(1)}</span>');
     expect(home).toContain("const googleReviewsUrl = agency?.googleMapsUrl?.trim();");
-    expect(home).toContain("VIEW GOOGLE REVIEWS");
+    expect(home).toContain("VIEW INDEPENDENT FEEDBACK");
     expect(home).not.toContain('<p className="mt-4 flex items-center gap-2 text-2xl font-bold text-accent">{verifiedAverage.toFixed(1)} <Stars rating={verifiedAverage} /></p>');
     expect(portal).toContain("Google Reviews / Business Profile URL");
     expect(portal).toContain("does not create, copy, or claim a Google rating or verification badge");
@@ -149,7 +151,7 @@ describe("agency profile administration contract", () => {
     expect(router).toContain('reviewCtaEnabled: z.boolean()');
     expect(db).toContain('reviewSectionTitle: "TRAVELLED. REMEMBERED. SHARED."');
     expect(db).toContain('reviewCtaLabel: "VIEW GOOGLE REVIEWS"');
-    expect(home).toContain('agency?.reviewSectionTitle || "TRAVELLED. REMEMBERED. SHARED."');
+    expect(home).toContain('agency?.reviewSectionTitle || "REAL JOURNEYS. HONEST STORIES."');
     expect(home).toContain('agency?.reviewCtaEnabled === false ? "" : googleReviewsUrl');
     expect(portal).toContain('name="reviewSectionTitle"');
     expect(portal).toContain('name="reviewSectionIntro"');
