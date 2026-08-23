@@ -33,3 +33,13 @@ The administrator warning no longer recommends `db:push`: the current project al
 ## Agency Profile recovery verified — 23 August 2026
 
 A subsequent read-only live check of `https://triphimalya.com/api/trpc/agency.get` returned both `schemaNeedsUpdate: false` and `databaseNeedsAttention: false`. The API also returned the current profile-presentation fields, confirming that the hosted server now recognizes the recovered Agency Profile schema. This verification did not change any database records.
+
+## Tours route retest — 23 August 2026
+
+A fresh live visit to `https://triphimalya.com/tours` rendered the catalogue, filters, tour cards, navigation, and footer successfully. No dynamic-import error appeared during this retest, indicating that the previously missing Tours route chunk is currently available from the host.
+
+An immediate follow-up request to `/admin/login` received HTTP 429 from the host. Because the preceding catalogue request succeeded and no JavaScript was loaded for the sign-in route in this check, this is a host rate-limit response after rapid inspection requests, not evidence of the earlier dynamic-import failure. The sign-in page should be checked again after the host rate-limit window clears.
+
+After the rate-limit interval, a single non-authenticated header check of `/admin/login` returned HTTP 200 from Hostinger over HTTPS. The response has the expected security headers and current HTML timestamp. This confirms the entry document is available again; it does not require or involve administrator sign-in.
+
+A fresh browser visit to `/admin/login` then rendered the complete approved email-and-password sign-in form. No dynamic-import failure appeared. Alongside the successful Tours route retest, this confirms the previously intermittent Hostinger route-asset issue is no longer reproducing during the final live checks.

@@ -6,10 +6,10 @@ const home = readFileSync(new URL("../client/src/pages/Home.tsx", import.meta.ur
 const styles = readFileSync(new URL("../client/src/index.css", import.meta.url), "utf8");
 
 describe("supplied reference header and footer contract", () => {
-  it("uses the requested solid dark header while retaining an accessible phone menu", () => {
+  it("uses the requested white Himalayan-navy header while retaining an accessible phone menu", () => {
     expect(home).toContain("<PublicHeader profile={agency} />");
     expect(home).toContain("<PublicLayout showHeader={false}>");
-    expect(source).toContain('className="relative z-50 isolate border-b border-primary-foreground/10 bg-[#0f172a]/[.97] shadow-[0_8px_24px_rgba(2,6,23,.18)] backdrop-blur-md"');
+    expect(source).toContain('className="relative z-50 isolate border-b border-[#0D2C5B]/10 bg-white/95 shadow-[0_8px_24px_rgba(13,44,91,.1)] backdrop-blur-xl"');
     expect(source).toContain('aria-controls="mobile-menu"');
     expect(source).toContain('aria-expanded={mobileOpen}');
     expect(source).toContain("lg:hidden");

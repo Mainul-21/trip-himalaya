@@ -43,7 +43,7 @@ describe("premium public experience contract", () => {
   it("restores the header Plan Your Trip style, keeps icon-only floating CTAs, and removes phone actions from the homepage", () => {
     expect(layout).toContain('const planHref = isHomepage ? "contact" : "/contact"');
     expect(layout).toContain("PLAN YOUR TRIP");
-    expect(layout).toContain("rounded-md bg-accent px-5 py-2.5");
+    expect(layout).toContain("rounded-md bg-[#F56600] px-5 py-2.5");
     expect(layout).toContain("md:inline-flex");
     expect(layout).toContain("!isHomepage ? <a href={phoneHref}");
     expect(layout).toContain('aria-label="Plan your Trip"');
@@ -59,14 +59,18 @@ describe("premium public experience contract", () => {
     expect(layout).toContain("WhatsAppIcon");
   });
 
-  it("uses a refined serif Trip Himalaya wordmark without changing the shared header structure", () => {
-    expect(indexHtml).toContain("DM+Serif+Display");
+  it("uses the supplied bold Himalayan-navy Trip Himalaya wordmark without changing the shared header structure", () => {
+    expect(indexHtml).toContain("Montserrat:wght@600;700");
     expect(styles).toContain(".brand-wordmark");
-    expect(layout).toContain('className="brand-wordmark block text-[1.35rem] sm:text-[1.45rem]"');
-    expect(layout).toContain('width={48} height={48}');
-    expect(layout).toContain('bg-[#0f172a]/[.97]');
-    expect(layout).toContain("backdrop-blur-md");
-    expect(layout).toContain("border-b border-primary-foreground/10");
+    expect(styles).toContain('font-family: "Montserrat", "Poppins", sans-serif');
+    expect(styles).toContain(".brand-tagline");
+    expect(layout).toContain('className="brand-wordmark block text-[22px] sm:text-[26px] lg:text-[32px]"');
+    expect(layout).toContain('width={76} height={76}');
+    expect(layout).toContain("<Brand profile={profile} />");
+    expect(layout).toContain('const textClass = light ? "text-primary-foreground" : "text-[#0D2C5B]"');
+    expect(layout).toContain('bg-white/95');
+    expect(layout).toContain("backdrop-blur-xl");
+    expect(layout).toContain("border-b border-[#0D2C5B]/10");
     expect(layout).toContain("PLAN YOUR TRIP");
   });
 

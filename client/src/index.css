@@ -6,7 +6,7 @@
 
 @theme inline {
   --font-display: "Oswald", sans-serif;
-  --font-brand: "DM Serif Display", Georgia, serif;
+  --font-brand: "Montserrat", "Poppins", sans-serif;
   --font-sans: "Inter", sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -91,7 +91,8 @@
 @layer components {
   .container { width: 100%; margin-inline: auto; padding-inline: 1.25rem; max-width: 80rem; }
   .display, .section-title { font-family: "Oswald", sans-serif; letter-spacing: .025em; }
-  .brand-wordmark { font-family: "DM Serif Display", Georgia, serif; font-weight: 400; letter-spacing: -.035em; line-height: .84; }
+  .brand-wordmark { font-family: "Montserrat", "Poppins", sans-serif; font-weight: 700; letter-spacing: .5px; line-height: .88; }
+  .brand-tagline { color: #F56600; font-size: clamp(9px, .62vw, 10px); font-weight: 600; letter-spacing: 2px; line-height: 1.15; text-transform: uppercase; white-space: nowrap; }
   .eyebrow { font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--accent); }
   .section-title { font-size: clamp(1.875rem, 4vw, 3rem); font-weight: 700; line-height: 1.1; text-transform: uppercase; color: var(--primary); }
   .rise, .rise-2, .rise-3 { animation: none; }

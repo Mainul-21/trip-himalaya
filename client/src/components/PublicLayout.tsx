@@ -16,17 +16,18 @@ const navigation = [
 ];
 
 const fallbackAgencyProfile = {
-  brandName: "Trip Himalaya", tagline: "Discover Himachal. Experience Himalayas.", logoUrl: OFFICIAL_TRIP_HIMALAYA_LOGO, phone: "+918219628359", whatsapp: "918219628359", email: "hello@triphimalaya.in", address: "Dharamshala, Himachal Pradesh, India", instagramUrl: "", facebookUrl: "", youtubeUrl: "", googleMapsUrl: "",
+  brandName: "Trip Himalaya", tagline: "Explore. Experience. Live.", logoUrl: OFFICIAL_TRIP_HIMALAYA_LOGO, phone: "+918219628359", whatsapp: "918219628359", email: "hello@triphimalaya.in", address: "Dharamshala, Himachal Pradesh, India", instagramUrl: "", facebookUrl: "", youtubeUrl: "", googleMapsUrl: "",
 };
 
 type AgencyProfile = typeof fallbackAgencyProfile;
 
 export function Brand({ light = false, profile = fallbackAgencyProfile, reference = true }: { light?: boolean; profile?: AgencyProfile; reference?: boolean }) {
   const words = profile.brandName.trim().split(/\s+/);
-  const textClass = light ? "text-primary-foreground" : "text-primary";
-  return <Link href="/" className={`flex items-center gap-3 ${textClass}`} aria-label={`${profile.brandName} home`}>
-    <img src={resolveImageUrl(profile.logoUrl)} alt={`${profile.brandName} logo`} width={48} height={48} className="h-11 w-11 object-contain" />
-    <span className="leading-none"><span className="brand-wordmark block text-[1.35rem] sm:text-[1.45rem]">{words[0] || "TRIP"}</span><span className="brand-wordmark block text-[1.35rem] sm:text-[1.45rem]">{words.slice(1).join(" ") || "HIMALAYA"}</span>{profile.tagline && <span className={`mt-1 block text-[10px] ${light ? "text-primary-foreground/70" : "text-muted-foreground"}`}>{profile.tagline}</span>}</span>
+  const textClass = light ? "text-primary-foreground" : "text-[#0D2C5B]";
+  const brandTagline = profile.tagline || "Explore. Experience. Live.";
+  return <Link href="/" className={`flex w-fit items-center gap-3 ${textClass} lg:min-w-[17.5rem]`} aria-label={`${profile.brandName} home`}>
+    <img src={resolveImageUrl(profile.logoUrl)} alt={`${profile.brandName} logo`} width={76} height={76} className="h-14 w-14 shrink-0 object-contain sm:h-16 sm:w-16 lg:h-[76px] lg:w-[76px]" />
+    <span className="leading-none"><span className="brand-wordmark block text-[22px] sm:text-[26px] lg:text-[32px]">{words[0] || "TRIP"}</span><span className="brand-wordmark block text-[21px] sm:text-[25px] lg:text-[30px]">{words.slice(1).join(" ") || "HIMALAYA"}</span><span className="brand-tagline mt-1.5 block">{brandTagline}</span></span>
   </Link>;
 }
 
@@ -42,19 +43,19 @@ export function PublicHeader({ profile = fallbackAgencyProfile }: { profile?: Ag
   const phoneHref = `tel:${profile.phone.replace(/[^+0-9]/g, "")}`;
   const whatsappNumber = profile.whatsapp.replace(/\D/g, "");
   const planHref = isHomepage ? "contact" : "contact";
-  return <header className="relative z-50 isolate border-b border-primary-foreground/10 bg-[#0f172a]/[.97] shadow-[0_8px_24px_rgba(2,6,23,.18)] backdrop-blur-md">
-    <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-5 py-4">
-      <Brand light profile={profile} />
-      <nav className="hidden items-center gap-7 lg:flex" aria-label="Main navigation">
-        {navigation.map(link => <Link key={link.href} href={link.href} className={`focus-ring flex items-center gap-1 text-xs font-semibold tracking-wide text-primary-foreground/90 transition-colors hover:text-accent ${location.split("?")[0] === link.href ? "border-b-2 border-accent pb-1 text-primary-foreground" : ""}`}>{link.label}{link.dropdown ? <ChevronDown size={13} /> : null}</Link>)}
-        {user ? <Link href="/admin" className="focus-ring border-b-2 border-transparent pb-1 text-xs font-semibold tracking-wide text-primary-foreground/90 transition-colors hover:text-accent">ADMIN DASHBOARD</Link> : null}
+  return <header className="relative z-50 isolate border-b border-[#0D2C5B]/10 bg-white/95 shadow-[0_8px_24px_rgba(13,44,91,.1)] backdrop-blur-xl">
+    <div className="mx-auto flex min-h-[5.75rem] max-w-7xl items-center justify-between gap-5 px-5 py-3 lg:min-h-[8.75rem] lg:gap-6 lg:px-7">
+      <Brand profile={profile} />
+      <nav className="hidden items-center gap-5 xl:gap-7 lg:flex" aria-label="Main navigation">
+        {navigation.map(link => <Link key={link.href} href={link.href} className={`focus-ring flex items-center gap-1 text-xs font-bold tracking-wide text-[#0D2C5B] transition-colors hover:text-[#F56600] ${location.split("?")[0] === link.href ? "border-b-2 border-[#F56600] pb-1 text-[#0D2C5B]" : ""}`}>{link.label}{link.dropdown ? <ChevronDown size={13} /> : null}</Link>)}
+        {user ? <Link href="/admin" className="focus-ring border-b-2 border-transparent pb-1 text-xs font-bold tracking-wide text-[#0D2C5B] transition-colors hover:text-[#F56600]">ADMIN DASHBOARD</Link> : null}
       </nav>
       <div className="flex items-center gap-2 sm:gap-3 lg:contents">
-        <Link href={planHref} className="focus-ring hidden items-center gap-2 rounded-md bg-accent px-5 py-2.5 text-xs font-semibold tracking-wide text-accent-foreground shadow-md transition-transform hover:scale-[1.03] md:inline-flex">PLAN YOUR TRIP <span className="grid h-5 w-5 place-items-center rounded-full border border-accent-foreground/60"><Send size={11} /></span></Link>
-        <button type="button" className="focus-ring grid h-11 w-11 place-items-center rounded-md border border-primary-foreground/40 text-primary-foreground transition-colors hover:bg-primary-foreground/10 lg:hidden" onClick={() => setMobileOpen(open => !open)} aria-expanded={mobileOpen} aria-controls="mobile-menu" aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}>{mobileOpen ? <X size={20} /> : <Menu size={21} strokeWidth={2.3} />}</button>
+        <Link href={planHref} className="focus-ring hidden items-center gap-2 rounded-md bg-[#F56600] px-5 py-2.5 text-xs font-bold tracking-wide text-white shadow-md transition-transform hover:scale-[1.03] hover:bg-[#d95600] md:inline-flex">PLAN YOUR TRIP <span className="grid h-5 w-5 place-items-center rounded-full border border-white/70"><Send size={11} /></span></Link>
+        <button type="button" className="focus-ring grid h-11 w-11 place-items-center rounded-md border border-[#0D2C5B]/25 text-[#0D2C5B] transition-colors hover:bg-[#0D2C5B]/5 lg:hidden" onClick={() => setMobileOpen(open => !open)} aria-expanded={mobileOpen} aria-controls="mobile-menu" aria-label={mobileOpen ? "Close navigation menu" : "Open navigation menu"}>{mobileOpen ? <X size={20} /> : <Menu size={21} strokeWidth={2.3} />}</button>
       </div>
     </div>
-    {mobileOpen ? <div id="mobile-menu" className="absolute inset-x-0 top-full z-50 max-h-[calc(100dvh-4.75rem)] overflow-y-auto border-t border-primary-foreground/15 bg-primary-deep px-5 py-4 shadow-2xl lg:hidden"><nav className="mx-auto grid max-w-7xl gap-1" aria-label="Mobile navigation">{navigation.map(link => <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)} className="focus-ring flex min-h-11 items-center rounded-md px-3 py-3 text-sm font-semibold leading-5 tracking-wide text-primary-foreground hover:bg-primary-foreground/10">{link.label}</Link>)}{user ? <Link href="/admin" onClick={() => setMobileOpen(false)} className="focus-ring flex min-h-11 items-center rounded-md px-3 py-3 text-sm font-semibold leading-5 tracking-wide text-primary-foreground hover:bg-primary-foreground/10">ADMIN DASHBOARD</Link> : null}<div className={`mt-3 grid gap-2 ${isHomepage ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}>{!isHomepage ? <a href={phoneHref} className="focus-ring flex min-h-11 items-center justify-center gap-2 rounded-full border border-primary-foreground/30 px-3 py-3 text-center text-xs font-semibold leading-5 tracking-wide text-primary-foreground"><Phone size={14} /> CALL NOW</a> : null}<a href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello, I would like to know more about your Dharamshala tour packages.")}`} target="_blank" rel="noreferrer" className="focus-ring flex min-h-11 items-center justify-center gap-2 rounded-full border border-primary-foreground/30 px-3 py-3 text-center text-xs font-semibold leading-5 tracking-wide text-primary-foreground"><WhatsAppIcon className="size-4" /> WHATSAPP</a><Link href={planHref} onClick={() => setMobileOpen(false)} className="focus-ring flex min-h-11 items-center justify-center rounded-full bg-accent px-3 py-3 text-center text-xs font-semibold leading-5 tracking-wide text-accent-foreground">PLAN YOUR TRIP</Link></div></nav></div> : null}
+    {mobileOpen ? <div id="mobile-menu" className="absolute inset-x-0 top-full z-50 max-h-[calc(100dvh-5.75rem)] overflow-y-auto border-t border-[#0D2C5B]/10 bg-white px-5 py-4 shadow-2xl lg:hidden"><nav className="mx-auto grid max-w-7xl gap-1" aria-label="Mobile navigation">{navigation.map(link => <Link key={link.href} href={link.href} onClick={() => setMobileOpen(false)} className="focus-ring flex min-h-11 items-center rounded-md px-3 py-3 text-sm font-bold leading-5 tracking-wide text-[#0D2C5B] hover:bg-[#0D2C5B]/5">{link.label}</Link>)}{user ? <Link href="/admin" onClick={() => setMobileOpen(false)} className="focus-ring flex min-h-11 items-center rounded-md px-3 py-3 text-sm font-bold leading-5 tracking-wide text-[#0D2C5B] hover:bg-[#0D2C5B]/5">ADMIN DASHBOARD</Link> : null}<div className={`mt-3 grid gap-2 ${isHomepage ? "sm:grid-cols-2" : "sm:grid-cols-3"}`}>{!isHomepage ? <a href={phoneHref} className="focus-ring flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#0D2C5B]/25 px-3 py-3 text-center text-xs font-bold leading-5 tracking-wide text-[#0D2C5B]"><Phone size={14} /> CALL NOW</a> : null}<a href={`https://wa.me/${whatsappNumber}?text=${encodeURIComponent("Hello, I would like to know more about your Dharamshala tour packages.")}`} target="_blank" rel="noreferrer" className="focus-ring flex min-h-11 items-center justify-center gap-2 rounded-full border border-[#0D2C5B]/25 px-3 py-3 text-center text-xs font-bold leading-5 tracking-wide text-[#0D2C5B]"><WhatsAppIcon className="size-4" /> WHATSAPP</a><Link href={planHref} onClick={() => setMobileOpen(false)} className="focus-ring flex min-h-11 items-center justify-center rounded-full bg-[#F56600] px-3 py-3 text-center text-xs font-bold leading-5 tracking-wide text-white">PLAN YOUR TRIP</Link></div></nav></div> : null}
   </header>;
 }
 

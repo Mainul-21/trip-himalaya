@@ -170,7 +170,7 @@ describe("agency profile administration contract", () => {
     expect(portal).toContain('label="Short tagline (optional)"');
     expect(portal).not.toContain('name="tagline" defaultValue={data.tagline} required');
     expect(publicLayout).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
-    expect(publicLayout).toContain("{profile.tagline &&");
+    expect(publicLayout).toContain('const brandTagline = profile.tagline || "Explore. Experience. Live."');
     expect(dashboardLayout).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
     expect(dashboardSkeleton).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
     expect(adminLogin).toContain("OFFICIAL_TRIP_HIMALAYA_LOGO");
