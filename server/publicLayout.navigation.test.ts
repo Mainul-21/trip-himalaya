@@ -20,6 +20,9 @@ describe("supplied reference header and footer contract", () => {
     expect(source).toContain("flex items-center gap-2 sm:gap-3 lg:contents");
     expect(source).toContain('hidden border-b border-white/10 bg-[#0D2C5B] text-white lg:block');
     expect(source).toContain("Based in Himachal Pradesh");
+    expect(source).toContain("h-9 max-w-7xl");
+    expect(source).toContain('text-[10px] font-semibold');
+    expect(source).toContain("MapPin size={13}");
     expect(source).toContain("lg:min-h-[5.25rem]");
     expect(source).toContain("lg:w-[210px]");
     expect(source).toContain("max-h-[calc(100dvh-4.25rem)]");

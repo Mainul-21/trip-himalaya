@@ -432,3 +432,4 @@
 - [x] Further reduce the public header footprint across desktop and mobile while preserving readable navigation and accessible touch controls.
 - [x] Add the owner-provided Privacy Policy content and verified contact details to the existing public privacy page without changing unrelated pages.
 - [x] Increase the public header and supplied logo to a balanced, more visible size while keeping the utility bar and responsive navigation intact.
+- [x] Slightly enlarge the verified contact text and icons in the public header utility bar without changing its contact details or responsive behavior.
