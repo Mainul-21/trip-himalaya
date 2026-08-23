@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 
-const root = path.resolve(import.meta.dirname, "..");
+const root = process.cwd();
 
 describe("Hostinger deployment contract", () => {
   it("ships an Apache SPA fallback that keeps API requests separate from client routes", () => {
@@ -27,20 +27,20 @@ describe("Hostinger deployment contract", () => {
     expect(environment).toContain("CLOUDINARY_URL=");
   });
 
-  it("uses the committed npm lockfile and no pnpm workspace policy for the Hostinger deployment", () => {
+  it("pins the managed pnpm runtime and scopes its pnpm 11 build policy", () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8")) as {
       packageManager: string;
+      devEngines?: { packageManager?: { name?: string; onFail?: string } };
     };
-    const guide = fs.readFileSync(path.join(root, "HOSTINGER_DEPLOYMENT.md"), "utf8");
-    const npmConfig = fs.readFileSync(path.join(root, ".npmrc"), "utf8");
+    const pnpmWorkspace = fs.readFileSync(path.join(root, "pnpm-workspace.yaml"), "utf8");
 
-    expect(pkg.packageManager).toBe("npm@10.9.2");
-    expect(fs.existsSync(path.join(root, "package-lock.json"))).toBe(true);
-    expect(fs.existsSync(path.join(root, "pnpm-lock.yaml"))).toBe(false);
-    expect(fs.existsSync(path.join(root, "pnpm-workspace.yaml"))).toBe(false);
-    expect(guide).toContain("npm ci");
-    expect(guide).toContain("dist/index.js");
-    expect(npmConfig).toContain("include=dev");
+    expect(pkg.packageManager).toBe("pnpm@11.22.0");
+    expect(pkg.devEngines?.packageManager?.name).toBe("pnpm");
+    expect(pkg.devEngines?.packageManager?.onFail).toBe("warn");
+    expect(fs.existsSync(path.join(root, "pnpm-lock.yaml"))).toBe(true);
+    expect(pnpmWorkspace).toContain("allowBuilds:");
+    expect(pnpmWorkspace).toContain("esbuild: true");
+    expect(pnpmWorkspace).toContain("'@tailwindcss/oxide': true");
   });
 
   it("does not retain ineffective root permission hooks that run outside the failed package install stage", () => {

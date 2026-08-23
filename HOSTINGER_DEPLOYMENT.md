@@ -18,8 +18,8 @@ This is the required option if the administrator portal must actually sign in, l
 | App type | **Node.js Web App**; select **Express.js** if detected, otherwise **Other** |
 | Node version | **22.x** |
 | Repository | `Mainul-21/triphimalaya02`, branch `main` |
-| Package manager | **npm 10.x** |
-| Install command | `npm ci` |
+| Package manager | **pnpm 11.22.0** |
+| Install command | `pnpm install --frozen-lockfile` |
 | Build command | `npm run build` |
 | Start command | `npm start` |
 | Output directory | `dist` |
@@ -30,30 +30,31 @@ This is the required option if the administrator portal must actually sign in, l
 
 Create the variables listed in [`HOSTINGER_ENV.example`](./HOSTINGER_ENV.example) in **hPanel → Website → Environment Variables**. Use your own secret values—never upload a real `.env` file to GitHub or the public web root.
 
-`DATABASE_URL`, `JWT_SECRET`, and `INITIAL_ADMIN_SETUP_KEY` are required for the server and approved admin account workflow. `CLOUDINARY_URL` is required for administrator image uploads outside the managed development platform. This project’s server listens on the `PORT` provided by Hostinger; do not force a fixed public port.
+`DATABASE_URL`, `JWT_SECRET`, and `INITIAL_ADMIN_SETUP_KEY` are required for the server and approved admin account workflow. For TiDB Cloud public endpoints, set `DATABASE_SSL=true`; the application also auto-enables TLS when the database URL uses port `4000`. If TiDB Cloud Dedicated supplies a CA certificate, set `DATABASE_SSL_CA_PATH` to the deployed certificate path and keep `DATABASE_SSL_REJECT_UNAUTHORIZED=true`. `CLOUDINARY_URL` is required for administrator image uploads outside the managed development platform. This project’s server listens on the `PORT` provided by Hostinger; do not force a fixed public port.
 
 ### Deploy steps
 
 1. In hPanel, open **Websites → Add Website → Deploy Web App** and choose the Node.js app flow. [Hostinger’s current Node.js guide](https://www.hostinger.com/support/how-to-deploy-a-nodejs-website-in-hostinger/) confirms Node apps are supported on Business and Cloud plans.
 2. Import the GitHub repository or upload the complete project ZIP. Do **not** upload only the old Vite `dist/public` folder for this full-stack option.
-3. If hPanel has a package-manager selector, choose **npm**. The repository commits a single Linux-generated `package-lock.json`, declares npm 10.9.2 in `package.json`, and includes a required root `.npmrc`; do not select pnpm, remove `.npmrc`, or enable a Corepack override.
-4. Enter the build and entry settings shown above, then add the required environment variables.
-5. Deploy. For server-side Node apps, Hostinger creates the public routing bridge automatically; do not replace its generated `public_html/.htaccess` with unrelated rules.
-6. Test `/`, `/admin`, `/admin/login`, `/tours`, and `/api/trpc` from the deployed domain.
+3. If hPanel has a package-manager selector, choose **pnpm 11.22.0**. The repository’s canonical lockfile is `pnpm-lock.yaml`, `package.json` pins the managed pnpm version, and `pnpm-workspace.yaml` scopes native build approvals for esbuild and Tailwind. Do not mix npm and pnpm lockfiles or enable an unrelated Corepack override.
+4. Enter the build and entry settings shown above, then add the required environment variables. Do not paste a local `.env` file into the public web root.
+5. Apply the existing Drizzle migrations to the configured database using a controlled migration step. Do not use `pnpm db:push` or any destructive reset against an existing production database; first confirm the target database and take a backup.
+6. Deploy. For server-side Node apps, Hostinger creates the public routing bridge automatically; do not replace its generated `public_html/.htaccess` with unrelated rules.
+7. Test `/`, `/admin`, `/admin/login`, `/tours`, `/api/health`, and `/api/trpc` from the deployed domain.
 
-### npm clean-install policy
+### pnpm clean-install policy
 
-The repository uses one package-management contract: **npm 10.9.2**, the root `package-lock.json`, and the committed `.npmrc`. The lockfile was regenerated on Linux and validated with a clean `npm ci`, tests, TypeScript compilation, and the production build. This avoids the prior pnpm nested native-binary install path and removes ineffective root-level permission hooks.
+The repository uses one package-management contract: **pnpm 11.22.0**, the root `pnpm-lock.yaml`, and the committed `pnpm-workspace.yaml`. A frozen pnpm install was validated with the full test suite, TypeScript compilation, and the production build. The workspace explicitly permits the native binaries required by esbuild and Tailwind; do not replace this with an ad-hoc install or runtime permission workaround.
 
-Hostinger builds while `NODE_ENV=production` is set. By default, npm can omit `devDependencies` in that environment, which excludes the required `vite`, TypeScript, Vitest, and `esbuild` build toolchain. The committed `.npmrc` contains `include=dev`, so the build toolchain is installed for `npm run build` while the running server still receives `NODE_ENV=production`. Do not replace the build command with `npx vite`, and do not remove this configuration.
+Hostinger builds while `NODE_ENV=production` is set. Ensure the managed pnpm install includes the development toolchain required by `vite`, TypeScript, Vitest, and `esbuild`; the committed workspace policy permits the required native build packages. Use the normal `pnpm install --frozen-lockfile` and `pnpm run build` commands, and do not replace the build with `npx vite` or remove the native-build policy.
 
-Use the normal `npm ci` and `npm run build` commands. Do **not** add `ignore-scripts`, `unsafe-perm`, runtime `chmod`, `sudo`, or generated package-manager workarounds. The build still requires trusted package lifecycle scripts to install native binaries.
+Use the normal `pnpm install --frozen-lockfile` and `pnpm run build` commands. Do **not** add `ignore-scripts`, runtime `chmod`, `sudo`, or generated package-manager workarounds. The build still requires trusted package lifecycle scripts to install native binaries.
 
-### If Hostinger’s npm install reports `spawnSync .../esbuild/bin/esbuild EACCES`
+### If Hostinger’s pnpm install reports `spawnSync .../esbuild/bin/esbuild EACCES`
 
-First confirm that hPanel is using **npm**, Node **22.x**, root **`./`**, and the latest `main` branch with `package-lock.json`. Then click **Save and redeploy** to recreate the managed build workspace.
+First confirm that hPanel is using **pnpm 11.22.0**, Node **22.x**, root **`./`**, and the latest `main` branch with `pnpm-lock.yaml`. Then click **Save and redeploy** to recreate the managed build workspace.
 
-If the same `EACCES` error remains during `npm ci`, it is a Hostinger deployment-workspace restriction: the package manager cannot repair an executable blocked by the managed filesystem while installation is in progress. Send the sanitized final log lines to Hostinger support and ask them to recreate the Web App build workspace and verify that its deployment user can execute package binaries under `node_modules`.
+If the same `EACCES` error remains during `pnpm install --frozen-lockfile`, it is a Hostinger deployment-workspace restriction: the package manager cannot repair an executable blocked by the managed filesystem while installation is in progress. Send the sanitized final log lines to Hostinger support and ask them to recreate the Web App build workspace and verify that its deployment user can execute package binaries under `node_modules`.
 
 ## Static-only fallback (visual route repair only)
 
@@ -84,9 +85,10 @@ This corrects the direct `/admin` invalid-page route. It does **not** create the
 1. Confirm Hostinger deployed the **full Node project**, not only a frontend ZIP.
 2. Open the latest hPanel deployment logs and confirm `npm run build` completed.
 3. Confirm `dist/index.js` exists in the Node build output and `NODE_ENV=production` is set.
-4. Confirm all required environment variable names and values are set in hPanel, then redeploy or restart the Node application.
-5. If using static-only upload, confirm the hidden `.htaccess` is in `public_html` and no conflicting older rewrite file replaced it.
-6. If the log reports an npm optional-dependency resolution error, confirm the deployed source includes the committed root `package-lock.json`; then start a fresh deployment from the latest `main` branch.
-7. If the log reports `spawnSync .../esbuild/bin/esbuild EACCES` during `npm ci`, do not disable scripts or add a runtime `chmod` workaround. Ask Hostinger to reset the Web App build workspace and ensure the deployment filesystem permits binary execution.
+4. Confirm `DATABASE_URL` points to the intended TiDB database, `DATABASE_SSL=true` is set for TiDB Cloud public endpoints, and the optional CA path is readable when used; then redeploy or restart the Node application.
+5. Confirm the database has all migrations through `0013_lovely_thunderball.sql` applied before diagnosing application queries.
+6. If using static-only upload, confirm the hidden `.htaccess` is in `public_html` and no conflicting older rewrite file replaced it.
+7. If the log reports a pnpm lockfile or optional-dependency resolution error, confirm the deployed source includes the committed root `pnpm-lock.yaml` and `pnpm-workspace.yaml`; then start a fresh deployment from the latest `main` branch.
+8. If the log reports `spawnSync .../esbuild/bin/esbuild EACCES` during `pnpm install --frozen-lockfile`, do not disable scripts or add a runtime `chmod` workaround. Ask Hostinger to reset the Web App build workspace and ensure the deployment filesystem permits binary execution.
 
 The public page files and React route definitions are unchanged by this configuration.
