@@ -393,3 +393,6 @@
 - [x] Remove the principal password-recovery page, sign-in link, route registration, recovery API procedure, and public documentation references.
 - [x] Retain only the existing email-and-password administrator sign-in flow with current principal/admin role protections and no public recovery or account-creation alternative.
 - [x] Add regression coverage and verify public recovery paths are unavailable while standard administrator authentication safeguards continue to work.
+- [x] Audit the current agencyProfiles database columns, Drizzle schema, and migrations to identify only missing additive profile fields.
+- [x] Apply verified non-destructive agencyProfiles additions without altering existing agency, tour, booking, enquiry, review, or administrator records.
+- [x] Restart services and verify the protected agency profile editor no longer blocks on an outdated local schema.

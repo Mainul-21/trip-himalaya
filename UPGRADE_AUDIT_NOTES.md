@@ -15,3 +15,7 @@ Tablet inspection initially identified that fixed desktop contact controls could
 ## Design-preservation verification — 23 August 2026
 
 The final homepage-only refinement retains the existing navy-and-saffron presentation and public journeys while restoring **Plan Your Trip** as the shared quote action, removing the dedicated feedback route, removing the homepage phone action, and keeping authentic feedback on the homepage. A 768-pixel multi-route inspection covered the home, tours, Triund detail, and contact journeys. The catalogue’s image placeholders in the full-page capture were a lazy-loading capture artifact: a subsequent live-browser verification confirmed the published cards and their managed-storage images render after the tours query resolves. No published tour content, booking handling, enquiry handling, or review data was changed.
+
+### Latest live homepage verification — 23 August 2026
+
+The live browser rendered the priority Himalayan hero media and all six first-viewport Explore Himachal image URLs from managed project storage after the homepage settled. The public markup retained the header Plan Your Trip route, standard tour and enquiry links, and icon-only floating Plan Your Trip and WhatsApp controls. A prior automated capture can show image placeholders before deferred media settles; the live rendered page confirmed that the expected image-delivery paths resolve.
