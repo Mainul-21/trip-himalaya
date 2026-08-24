@@ -65,3 +65,7 @@ A read-only request to the local public `agency.get` endpoint returned **HTTP 20
 ## Local public imagery verification — 23 August 2026
 
 The configured managed-storage origin returned **HTTP 200** image responses for the current homepage hero, travel-style category, and optimized card-image references. A fresh homepage render displayed its Himalayan hero image, and the `Triund Sunrise Trek` public detail page displayed its tour hero image. The earlier blank render was not reproducible after the fresh image-request check, so no asset URL, tour record, or image storage object was changed.
+
+## Follow-up preview-image confirmation — 24 August 2026
+
+The initial thumbnail created during the tour-detail typography checkpoint briefly showed empty public-image regions. A second fresh homepage capture immediately rendered the hero background and the usual public imagery normally. Because the issue did not reproduce, no corrective asset, caching, code, or data change was made.
