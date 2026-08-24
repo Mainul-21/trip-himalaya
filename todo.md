@@ -436,3 +436,4 @@
 - [x] Align the signed-in-only Admin Dashboard header link with the public navigation row without changing its access-control visibility.
 - [x] Standardize lower-page typography using the established heading treatment and a consistent modern body font while preserving the approved hero and upper layout.
 - [x] Add a responsive View All Packages action below the existing packages list with matching visual states and tours navigation.
+- [x] Enlarge and refine the typography of the lower public tour-detail sections—Day by Day, inclusions/exclusions, preparation, FAQs, and booking card—while preserving the approved hero and upper layout.
