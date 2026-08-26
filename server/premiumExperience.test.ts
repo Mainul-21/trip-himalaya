@@ -30,10 +30,14 @@ describe("premium public experience contract", () => {
     expect(app).not.toContain('import("./pages/Reviews")');
     expect(app).not.toContain('path="/reviews"');
     expect(home).toContain("trpc.reviews.list.useQuery");
-    expect(home).toContain("reviews.reduce");
     expect(home).toContain("REAL JOURNEYS. HONEST STORIES.");
-    expect(home).toContain("published guest");
     expect(home).toContain('agency?.reviewCtaEnabled === false ? "" : googleReviewsUrl');
+    expect(home).not.toContain("verifiedAverage");
+    expect(home).not.toContain("reviews.reduce");
+    expect(home).not.toContain("item.rating");
+    expect(home).not.toContain("<Stars");
+    expect(home).not.toContain("Average from {reviews.length}");
+    expect(home).not.toContain("published guest");
     expect(home).not.toContain("Google certified");
     expect(home).not.toContain("Google recommended");
     expect(home).not.toContain("Google #1");

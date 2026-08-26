@@ -135,11 +135,18 @@ describe("agency profile administration contract", () => {
     expect(home).toContain('agency?.whyTripTitle || "WHY TRIP HIMALAYA?"');
   });
 
-  it("uses a valid, premium traveller score and an administrator-controlled Google Reviews destination", () => {
-    expect(home).toContain('<span className="text-3xl font-bold text-accent">{verifiedAverage.toFixed(1)}</span>');
+  it("keeps administrator-controlled guest feedback without showing public review figures", () => {
     expect(home).toContain("const googleReviewsUrl = agency?.googleMapsUrl?.trim();");
     expect(home).toContain("VIEW INDEPENDENT FEEDBACK");
-    expect(home).not.toContain('<p className="mt-4 flex items-center gap-2 text-2xl font-bold text-accent">{verifiedAverage.toFixed(1)} <Stars rating={verifiedAverage} /></p>');
+    expect(home).not.toContain("verifiedAverage");
+    expect(home).not.toContain("reviews.reduce");
+    expect(home).not.toContain("item.rating");
+    expect(home).not.toContain("<Stars");
+    expect(home).not.toContain("Average from {reviews.length}");
+    expect(home).not.toContain("touristCount");
+    expect(home).not.toContain("tourCount");
+    expect(home).not.toContain("thirdMetricLabel");
+    expect(home).not.toContain("thirdMetricValue");
     expect(portal).toContain("Google Reviews / Business Profile URL");
     expect(portal).toContain("does not create, copy, or claim a Google rating or verification badge");
   });

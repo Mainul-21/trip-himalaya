@@ -17,7 +17,13 @@ describe("premium journey presentation", () => {
     expect(home).toContain("Curated journeys. Local expertise. Unforgettable memories.");
     expect(home).toContain("Choose your perfect experience");
     expect(home).toContain("REAL JOURNEYS. HONEST STORIES.");
-    expect(home).toContain("Average from {reviews.length} published guest");
+    expect(home).not.toContain("verifiedAverage");
+    expect(home).not.toContain("reviews.reduce");
+    expect(home).not.toContain("item.rating");
+    expect(home).not.toContain("<Stars");
+    expect(home).not.toContain("Average from {reviews.length}");
+    expect(home).not.toContain("touristCount");
+    expect(home).not.toContain("tourCount");
     expect(home).toContain("VIEW INDEPENDENT FEEDBACK");
     expect(home).toContain("PLAN YOUR HIMACHAL TRIP");
     expect(home).toContain('function scrollToSection(sectionId: "packages" | "plan")');

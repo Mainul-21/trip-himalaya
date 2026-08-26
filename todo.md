@@ -437,3 +437,4 @@
 - [x] Standardize lower-page typography using the established heading treatment and a consistent modern body font while preserving the approved hero and upper layout.
 - [x] Add a responsive View All Packages action below the existing packages list with matching visual states and tours navigation.
 - [x] Enlarge and refine the typography of the lower public tour-detail sections—Day by Day, inclusions/exclusions, preparation, FAQs, and booking card—while preserving the approved hero and upper layout.
+- [x] Ensure the homepage does not display any verified trip figures, traveller counts, tour counts, ratings, or similar metrics.
