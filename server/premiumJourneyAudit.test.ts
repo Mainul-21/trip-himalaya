@@ -22,8 +22,11 @@ describe("premium journey presentation", () => {
     expect(home).not.toContain("item.rating");
     expect(home).not.toContain("<Stars");
     expect(home).not.toContain("Average from {reviews.length}");
-    expect(home).not.toContain("touristCount");
-    expect(home).not.toContain("tourCount");
+    expect(home).toContain("const homepageFigures = [");
+    expect(home).toContain('value: agency?.touristCount?.trim() || ""');
+    expect(home).toContain('value: agency?.tourCount?.trim() || ""');
+    expect(home).toContain("homepageFigures.length ?");
+    expect(home).toContain("AT A GLANCE");
     expect(home).toContain("VIEW INDEPENDENT FEEDBACK");
     expect(home).toContain("PLAN YOUR HIMACHAL TRIP");
     expect(home).toContain('function scrollToSection(sectionId: "packages" | "plan")');

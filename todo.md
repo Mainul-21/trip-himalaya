@@ -438,3 +438,5 @@
 - [x] Add a responsive View All Packages action below the existing packages list with matching visual states and tours navigation.
 - [x] Enlarge and refine the typography of the lower public tour-detail sections—Day by Day, inclusions/exclusions, preparation, FAQs, and booking card—while preserving the approved hero and upper layout.
 - [x] Ensure the homepage does not display any verified trip figures, traveller counts, tour counts, ratings, or similar metrics.
+- [x] Restore the administrator-managed homepage trip figures at the owner’s request while keeping ratings, stars, review averages, and review counts off the public homepage.
+- [x] Verify that principal and permitted administrators can add and edit the three saved homepage figures through Agency Profile without exposing administrator controls publicly.

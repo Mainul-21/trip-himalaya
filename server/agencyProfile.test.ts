@@ -135,7 +135,7 @@ describe("agency profile administration contract", () => {
     expect(home).toContain('agency?.whyTripTitle || "WHY TRIP HIMALAYA?"');
   });
 
-  it("keeps administrator-controlled guest feedback without showing public review figures", () => {
+  it("keeps administrator-controlled trip figures separate from public review figures", () => {
     expect(home).toContain("const googleReviewsUrl = agency?.googleMapsUrl?.trim();");
     expect(home).toContain("VIEW INDEPENDENT FEEDBACK");
     expect(home).not.toContain("verifiedAverage");
@@ -143,10 +143,15 @@ describe("agency profile administration contract", () => {
     expect(home).not.toContain("item.rating");
     expect(home).not.toContain("<Stars");
     expect(home).not.toContain("Average from {reviews.length}");
-    expect(home).not.toContain("touristCount");
-    expect(home).not.toContain("tourCount");
-    expect(home).not.toContain("thirdMetricLabel");
-    expect(home).not.toContain("thirdMetricValue");
+    expect(home).toContain("const homepageFigures = [");
+    expect(home).toContain('value: agency?.touristCount?.trim() || ""');
+    expect(home).toContain('value: agency?.tourCount?.trim() || ""');
+    expect(home).toContain('label: agency?.thirdMetricLabel?.trim() || ""');
+    expect(home).toContain('value: agency?.thirdMetricValue?.trim() || ""');
+    expect(home).toContain("homepageFigures.length ?");
+    expect(home).toContain("Figures are updated by the Trip Himalaya administration team.");
+    expect(portal).toContain("Homepage trip figures");
+    expect(portal).toContain('label="Total travellers" name="touristCount"');
     expect(portal).toContain("Google Reviews / Business Profile URL");
     expect(portal).toContain("does not create, copy, or claim a Google rating or verification badge");
   });
