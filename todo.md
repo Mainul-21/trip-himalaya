@@ -463,3 +463,11 @@ The owner provided these desired activity names: Trekking—Lamdal Trek, Baleni 
 - [x] Add the owner-provided Trip Himalaya Google Maps embed responsively to the public location section.
 - [x] Update the Plan Your Himachal Trip heading typography to the supplied Montserrat-style hierarchy while preserving the existing palette.
 - [x] Validate the review section, map embed, heading typography, responsive layouts, tests, and production build before publishing.
+
+- [x] Replace the fragile public Google Maps iframe source with a reliable responsive embed while retaining an accessible fallback link.
+- [x] Make the homepage review presentation copy and authentic review records safely editable through protected administrator controls without public ratings, stars, verification, or count claims.
+- [x] Validate the map, review editor, public/admin permissions, responsive rendering, tests, and production build before publishing.
+
+- [x] Replace the fragile public Google Maps iframe source with a reliable responsive embed while retaining an accessible fallback link.
+- [x] Make the homepage review presentation copy and authentic review records safely editable through protected administrator controls without public ratings, stars, verification, or count claims.
+- [x] Validate the map, review editor, public/admin permissions, responsive rendering, tests, and production build before publishing.
