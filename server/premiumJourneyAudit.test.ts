@@ -33,7 +33,7 @@ describe("premium journey presentation", () => {
     expect(home).toContain('reviews.map(item =>');
     expect(home).toContain('snap-x snap-mandatory');
     expect(home).toContain('overscroll-x-contain');
-    expect(home).toContain('w-full shrink-0 snap-start rounded-xl sm:w-[19rem]');
+    expect(home).toContain('w-[min(21rem,calc(100vw-4rem))] shrink-0 snap-start rounded-xl');
     expect(home).toContain('carousel.addEventListener("pointerdown", stop)');
     expect(home).toContain("PLAN YOUR HIMACHAL TRIP");
     expect(home).toContain('function scrollToSection(sectionId: "packages" | "plan")');
@@ -48,18 +48,18 @@ describe("premium journey presentation", () => {
     expect(home).toContain('type={dateFieldFocused ? "date" : "text"}');
     expect(home).toContain("Destination / Places");
     expect(home).toContain("cat-trekking_07d114b2.jpg");
-    expect(home).toContain("cat-spiritual_743c5681.jpg");
     expect(home).toContain("cat-camping_c447f997.jpg");
     expect(home).toContain("cat-village_f7870b29.jpg");
     expect(home).toContain("cat-tours_8d0fd3d0.jpg");
-    expect(home).toContain("cat-custom_9ca90b70.jpg");
     expect(home).toContain('getImageVariant(item.image, "card")} alt={item.title.toLowerCase()} width={640} height={512} loading="lazy" decoding="async" className="h-28 w-full rounded-sm object-cover"');
     expect(home).not.toContain('loading="eager" fetchPriority="high" decoding="async" className="h-28 w-full rounded-sm object-cover"');
     expect(home).toContain("trpc.tours.list.useQuery");
-    expect(home).toContain("const categories = fallbackTripStyles");
+    expect(home).toContain("const categories = agency?.travelStyles?.length ? agency.travelStyles : fallbackTripStyles");
+    expect(home).toContain('agency?.exploreTitle || "EXPLORE HIMACHAL"');
+    expect(home).toContain('agency?.exploreIntro || "Choose your perfect experience"');
     expect(home).not.toContain("500+ Google Reviews");
     expect(home).not.toContain("Google verified");
-    for (const label of ["TREKKING", "SPIRITUAL TOURS", "CAMPING", "VILLAGE EXPERIENCES", "HIMACHAL TOURS", "CUSTOM TOURS"]) {
+    for (const label of ["TREKKING", "TOURS", "ADVENTURE", "LOCAL & CULTURE"]) {
       expect(home).toContain(`title: "${label}"`);
     }
   });

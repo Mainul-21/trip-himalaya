@@ -16,9 +16,9 @@ describe("tour Best Seller and trip-style experience", () => {
 
   it("offers clear home-page trip styles and matching working catalogue filters", () => {
     expect(homeSource).toContain("WHY TRIP HIMALAYA?");
-    expect(homeSource).toContain("/tours?style=short-breaks");
+    expect(homeSource).toContain("/tours?style=experiences");
     expect(homeSource).toContain("/tours?style=best-sellers");
-    expect(toursSource).toContain("Short Breaks");
+    expect(toursSource).toContain("experiences");
     expect(toursSource).toContain("Best Sellers");
     expect(toursSource).toContain("filterMatches");
   });

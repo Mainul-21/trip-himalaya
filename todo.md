@@ -441,14 +441,14 @@
 - [x] Restore the administrator-managed homepage trip figures at the owner’s request while keeping ratings, stars, review averages, and review counts off the public homepage.
 - [x] Verify that principal and permitted administrators can add and edit the three saved homepage figures through Agency Profile without exposing administrator controls publicly.
 
-- [ ] Update administrator-managed public experience categories with the owner-provided trekking, tour, adventure, and local-culture items using safe fact-based copy.
+- [x] Update administrator-managed public experience categories with the owner-provided trekking, tour, adventure, and local-culture items using safe fact-based copy.
 - [x] Redesign the homepage traveller-review card layout to follow the supplied reference structure while preserving authentic review text and excluding fabricated claims or metrics.
 - [x] Validate the updated experience content, review layout, responsive presentation, tests, and production build before publishing.
 - [x] Checkpoint and publish the verified experience and review-layout update.
 
 # Current Worklog
 
-- [ ] Update administrator-managed public experience categories with the owner-provided trekking, tour, adventure, and local-culture items using safe fact-based copy.
+- [x] Update administrator-managed public experience categories with the owner-provided trekking, tour, adventure, and local-culture items using safe fact-based copy.
 - [x] Redesign the homepage traveller-review card layout to follow the supplied reference structure while preserving authentic review text and excluding fabricated claims or metrics.
 - [x] Validate the updated experience content, review layout, responsive presentation, tests, and production build before publishing.
 - [x] Checkpoint and publish the verified experience and review-layout update.
