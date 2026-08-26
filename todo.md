@@ -442,19 +442,24 @@
 - [x] Verify that principal and permitted administrators can add and edit the three saved homepage figures through Agency Profile without exposing administrator controls publicly.
 
 - [ ] Update administrator-managed public experience categories with the owner-provided trekking, tour, adventure, and local-culture items using safe fact-based copy.
-- [ ] Redesign the homepage traveller-review card layout to follow the supplied reference structure while preserving authentic review text and excluding fabricated claims or metrics.
-- [ ] Validate the updated experience content, review layout, responsive presentation, tests, and production build before publishing.
-- [ ] Checkpoint and publish the verified experience and review-layout update.
+- [x] Redesign the homepage traveller-review card layout to follow the supplied reference structure while preserving authentic review text and excluding fabricated claims or metrics.
+- [x] Validate the updated experience content, review layout, responsive presentation, tests, and production build before publishing.
+- [x] Checkpoint and publish the verified experience and review-layout update.
 
 # Current Worklog
 
 - [ ] Update administrator-managed public experience categories with the owner-provided trekking, tour, adventure, and local-culture items using safe fact-based copy.
-- [ ] Redesign the homepage traveller-review card layout to follow the supplied reference structure while preserving authentic review text and excluding fabricated claims or metrics.
-- [ ] Validate the updated experience content, review layout, responsive presentation, tests, and production build before publishing.
-- [ ] Checkpoint and publish the verified experience and review-layout update.
+- [x] Redesign the homepage traveller-review card layout to follow the supplied reference structure while preserving authentic review text and excluding fabricated claims or metrics.
+- [x] Validate the updated experience content, review layout, responsive presentation, tests, and production build before publishing.
+- [x] Checkpoint and publish the verified experience and review-layout update.
 
 # New Request Notes
 
 The owner provided these desired activity names: Trekking—Lamdal Trek, Baleni Pass, Minkiani Pass, Seven Lake Trek; Tour—Dharamshala Tour, Five Devi Darshan in Himachal, Manali Tour, Dalhousie–Chamba; Adventure—Paragliding, Zipline, ATV Ride, Jeep Safari, Sky Cycling, Riverside Picnic; Local & Culture—Kareri Village Tour, Boh Village Tour. The owner requested a reference-inspired review-card layout only, not copied colours or unverified rating/verification/count claims.
 
 - [x] Prepare a non-destructive SQL insert script for the owner-requested tours as unpublished drafts with replaceable sample fields, without executing it or changing existing records.
+
+- [x] Update the homepage review section structure to follow the supplied reference card layout without copying its colours or adding unsupported review claims.
+- [x] Add the owner-provided Trip Himalaya Google Maps embed responsively to the public location section.
+- [x] Update the Plan Your Himachal Trip heading typography to the supplied Montserrat-style hierarchy while preserving the existing palette.
+- [x] Validate the review section, map embed, heading typography, responsive layouts, tests, and production build before publishing.
