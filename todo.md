@@ -457,6 +457,9 @@
 
 The owner provided these desired activity names: Trekking—Lamdal Trek, Baleni Pass, Minkiani Pass, Seven Lake Trek; Tour—Dharamshala Tour, Five Devi Darshan in Himachal, Manali Tour, Dalhousie–Chamba; Adventure—Paragliding, Zipline, ATV Ride, Jeep Safari, Sky Cycling, Riverside Picnic; Local & Culture—Kareri Village Tour, Boh Village Tour. The owner requested a reference-inspired review-card layout only, not copied colours or unverified rating/verification/count claims.
 
+- [x] Preserve the existing Trip Himalaya Google Reviews source and correct the homepage review carousel so cards fully show, auto-scroll smoothly, and support touch scrolling on phones.
+- [x] Validate the corrected review carousel on desktop and mobile without adding fabricated review metrics or claims.
+
 - [x] Prepare a non-destructive SQL insert script for the owner-requested tours as unpublished drafts with replaceable sample fields, without executing it or changing existing records.
 
 - [x] Update the homepage review section structure to follow the supplied reference card layout without copying its colours or adding unsupported review claims.

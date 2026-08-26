@@ -28,6 +28,13 @@ describe("premium journey presentation", () => {
     expect(home).toContain("homepageFigures.length ?");
     expect(home).toContain("AT A GLANCE");
     expect(home).toContain("VIEW INDEPENDENT FEEDBACK");
+    expect(home).toContain('ref={reviewCarouselRef}');
+    expect(home).toContain('aria-label="Scrollable traveller stories"');
+    expect(home).toContain('reviews.map(item =>');
+    expect(home).toContain('snap-x snap-mandatory');
+    expect(home).toContain('overscroll-x-contain');
+    expect(home).toContain('w-full shrink-0 snap-start rounded-xl sm:w-[19rem]');
+    expect(home).toContain('carousel.addEventListener("pointerdown", stop)');
     expect(home).toContain("PLAN YOUR HIMACHAL TRIP");
     expect(home).toContain('function scrollToSection(sectionId: "packages" | "plan")');
     expect(home).toContain('scrollToSection("packages")');
