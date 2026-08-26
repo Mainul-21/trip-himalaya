@@ -51,8 +51,8 @@ describe("premium journey presentation", () => {
     expect(home).toContain("cat-camping_c447f997.jpg");
     expect(home).toContain("cat-village_f7870b29.jpg");
     expect(home).toContain("cat-tours_8d0fd3d0.jpg");
-    expect(home).toContain('getImageVariant(item.image, "card")} alt={item.title.toLowerCase()} width={640} height={512} loading="lazy" decoding="async" className="h-28 w-full rounded-sm object-cover"');
-    expect(home).not.toContain('loading="eager" fetchPriority="high" decoding="async" className="h-28 w-full rounded-sm object-cover"');
+    expect(home).toContain('getImageVariant(item.image, "card")} alt={item.title.toLowerCase()} width={640} height={512} loading="lazy" decoding="async" className="mt-auto h-20 w-full rounded-sm object-cover');
+    expect(home).not.toContain('loading="eager" fetchPriority="high" decoding="async" className="mt-auto h-20 w-full rounded-sm object-cover"');
     expect(home).toContain("trpc.tours.list.useQuery");
     expect(home).toContain("const categories = agency?.travelStyles?.length ? agency.travelStyles : fallbackTripStyles");
     expect(home).toContain('agency?.exploreTitle || "EXPLORE HIMACHAL"');

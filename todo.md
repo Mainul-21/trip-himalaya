@@ -460,6 +460,9 @@ The owner provided these desired activity names: Trekking—Lamdal Trek, Baleni 
 - [x] Preserve the existing Trip Himalaya Google Reviews source and correct the homepage review carousel so cards fully show, auto-scroll smoothly, and support touch scrolling on phones.
 - [x] Validate the corrected review carousel on desktop and mobile without adding fabricated review metrics or claims.
 
+- [x] Display the owner-provided activity names inside the editable Explore Himachal category cards so the category cards are not visually empty.
+- [x] Validate the populated category cards, safe tour navigation, responsive layout, tests, and production build before publishing.
+
 - [x] Prepare a non-destructive SQL insert script for the owner-requested tours as unpublished drafts with replaceable sample fields, without executing it or changing existing records.
 
 - [x] Update the homepage review section structure to follow the supplied reference card layout without copying its colours or adding unsupported review claims.
