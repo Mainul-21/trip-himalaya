@@ -33,7 +33,7 @@ describe("premium journey presentation", () => {
     expect(home).toContain('reviews.map(item =>');
     expect(home).toContain('snap-x snap-mandatory');
     expect(home).toContain('overscroll-x-contain');
-    expect(home).toContain('w-[min(21rem,calc(100vw-4rem))] shrink-0 snap-start rounded-xl');
+    expect(home).toContain('w-[calc(100vw-2.5rem)] shrink-0 snap-start rounded-2xl');
     expect(home).toContain('carousel.addEventListener("pointerdown", stop)');
     expect(home).toContain("PLAN YOUR HIMACHAL TRIP");
     expect(home).toContain('function scrollToSection(sectionId: "packages" | "plan")');

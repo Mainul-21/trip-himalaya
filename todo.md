@@ -474,6 +474,10 @@ The owner provided these desired activity names: Trekking—Lamdal Trek, Baleni 
 - [x] Make the homepage review presentation copy and authentic review records safely editable through protected administrator controls without public ratings, stars, verification, or count claims.
 - [x] Validate the map, review editor, public/admin permissions, responsive rendering, tests, and production build before publishing.
 
+- [x] Restore the exact owner-provided Trip Himalaya Google Maps iframe while retaining the accessible map fallback link.
+- [x] Refine the homepage review carousel to more closely match the supplied reference structure with complete, touch-scrollable cards and no fabricated review metrics or claims.
+- [x] Validate the restored map iframe and refined review carousel on desktop and mobile before publishing.
+
 - [x] Replace the fragile public Google Maps iframe source with a reliable responsive embed while retaining an accessible fallback link.
 - [x] Make the homepage review presentation copy and authentic review records safely editable through protected administrator controls without public ratings, stars, verification, or count claims.
 - [x] Validate the map, review editor, public/admin permissions, responsive rendering, tests, and production build before publishing.
