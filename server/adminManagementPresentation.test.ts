@@ -26,12 +26,14 @@ describe("principal admin account management and tour-card presentation", () => 
     expect(portal).toContain("Remove");
   });
 
-  it("provides a protected editor for authentic homepage review content without public rating metrics", () => {
+  it("provides a protected editor for unlimited authentic reviews and their saved individual ratings", () => {
     expect(router).toContain("update: adminProcedure.input");
     expect(portal).toContain("trpc.reviews.update.useMutation");
     expect(portal).toContain("function ReviewEditForm");
     expect(portal).toContain("Publish this authentic feedback");
-    expect(portal).toContain("Public cards do not display star ratings, verification claims, or review counts.");
+    expect(portal).toContain("no review limit: add one record for each authentic traveller review.");
+    expect(portal).toContain('aria-label="Traveller photo"');
+    expect(portal).toContain("Public cards display only the rating saved for this review");
   });
 
   it("uses the supplied compact package layout while keeping the real price and both journey actions visible", () => {

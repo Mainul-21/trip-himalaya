@@ -1491,7 +1491,8 @@ function Reviews() {
         >
           <p className="rounded-xl bg-[#f8fbf9] px-4 py-3 text-sm leading-6 text-slate-600">
             Add feedback only when it came from a real traveller. Enter their
-            name, place, rating and exact words. A photo is optional.
+            name, place, rating and exact words. A photo is optional. There is
+            no review limit: add one record for each authentic traveller review.
           </p>
           <div className="grid gap-5 md:grid-cols-2">
             <NamedInput label="Traveller name" name="name" />
@@ -1569,6 +1570,7 @@ function Reviews() {
             {editingId === x.id ? (
               <ReviewEditForm
                 review={x}
+                reviewPhotos={reviewPhotos}
                 pending={update.isPending}
                 onCancel={() => setEditingId(null)}
                 onSave={values => update.mutate({ id: x.id, ...values }, { onSuccess: () => setEditingId(null) })}
@@ -1595,20 +1597,23 @@ type EditableReview = {
   reviewerName: string;
   location: string | null;
   sourceLabel: string | null;
+  reviewerImage: string | null;
   rating: number;
   quote: string;
   isPublished: boolean;
 };
 
-type ReviewEditValues = Omit<EditableReview, "id" | "location" | "sourceLabel"> & { location?: string; sourceLabel?: string };
+type ReviewEditValues = Omit<EditableReview, "id" | "location" | "sourceLabel" | "reviewerImage"> & { location?: string; sourceLabel?: string; reviewerImage?: string };
 
 function ReviewEditForm({
   review,
+  reviewPhotos,
   pending,
   onCancel,
   onSave,
 }: {
   review: EditableReview;
+  reviewPhotos: string[];
   pending: boolean;
   onCancel: () => void;
   onSave: (values: ReviewEditValues) => void;
@@ -1617,6 +1622,7 @@ function ReviewEditForm({
     reviewerName: review.reviewerName,
     location: review.location || "",
     sourceLabel: review.sourceLabel || "",
+    reviewerImage: review.reviewerImage || "",
     rating: review.rating,
     quote: review.quote,
     isPublished: review.isPublished,
@@ -1629,10 +1635,14 @@ function ReviewEditForm({
         onSave(values);
       }}
     >
-      <p className="text-xs leading-5 text-slate-600">Edit only authentic traveller information. Public cards do not display star ratings, verification claims, or review counts.</p>
+      <p className="text-xs leading-5 text-slate-600">Edit only authentic traveller information. Public cards display only the rating saved for this review, never a review count, average, or verification claim.</p>
       <Input aria-label="Traveller name" value={values.reviewerName} onChange={event => setValues(current => ({ ...current, reviewerName: event.target.value }))} placeholder="Traveller name" required />
       <Input aria-label="Location" value={values.location || ""} onChange={event => setValues(current => ({ ...current, location: event.target.value }))} placeholder="Location" />
       <Input aria-label="Feedback source" value={values.sourceLabel || ""} onChange={event => setValues(current => ({ ...current, sourceLabel: event.target.value }))} placeholder="Feedback source" />
+      <select aria-label="Traveller photo" value={values.reviewerImage || ""} onChange={event => setValues(current => ({ ...current, reviewerImage: event.target.value }))} className="focus-ring h-10 rounded-lg border border-input bg-white px-3 text-sm text-[#123d5b]">
+        <option value="">Use initials on a simple background</option>
+        {reviewPhotos.map(photo => <option key={photo} value={photo}>Choose saved photo</option>)}
+      </select>
       <select aria-label="Star rating" value={values.rating} onChange={event => setValues(current => ({ ...current, rating: Number(event.target.value) }))} className="focus-ring h-10 rounded-lg border border-input bg-white px-3 text-sm text-[#123d5b]">
         {[5, 4, 3, 2, 1].map(rating => <option key={rating} value={rating}>{rating} stars</option>)}
       </select>

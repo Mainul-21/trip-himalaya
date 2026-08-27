@@ -481,3 +481,8 @@ The owner provided these desired activity names: Trekking—Lamdal Trek, Baleni 
 - [x] Replace the fragile public Google Maps iframe source with a reliable responsive embed while retaining an accessible fallback link.
 - [x] Make the homepage review presentation copy and authentic review records safely editable through protected administrator controls without public ratings, stars, verification, or count claims.
 - [x] Validate the map, review editor, public/admin permissions, responsive rendering, tests, and production build before publishing.
+
+- [x] Restore the homepage Choose Your Travel Style cards to the prior simple image-and-category presentation without activity-name lists.
+- [x] Ensure protected administrators can add, edit, publish, unpublish, delete, photo-manage, and set authentic ratings for any number of review records.
+- [x] Display only administrator-saved authentic review ratings in the public carousel, with no fabricated review content or unsupported aggregate claims.
+- [x] Validate the revised travel-style and review experiences with Vitest, type checks, production build, and responsive public/admin QA before publishing.

@@ -34,8 +34,8 @@ describe("premium public experience contract", () => {
     expect(home).toContain('agency?.reviewCtaEnabled === false ? "" : googleReviewsUrl');
     expect(home).not.toContain("verifiedAverage");
     expect(home).not.toContain("reviews.reduce");
-    expect(home).not.toContain("item.rating");
-    expect(home).not.toContain("<Stars");
+    expect(home).toContain('aria-label={`${item.rating} out of 5 stars`}');
+    expect(home).toContain('Array.from({ length: 5 }, (_, index) => <Star');
     expect(home).not.toContain("Average from {reviews.length}");
     expect(home).not.toContain("published guest");
     expect(home).not.toContain("Google certified");
